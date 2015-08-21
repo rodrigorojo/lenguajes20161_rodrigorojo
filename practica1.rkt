@@ -15,3 +15,15 @@
   (cond
     [(empty? l) 0]
     [else(+ 1 (mlength (cdr l)))]))
+
+;Funcion que calcula la suma de elementos de una lista no vacia
+;Supondremos que los elementos son enteros.
+
+(define (suma lst)
+  (cond
+    [(empty? lst) 0]
+    [else (+ (car lst) (suma (cdr lst)))]))
+
+;Funcion Average: Dada una lista de enteros, calcula el promedio de sus elementos
+(define (average l)
+  (/ (suma l)(mlength l)))
