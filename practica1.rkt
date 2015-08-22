@@ -43,10 +43,12 @@
  (cond
   [(empty? l) m]
   [(empty? m) l]
-  [else (cons (car l) (mconcat (cdr l) m))]
-  ) 
- )
+  [else (cons (car l) (mconcat (cdr l) m))]))
 
+;Funcion mpowerset: Define la potencia de una lista
+(define (mpowerset l)
+  (cond
+    [(empty? l) '()]))
 
 
 
