@@ -50,11 +50,13 @@
   (cond
     [(empty? l) '()]))
 
+;Dice si algun elemento de una lista cumple una propiedad
 (define (any? a l)
   (cond
     [(empty? l) #f]
     [else (or ((lambda(x) (a x)) (car l)) (any? a (cdr l)))]))
 
+;Dice si todos los elementos de una lista cumplen una propiedad
 (define (every? a l)
   (cond
     [(empty? l) #t]
