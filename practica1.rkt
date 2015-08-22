@@ -25,6 +25,13 @@
     [(empty? l) 0]
     [else(/ (suma l)(mlength l))]))
 
+;Funcion reduce: Aplica una funcion de aridad-2 a los elementos de una lista
+(define (reduce f l)
+  (cond
+    [(empty? l) '()]
+    [(= (mlength l) 1) l]))
+    
+
 ;Función zip: Dadas dos listas regresa una lista cuyos elementos son listas de tamaño dos de los pares
 ;i-esimos de las listas.
 
