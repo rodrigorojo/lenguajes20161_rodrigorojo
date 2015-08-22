@@ -44,6 +44,15 @@
   [(empty? l) m]
   [(empty? m) l]
   [else (cons (car l) (mconcat (cdr l) m))]))
+;Funcion mmap: Dados una funcion y una lista, aplica la funcion a los elementos
+;de la lista.
+;Casos: Si la lista es vacía, devolvemos la lista vacía
+;Sino, definimos la lista de la funcion aplicada a la cabeza, con la llamada recursiva
+;sobre el resto de la lista
+(define (mmap funcion lista)
+  (cond 
+    [(empty? lista) '()]
+    [else (cons (funcion(car lista)) (mmap funcion(cdr lista)))]))
 
 ;Funcion mpowerset: Define la potencia de una lista
 (define (mpowerset l)
@@ -90,3 +99,9 @@
 (test (mconcat '(1 3 4) '(3 1 2)) '(1 3 4 3 1 2))
 (test (mconcat '() '()) '())
 (test (mconcat '(1 2 3 4 5 6 7 8 9) '(10 11 12 13 14 15)) '(1 2 3 4 5 6 7 8 9 10 11 12 13 14 15))
+;Pruebas mmap
+(test (mmap car '((1 2 3) (4 5 6) (7 8 9))) '(1 4 7))
+(test (mmap add1 '(1 2 3)) '(2 3 4))
+(test (mmap cdr '((1 2 3) (4 5 6) (7 8 9))) '((2 3) (5 6) (8 9)))
+(test (mmap add1 '(11 32 41 2)) '(12 33 42 3))
+(test (mmap car '((1 2 3 4 5)(1 2 3))) '(1 1))
