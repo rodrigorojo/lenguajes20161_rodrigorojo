@@ -25,6 +25,13 @@
     [(empty? l) 0]
     [else(/ (suma l)(mlength l))]))
 
+;Funcion q dado un numero n devuelve la lista de primos entre 2 y n
+(define (primes n)
+  (cond
+    [(= n 0) '()]
+    [else (for/list ([x (in-range n) ]) (modulo x n))]
+  ))
+
 ;Funcion reduce: Aplica una funcion de aridad-2 a los elementos de una lista
 (define (reduce f l)
   (cond
