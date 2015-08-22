@@ -7,14 +7,15 @@
     [(zero? m) 1]
     [else (* n (pow n (- m 1)))]))
 
-;Funcion average: Dada una lista de enteros, calcula el promedio de sus elementos.
-
-(define (average l)
-  ;función auxiliar que saca la longitud de una lista.
-  (define(mlength l)
+;función auxiliar que saca la longitud de una lista.
+ (define(mlength l)
   (cond
     [(empty? l) 0]
     [else(+ 1 (mlength (cdr l)))]))
+
+;Funcion average: Dada una lista de enteros, calcula el promedio de sus elementos.
+
+(define (average l)
   ;función auxiliar que saca la suma de los elementos de una lista.
   (define (suma lst)
   (cond
@@ -80,7 +81,6 @@
 (test (average '()) 0)
 (test (average '(9)) 9)
 (test (average '(5 8 3 9 4 1)) 5)
-(test (average '(2 4 3)) 3)
 (test (average '(2 4 3)) 3)
 (test (average '(6 4 3 8 9)) 6)
 ;zip
