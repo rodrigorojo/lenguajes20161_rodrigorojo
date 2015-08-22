@@ -59,6 +59,17 @@
   (cond
     [(empty? l) '()]))
 
+;Dice si algun elemento de una lista cumple una propiedad
+(define (any? a l)
+  (cond
+    [(empty? l) #f]
+    [else (or ((lambda(x) (a x)) (car l)) (any? a (cdr l)))]))
+
+;Dice si todos los elementos de una lista cumplen una propiedad
+(define (every? a l)
+  (cond
+    [(empty? l) #t]
+    [else (and ((lambda(x) (a x)) (car l)) (every? a (cdr l)))]))
 
 
 ;Pruebas
@@ -99,9 +110,12 @@
 (test (mconcat '(1 3 4) '(3 1 2)) '(1 3 4 3 1 2))
 (test (mconcat '() '()) '())
 (test (mconcat '(1 2 3 4 5 6 7 8 9) '(10 11 12 13 14 15)) '(1 2 3 4 5 6 7 8 9 10 11 12 13 14 15))
+<<<<<<< HEAD
 ;Pruebas mmap
 (test (mmap car '((1 2 3) (4 5 6) (7 8 9))) '(1 4 7))
 (test (mmap add1 '(1 2 3)) '(2 3 4))
 (test (mmap cdr '((1 2 3) (4 5 6) (7 8 9))) '((2 3) (5 6) (8 9)))
 (test (mmap add1 '(11 32 41 2)) '(12 33 42 3))
 (test (mmap car '((1 2 3 4 5)(1 2 3))) '(1 1))
+=======
+>>>>>>> 211301ba0e1b85c9a52becc07d4b9bc3c3d09623
