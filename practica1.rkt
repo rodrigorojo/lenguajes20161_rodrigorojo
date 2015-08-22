@@ -110,12 +110,24 @@
 (test (mconcat '(1 3 4) '(3 1 2)) '(1 3 4 3 1 2))
 (test (mconcat '() '()) '())
 (test (mconcat '(1 2 3 4 5 6 7 8 9) '(10 11 12 13 14 15)) '(1 2 3 4 5 6 7 8 9 10 11 12 13 14 15))
-<<<<<<< HEAD
 ;Pruebas mmap
 (test (mmap car '((1 2 3) (4 5 6) (7 8 9))) '(1 4 7))
 (test (mmap add1 '(1 2 3)) '(2 3 4))
 (test (mmap cdr '((1 2 3) (4 5 6) (7 8 9))) '((2 3) (5 6) (8 9)))
 (test (mmap add1 '(11 32 41 2)) '(12 33 42 3))
 (test (mmap car '((1 2 3 4 5)(1 2 3))) '(1 1))
-=======
->>>>>>> 211301ba0e1b85c9a52becc07d4b9bc3c3d09623
+;Pruebas any?
+(test (any? number? '()) #f)
+(test (any? number? '(a b c d 1)) #t)
+(test (any? symbol? '(1 2 3 4)) #f)
+(test (any? number? '(h i j k l)) #f)
+(test (any? symbol? '(2 3 x 4)) #t)
+;Pruebas every
+(test (every? number? '()) #t)
+(test (every? number? '(1 2 3)) #t)
+(test (every? number? '(1 2 3 a)) #f)
+(test (every? symbol? '(1 2 3 a)) #f)
+(test (every? symbol? '(a b c d)) #t)
+
+
+
