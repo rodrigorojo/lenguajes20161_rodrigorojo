@@ -37,6 +37,18 @@
 
 ;Función auxiliar que genera una lista con los dos elementos dados
 
+;Funcion mconcat: Concatena dos listas recibidas
+
+(define (mconcat l m)
+ (cond
+  [(empty? l) m]
+  [(empty? m) l]
+  [else (cons (car l) (mconcat (cdr l) m))]
+  ) 
+ )
+
+
+
 
 ;Pruebas
 ;Power
@@ -68,3 +80,10 @@
 (test (suma '(1 1 1)) 3)
 (test (suma '(15 6)) 21)
 (test (suma '(1)) 1)
+
+;Pruebas mconcat
+(test (mconcat '(1 3 4) '()) '(1 3 4))
+(test (mconcat '() '(1 3 4)) '(1 3 4))
+(test (mconcat '(1 3 4) '(3 1 2)) '(1 3 4 3 1 2))
+(test (mconcat '() '()) '())
+(test (mconcat '(1 2 3 4 5 6 7 8 9) '(10 11 12 13 14 15)) '(1 2 3 4 5 6 7 8 9 10 11 12 13 14 15))
