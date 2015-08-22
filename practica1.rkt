@@ -29,6 +29,16 @@
   (cond
     [(empty? l) 0]
     [else(/ (suma l)(mlength l))]))
+;Función Zip:
+(define (zip l1 l2)
+  (cond
+  [(empty? l1) '()]
+  [(empty? l2) '()]
+  [else (cons (list (car l1) (car l2)) (zip (cdr l1) (cdr l2)))]))
+
+;Función auxiliar que genera una lista con los dos elementos dados
+
+
 ;Pruebas
 ;Power
 (test (pow 3 0) 1)
@@ -43,3 +53,19 @@
 (test (average '(2 4 3)) 3)
 (test (average '(2 4 3)) 3)
 (test (average '(6 4 3 8 9)) 6)
+;Zip
+(test (zip '(1 2 3) '(4 5 6)) '((1 4) (2 5) (3 6) ))
+(test (zip '(1 2) '()) '())
+(test (zip '() '(6 9)) '())
+(test (zip '(7 5 3) '(9 6 4)) '((7 9) (5 6) (3 4)))
+(test (zip '(1 5 3) '(3 4)) '((1 3) (5 4)))
+;Puerbas para funcion auxiliares
+;junta
+;(test (junta 1 3) '(1 3))
+;(test (junta 7 8) '(7 8))
+;(test (junta 3 2) '(3 2))
+;Suma
+(test (suma '(1 2 3 4 5)) 15)
+(test (suma '(1 1 1)) 3)
+(test (suma '(15 6)) 21)
+(test (suma '(1)) 1)
