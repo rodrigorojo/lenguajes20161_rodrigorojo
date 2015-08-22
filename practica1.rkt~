@@ -50,15 +50,6 @@
   (cond
     [(empty? l) '()]))
 
-(define (any? a l)
-  (cond
-    [(empty? l) #f]
-    [else (or ((lambda(x) (a x)) (car l)) (any? a (cdr l)))]))
-
-(define (every? a l)
-  (cond
-    [(empty? l) #t]
-    [else (and ((lambda(x) (a x)) (car l)) (every? a (cdr l)))]))
 
 
 ;Pruebas
