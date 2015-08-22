@@ -80,6 +80,7 @@
 (test (suma '(1 1 1)) 3)
 (test (suma '(15 6)) 21)
 (test (suma '(1)) 1)
+(test (suma '(1 2 3 4 5 6 7 8 9 10)) 55)
 
 ;Pruebas mconcat
 (test (mconcat '(1 3 4) '()) '(1 3 4))
