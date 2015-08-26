@@ -25,12 +25,19 @@
     [(empty? l) 0]
     [else(/ (suma l)(mlength l))]))
 
-;Funcion q dado un numero n devuelve la lista de primos entre 2 y n
-(define (primes n)
+;
+
+(define (divisor n)
   (cond
-    [(= n 0) '()]
-    [else (for/list ([x (in-range n) ]) (modulo x n))]
-  ))
+    [(empty? (listap n)) empty]
+    ;[(= (car(listap n)) 0) (divisor (cdr (listap n)))]
+    [else((= (modulo n (car(listap n))) 0) (cons (car(listap n)) (divisor (cdr (listap n)))))]))
+
+;Funcion q dado un numero n devuelve la lista de primos entre 2 y n
+(define (listap n)
+  (cond
+   ; [(= n 0) '()]
+    [else (for/list ([x (in-range 2 (+ n 1)) ]) (modulo x (+ n 1)))]))
 
 ;Funcion reduce: Aplica una funcion de aridad-2 a los elementos de una lista
 (define (reduce f l)
