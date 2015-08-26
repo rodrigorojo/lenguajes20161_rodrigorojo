@@ -27,24 +27,34 @@
 
 ;
 
-(define (divisor n)
+(define (divisor lst n)
   (cond
-    [(empty? (listap n)) empty]
-    ;[(= (car(listap n)) 0) (divisor (cdr (listap n)))]
-    [else((= (modulo n (car(listap n))) 0) (cons (car(listap n)) (divisor (cdr (listap n)))))]))
+    [(empty? lst) empty]
+    [(if (= (modulo n (car lst)) 0) (cons (car lst) (divisor (cdr lst) n)) (divisor (cdr lst) n))]))
+    
 
 ;Funcion q dado un numero n devuelve la lista de primos entre 2 y n
 (define (listap n)
-  (cond
-   ; [(= n 0) '()]
-    [else (for/list ([x (in-range 2 (+ n 1)) ]) (modulo x (+ n 1)))]))
+    (for/list ([x (in-range 2 (+ n 1)) ]) (modulo x (+ n 1))))
 
+; Funcion isprime
+(define (isprime n)
+  (if (= (mlength (divisor (listap n) n)) 1) #t #f))
+
+;Funcion primes
+(define (primes n)
+    (cond
+      [(= n 1) empty]
+      [(isprime n) (mconcat (primes (- n 1)) (list n))]
+      [else (primes (- n 1))]))
+                                         
+                
 ;Funcion reduce: Aplica una funcion de aridad-2 a los elementos de una lista
 (define (reduce f l)
   (cond
     [(empty? l) '()]
     [(= (mlength l) 1) l]))
-    
+
 
 ;Función zip: Dadas dos listas regresa una lista cuyos elementos son listas de tamaño dos de los pares
 ;i-esimos de las listas.
