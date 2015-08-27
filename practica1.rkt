@@ -16,7 +16,7 @@
 ;Funcion average: Dada una lista de enteros, calcula el promedio de sus elementos.
 
 (define (average l)
-  ;función auxiliar que saca la suma de los elementos de una lista.
+  ;Función auxiliar que saca la suma de los elementos de una lista.
   (define (suma lst)
   (cond
     [(empty? lst) 0]
@@ -25,31 +25,30 @@
     [(empty? l) 0]
     [else(/ (suma l)(mlength l))]))
 
-;
 
-(define (divisor lst n)
+;Funcion primes que regresa una lista con los numeros primos hasta un numero dado
+
+(define (primes n)
+  ;Función auxiliar que saca una lista de numeros de 2 hasta n.
+  (define (listap n)
+    (for/list ([x (in-range 2 (+ n 1)) ]) (modulo x (+ n 1))))
+  ;Función auxiliar que recive una lista l y un numero n, que devuelve una lista con los divisores de n que estan en l.
+  (define (divisor lst n)
   (cond
     [(empty? lst) empty]
     [(if (= (modulo n (car lst)) 0) (cons (car lst) (divisor (cdr lst) n)) (divisor (cdr lst) n))]))
-    
-
-;Funcion q dado un numero n devuelve la lista de primos entre 2 y n
-(define (listap n)
-    (for/list ([x (in-range 2 (+ n 1)) ]) (modulo x (+ n 1))))
-
-; Funcion isprime
-(define (isprime n)
+  ;Función auxiliar que dice si un numero es primo o no.
+  (define (isprime n)
   (if (= (mlength (divisor (listap n) n)) 1) #t #f))
-
-;Funcion primes
-(define (primes n)
-    (cond
-      [(= n 1) empty]
-      [(isprime n) (mconcat (primes (- n 1)) (list n))]
-      [else (primes (- n 1))]))
+  ;esta es la de primes
+  (cond
+    [(= n 1) empty]
+    [(isprime n) (mconcat (primes (- n 1)) (list n))]
+    [else (primes (- n 1))]))
                                          
                 
 ;Funcion reduce: Aplica una funcion de aridad-2 a los elementos de una lista
+
 (define (reduce f l)
   (cond
     [(empty? l) '()]
@@ -84,17 +83,20 @@
     [else (cons (funcion(car lista)) (mmap funcion(cdr lista)))]))
 
 ;Funcion mpowerset: Define la potencia de una lista
+
 (define (mpowerset l)
   (cond
     [(empty? l) '()]))
 
 ;Función any?: Dice si algun elemento de una lista cumple una propiedad dada.
+
 (define (any? a l)
   (cond
     [(empty? l) #f]
     [else (or ((lambda(x) (a x)) (car l)) (any? a (cdr l)))]))
 
 ;Función every?: Dice si todos los elementos de una lista cumplen una propiedad dada.
+
 (define (every? a l)
   (cond
     [(empty? l) #t]
@@ -114,6 +116,12 @@
 (test (average '(5 8 3 9 4 1)) 5)
 (test (average '(2 4 3)) 3)
 (test (average '(6 4 3 8 9)) 6)
+;primes
+(test (primes 30) '(2 3 5 7 11 13 17 19 23 29))
+(test (primes 11) '(2 3 5 7 11))
+(test (primes 1) '())
+(test (primes 5) '(2 3 5))
+(test (primes 20) '(2 3 5 7 11 13 17 19))
 ;zip
 (test (zip '(1 2 3) '(4 5 6)) '((1 4) (2 5) (3 6) ))
 (test (zip '(1 2) '()) '())
