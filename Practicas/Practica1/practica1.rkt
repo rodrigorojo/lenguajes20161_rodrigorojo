@@ -81,10 +81,17 @@
     [else (cons (funcion(car lista)) (mmap funcion(cdr lista)))]))
 
 ;Funcion mpowerset: Define la potencia de una lista
-
 (define (mpowerset l)
   (cond
     [(empty? l) '()]))
+
+;Función mfilter: aplica un predicado a los elementos de la lista si es verdadero regresa el elemnto en una lista.
+(define (mfilter f l)
+  (cond
+    [(empty? l) empty]
+    [else (if (f(car l))
+                (cons (car l) (mfilter f (cdr l)))
+                (mfilter f(cdr l)))]))
 
 ;Función any?: Dice si algun elemento de una lista cumple una propiedad dada.
 
@@ -101,6 +108,8 @@
     [else (and ((lambda(x) (a x)) (car l)) (every? a (cdr l)))]))
 
 
+  
+(print-only-errors)
 ;Pruebas
 ;power
 (test (pow 3 0) 1)
@@ -144,6 +153,12 @@
 (test (mmap cdr '((1 2 3) (4 5 6) (7 8 9))) '((2 3) (5 6) (8 9)))
 (test (mmap add1 '(11 32 41 2)) '(12 33 42 3))
 (test (mmap car '((1 2 3 4 5)(1 2 3))) '(1 1))
+;mfilter
+(test  (mfilter (lambda (x) (not (zero? x))) '(0 0 0 0 1)) '(1))
+(test  (mfilter (lambda (x) (not (zero? x))) '()) '())
+(test  (mfilter (lambda (l) (not (empty? l))) '(() () (9) () (1 2 3 4 5 6))) '((9) (1 2 3 4 5 6)))
+(test  (mfilter (lambda (n) (= (modulo n 2) 0)) '(4 1 2 3 8 9 10 5 8 12)) '(4 2 8 10 8 12))
+(test  (mfilter (lambda (x) (eqv? 1 x)) '(1 2 1 3 4)) '(1 1))
 ;any?
 (test (any? number? '()) #f)
 (test (any? number? '(a b c d 1)) #t)
