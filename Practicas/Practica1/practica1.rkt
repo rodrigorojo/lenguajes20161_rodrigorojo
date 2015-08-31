@@ -90,26 +90,28 @@
 
 ;Función any?: Dice si algun elemento de una lista cumple una propiedad dada.
 
-(define (any? a l)
+(define (any? f lst)
   (cond
-    [(empty? l) #f]
-    [else (or ((lambda(x) (a x)) (car l)) (any? a (cdr l)))]))
+    [(empty? lst) #f]
+    [else (or ((lambda(x) (f x)) (car lst)) (any? f (cdr lst)))]))
 
 ;Función every?: Dice si todos los elementos de una lista cumplen una propiedad dada.
 
-(define (every? a l)
+(define (every? f lst)
   (cond
-    [(empty? l) #t]
-    [else (and ((lambda(x) (a x)) (car l)) (every? a (cdr l)))]))
+    [(empty? lst) #t]
+    [else (and ((lambda(x) (f x)) (car lst)) (every? f (cdr lst)))]))
 
 ;Funcion mpowerset: Define la potencia de una lista
-(define (mpowerset l)
+
+(define (mpowerset lst)
   (cond
-    [(empty? l) '(())]
-    [else (mconcat (mpowerset (cdr l)) (mconcat (list (car l)) (mpowerset (cdr l))))]))  
+    [(empty? lst) '(())]
+    [else (define pset-rest (mpowerset (cdr lst)))
+          (mconcat pset-rest (mmap (lambda (x) (cons (car lst) x)) pset-rest))]))
     
   
-(print-only-errors)
+;(print-only-errors)
 ;Pruebas
 ;power
 (test (pow 3 0) 1)
