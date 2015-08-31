@@ -80,11 +80,6 @@
     [(empty? lista) '()]
     [else (cons (funcion(car lista)) (mmap funcion(cdr lista)))]))
 
-;Funcion mpowerset: Define la potencia de una lista
-(define (mpowerset l)
-  (cond
-    [(empty? l) '()]))
-
 ;Función mfilter: aplica un predicado a los elementos de la lista si es verdadero regresa el elemnto en una lista.
 (define (mfilter f l)
   (cond
@@ -107,7 +102,12 @@
     [(empty? l) #t]
     [else (and ((lambda(x) (a x)) (car l)) (every? a (cdr l)))]))
 
-
+;Funcion mpowerset: Define la potencia de una lista
+(define (mpowerset l)
+  (cond
+    [(empty? l) '(())]
+    [else (mconcat (mpowerset (cdr l)) (mconcat (list (car l)) (mpowerset (cdr l))))]))  
+    
   
 (print-only-errors)
 ;Pruebas
