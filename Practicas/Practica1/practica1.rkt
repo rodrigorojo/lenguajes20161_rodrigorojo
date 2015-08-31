@@ -107,8 +107,8 @@
 (define (mpowerset lst)
   (cond
     [(empty? lst) '(())]
-    [else (define pset-rest (mpowerset (cdr lst)))
-          (mconcat pset-rest (mmap (lambda (x) (cons (car lst) x)) pset-rest))]))
+    [else (define lst2 (mpowerset (cdr lst)))
+          (mconcat lst2 (mmap (lambda (x) (cons (car lst) x)) lst2))]))
     
   
 ;(print-only-errors)
@@ -175,5 +175,9 @@
 (test (every? symbol? '(a b c d)) #t)
 ;mpowerset
 (test (mpowerset '()) '(()))
+(test (mpowerset '(1)) '(()(1))) 
+(test (mpowerset '(1 2)) '(() (2) (1) (1 2)))
+(test (mpowerset '(1 2 3)) '(() (3) (2) (2 3) (1) (1 3) (1 2) (1 2 3)))
+(test (mpowerset '(1 2 3 4)) '(() (4) (3) (3 4) (2) (2 4) (2 3) (2 3 4) (1) (1 4) (1 3) (1 3 4) (1 2) (1 2 4) (1 2 3) (1 2 3 4)))
 
 
