@@ -171,6 +171,7 @@
 (test (every? number? '(1 2 3 a)) #f)
 (test (every? symbol? '(1 2 3 a)) #f)
 (test (every? symbol? '(a b c d)) #t)
-
+;mpowerset
+(test (mpowerset '()) '(()))
 
 
