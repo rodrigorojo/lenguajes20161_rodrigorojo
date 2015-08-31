@@ -102,7 +102,8 @@
     [(empty? lst) #t]
     [else (and ((lambda(x) (f x)) (car lst)) (every? f (cdr lst)))]))
 
-;Funcion mpowerset: Define la potencia de una lista
+;Funcion mpowerset: Define la potencia de una lista de manera recursiva. 
+;mpowerset:: [a] -> [[a]]
 
 (define (mpowerset lst)
   (cond
