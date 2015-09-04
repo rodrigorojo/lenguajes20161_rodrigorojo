@@ -7,4 +7,12 @@
 ;Lista
 (define-type MList
   [MEmpty]
-  [MCons (n number?) (l MList?)])
+  [MCons (n any?) (l MList?)])
+
+;Predicado Any. Ayuda a poder construir MList con cualquier valor
+(define (any? x) #t)
+
+;Arboles
+(define-type NTree
+  [TLEmpty]
+  [NodeN (e any?) (l list?)])
