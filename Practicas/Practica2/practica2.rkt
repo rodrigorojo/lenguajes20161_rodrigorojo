@@ -48,6 +48,17 @@
     [(MEmpty? lista) (MEmpty)]
     [else (MCons (funcion(MCons-n lista)) (mapML funcion(MCons-l lista)))]))
 
+;filterML - Dada una lista de tipo MLista y un predicado de un argumento, regresar una lista de tipo MLista
+;sin los elementos que al aplicar el predicado, regresa falso
+
+(define (filterML f l)
+  (cond
+    [(MEmpty?) (MEmpty)]
+    [else (if (f(MCons-n l))
+              (MCons (MCons-n l) (filterML f (MCons-l l)))
+              (filterML f (MCons-l l)))]))
+
+
 ;Test
 ;LengthML
 (test (lengthML (MEmpty)) 0)
@@ -67,3 +78,4 @@
 (test (mapML add1 (MCons 1(MEmpty))) (MCons 2(MEmpty)))
 (test (mapML (lambda (x) (+ x x)) (MCons 10 (MCons 3 (MEmpty)))) (MCons 20 (MCons 6 (MEmpty))))
 (test (mapML (lambda (x) (+ x 2)) (MCons 2 (MCons 3 (MEmpty)))) (MCons 4 (MCons 5 (MEmpty))))
+;filterML
