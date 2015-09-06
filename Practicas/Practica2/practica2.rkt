@@ -99,6 +99,13 @@
 
 (define plazas (MCons plaza-satelite (MCons plaza-perisur (MEmpty))))
 
+;gps-coordinates dada una lista de locaciones regresa una lista con su ubicación gps
+
+(define (gps-coordinates lst)
+  (cond
+    [(MEmpty? lst) (MEmpty)]
+    [else (MCons (building-loc (MCons-n lst)) (gps-coordinates (MCons-l lst)))]))
+
 ;Test
 ;MArray2MList
 (test (MArray2MList (MArray 3 '(1 2 3))) (MCons 1 (MCons 2 (MCons 3 (MEmpty)))))
@@ -125,3 +132,12 @@
 (test (mapML (lambda (x) (+ x x)) (MCons 10 (MCons 3 (MEmpty)))) (MCons 20 (MCons 6 (MEmpty))))
 (test (mapML (lambda (x) (+ x 2)) (MCons 2 (MCons 3 (MEmpty)))) (MCons 4 (MCons 5 (MEmpty))))
 ;filterML
+;gps-coordinates
+(test (gps-coordinates (MEmpty)) (MEmpty))
+(test (gps-coordinates plazas) (MCons (GPS 19.510482 -99.23411900000002) (MCons (GPS 19.304135 -99.19001000000003) (MEmpty))))
+(test (gps-coordinates (MCons ciencias (MEmpty))) (MCons (GPS 19.3239411016 -99.179806709) (MEmpty)))
+(test (gps-coordinates (MCons ciencias (MCons zocalo (MEmpty)))) (MCons (GPS 19.3239411016 -99.179806709) (MCons (GPS 19.432721893261117 -99.13332939147949) (MEmpty))))
+(test (gps-coordinates (MCons plaza-satelite (MCons zocalo (MCons ciencias (MEmpty)))))
+      (MCons
+       (GPS 19.510482 -99.23411900000002)
+       (MCons (GPS 19.432721893261117 -99.13332939147949) (MCons (GPS 19.3239411016 -99.179806709) (MEmpty)))))
