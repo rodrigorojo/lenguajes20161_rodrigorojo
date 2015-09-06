@@ -1,5 +1,4 @@
 #lang plai
-
 ;Sección 1
 
 ;Arreglo
@@ -31,6 +30,16 @@
   [Rectangle (p 2D-Point?) (b number?) (h number?)])
 
 ;Sección 2
+;setValueA - Dado un arreglo de tipo Array, una posicion y un valor numerico v, regresar otro arreglo con el valor v intercambiado en la posicion indicada del arreglo original.
+(define (setValueA ar x y)
+  (cond
+    [(>= x (MArray-n ar)) (error "setValueA: Out of bounds")]
+    [else(MArray (MArray-n ar) (intercambia (MArray-l ar) x y))]))
+;Funcion auxiliar que dada una lista intercambia un valor en cierto indice por un valor dado.
+(define (intercambia lst x y)
+  (cond
+    [(zero? x) (cons y (cdr lst))]
+    [else(cons (car lst) (intercambia (cdr lst) (- x 1) y))]))
 
 ;MArray2MList - convierte un arreglo de tipo MArray a una lista de tipo MList
 
@@ -107,6 +116,12 @@
     [else (MCons (building-loc (MCons-n lst)) (gps-coordinates (MCons-l lst)))]))
 
 ;Test
+;setValueA
+(test (setValueA (MArray 5 '(0 1 2 3 4)) 1 6) (MArray 5 '(0 6 2 3 4)))
+(test (setValueA (MArray 4 '(0 1 2 3)) 2 3) (MArray 4 '(0 1 3 3)))
+(test (setValueA (MArray 3 '(0 1 2)) 1 9) (MArray 3 '(0 9 2)))
+(test (setValueA (MArray 2 '(0 1)) 0 6) (MArray 2 '(6 1)))
+(test (setValueA (MArray 1 '(0)) 0 2) (MArray 1 '(2)))
 ;MArray2MList
 (test (MArray2MList (MArray 3 '(1 2 3))) (MCons 1 (MCons 2 (MCons 3 (MEmpty)))))
 (test (MArray2MList (MArray 0 '())) (MEmpty))
