@@ -108,6 +108,13 @@
 
 (define plazas (MCons plaza-satelite (MCons plaza-perisur (MEmpty))))
 
+;haversine - Dados dos valores de tipo GPS calcular su distancia usando la formula de haversine.
+
+(define (haversine gps1 gps2)
+  (* 12756.274 (asin (sqrt (+ (expt (sin (/ (- (degrees->radians (GPS-lat gps2)) (degrees->radians (GPS-lat gps1))) 2)) 2)
+                              (* (* (cos (degrees->radians (GPS-lat gps1))) (cos (degrees->radians (GPS-lat gps2))))
+                                 (expt (sin (/ (- (degrees->radians (GPS-long gps2)) (degrees->radians (GPS-long gps1))) 2)) 2)))))))
+
 ;gps-coordinates dada una lista de locaciones regresa una lista con su ubicación gps
 
 (define (gps-coordinates lst)
