@@ -115,6 +115,14 @@
     [(MEmpty? lst) (MEmpty)]
     [else (MCons (building-loc (MCons-n lst)) (gps-coordinates (MCons-l lst)))]))
 
+;area devuelve el area de una figura
+
+(define (area fig)
+  (cond
+    [(Circle? fig) (* pi (expt (Circle-n fig) 2))]
+    [(Square? fig) (expt (Square-l fig) 2)]
+    [(Rectangle? fig) (* (Rectangle-b fig) (Rectangle-h fig))]))
+
 ;Test
 ;setValueA
 (test (setValueA (MArray 5 '(0 1 2 3 4)) 1 6) (MArray 5 '(0 6 2 3 4)))
@@ -156,3 +164,9 @@
       (MCons
        (GPS 19.510482 -99.23411900000002)
        (MCons (GPS 19.432721893261117 -99.13332939147949) (MCons (GPS 19.3239411016 -99.179806709) (MEmpty)))))
+;area
+(test (area (Circle (2D-Point 5 5) 4)) 50.26548245743669)
+(test (area (Square (2D-Point 0 0) 20)) 400)
+(test (area (Rectangle (2D-Point 3 4) 5 10)) 50)
+(test (area (Circle (2D-Point 0 3) 10)) 314.1592653589793)
+(test (area (Square (2D-Point 1 10) 12)) 144)
