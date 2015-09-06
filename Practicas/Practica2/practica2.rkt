@@ -42,6 +42,11 @@
   [(MEmpty? m) ls]
   [else (MCons (MCons-n ls)(concatML (MCons-l ls) m))]))
 
+;mapML - Dada una lista de tipo MLista y una funcion de aridad 1, regresar una lista de tipo MLista con la aplicación de la funcion a cada uno de los elementos de la lista original
+(define (mapML funcion lista)
+  (cond
+    [(MEmpty? lista) MEmpty]
+    [else (MCons (funcion(MCons-n lista)) (mapML funcion(MCons-l lista)))]))
 
 ;Test
 ;LengthML
