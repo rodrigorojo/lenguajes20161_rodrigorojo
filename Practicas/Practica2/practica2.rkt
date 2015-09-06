@@ -16,3 +16,14 @@
 (define-type NTree
   [TLEmpty]
   [NodeN (e any?) (l list?)])
+
+
+;Position
+(define-type Position
+  [2D-Point (m number?) (n number?)])
+
+;Figure
+(define-type Figure
+  [Circle (p 2D-Point?) (n number?)]
+  [Square  (p 2D-Point?) (l number?)]
+  [Rectangle (p 2D-Point?) (b number?) (h number?)])
