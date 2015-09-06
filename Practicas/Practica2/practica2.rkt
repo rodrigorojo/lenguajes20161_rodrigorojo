@@ -73,6 +73,31 @@
               (MCons (MCons-n l) (filterML f (MCons-l l)))
               (filterML f (MCons-l l)))]))
 
+;Tipo coordenadas
+
+(define-type Coordinates
+  [GPS (lat number?)
+       (long number?)])
+
+;tipo locación
+
+(define-type Location
+  [building (name string?)
+            (loc GPS?)])
+
+;; Coordenadas GPS
+
+(define gps-satelite (GPS 19.510482 -99.23411900000002))
+(define gps-ciencias (GPS 19.3239411016 -99.179806709))
+(define gps-zocalo (GPS 19.432721893261117 -99.13332939147949))
+(define gps-perisur (GPS 19.304135 -99.19001000000003))
+
+(define plaza-satelite (building "Plaza Satelite" gps-satelite))
+(define ciencias (building "Facultad de Ciencias" gps-ciencias))
+(define zocalo (building "Zocalo" gps-zocalo))
+(define plaza-perisur (building "Plaza Perisur" gps-perisur))
+
+(define plazas (MCons plaza-satelite (MCons plaza-perisur (MEmpty))))
 
 ;Test
 ;MArray2MList
