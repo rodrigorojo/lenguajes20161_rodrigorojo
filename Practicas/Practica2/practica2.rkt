@@ -53,7 +53,7 @@
 
 (define (filterML f l)
   (cond
-    [(MEmpty?) (MEmpty)]
+    [(MEmpty? l) (MEmpty)]
     [else (if (f(MCons-n l))
               (MCons (MCons-n l) (filterML f (MCons-l l)))
               (filterML f (MCons-l l)))]))
