@@ -1,5 +1,7 @@
 #lang plai
 
+;Sección 1
+
 ;Arreglo
 (define-type Array
   [MArray (n number?) (l list?)])
@@ -27,6 +29,19 @@
   [Circle (p 2D-Point?) (n number?)]
   [Square  (p 2D-Point?) (l number?)]
   [Rectangle (p 2D-Point?) (b number?) (h number?)])
+
+;Sección 2
+
+;MArray2MList - convierte un arreglo de tipo MArray a una lista de tipo MList
+
+(define (MArray2MList marr)
+  ;Función auxiliar que regresa un arreglo sin la cabeza
+  (define (cdrMarray marr)
+  (MArray (- (MArray-n marr) 1) (cdr (MArray-l marr))))
+  ; esta es MArray2MList
+  (cond
+    [(empty? (MArray-l marr)) (MEmpty)]
+    [else (MCons (car (MArray-l marr)) (MArray2MList (cdrMarray marr)))]))
 
 ;LengthML- Calcula la longitud de 1 MList
 
@@ -60,6 +75,12 @@
 
 
 ;Test
+;MArray2MList
+(test (MArray2MList (MArray 3 '(1 2 3))) (MCons 1 (MCons 2 (MCons 3 (MEmpty)))))
+(test (MArray2MList (MArray 0 '())) (MEmpty))
+(test (MArray2MList (MArray 2 '("a" "b"))) (MCons "a" (MCons "b" (MEmpty))))
+(test (MArray2MList (MArray 5 '(15 4 35 12 1))) (MCons 15 (MCons 4 (MCons 35 (MCons 12 (MCons 1 (MEmpty)))))))
+(test (MArray2MList (MArray 4 '("esta" "es" "una" "prueba"))) (MCons "esta" (MCons "es" (MCons "una" (MCons "prueba" (MEmpty))))))
 ;LengthML
 (test (lengthML (MEmpty)) 0)
 (test (lengthML (MCons 7 (MCons 4 (MEmpty)))) 2)
