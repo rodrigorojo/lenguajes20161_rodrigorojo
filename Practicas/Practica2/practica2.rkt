@@ -111,7 +111,7 @@
 ;haversine - Dados dos valores de tipo GPS calcular su distancia usando la formula de haversine.
 
 (define (haversine gps1 gps2)
-  (* 12756.274 (asin (sqrt (+ (expt (sin (/ (- (degrees->radians (GPS-lat gps2)) (degrees->radians (GPS-lat gps1))) 2)) 2)
+  (* 12742 (asin (sqrt (+ (expt (sin (/ (- (degrees->radians (GPS-lat gps2)) (degrees->radians (GPS-lat gps1))) 2)) 2)
                               (* (* (cos (degrees->radians (GPS-lat gps1))) (cos (degrees->radians (GPS-lat gps2))))
                                  (expt (sin (/ (- (degrees->radians (GPS-long gps2)) (degrees->radians (GPS-long gps1))) 2)) 2)))))))
 
@@ -162,6 +162,12 @@
 (test (mapML (lambda (x) (+ x x)) (MCons 10 (MCons 3 (MEmpty)))) (MCons 20 (MCons 6 (MEmpty))))
 (test (mapML (lambda (x) (+ x 2)) (MCons 2 (MCons 3 (MEmpty)))) (MCons 4 (MCons 5 (MEmpty))))
 ;filterML
+;harvesine
+(test (haversine gps-ciencias gps-zocalo) 13.033219276117368)
+(test (haversine gps-ciencias gps-perisur) 2.44727738966455)
+(test (haversine gps-satelite gps-perisur) 23.401736010506026)
+(test (haversine gps-ciencias gps-satelite) 21.510202561254264)
+(test (haversine gps-zocalo gps-satelite) 13.653182838772619)
 ;gps-coordinates
 (test (gps-coordinates (MEmpty)) (MEmpty))
 (test (gps-coordinates plazas) (MCons (GPS 19.510482 -99.23411900000002) (MCons (GPS 19.304135 -99.19001000000003) (MEmpty))))
