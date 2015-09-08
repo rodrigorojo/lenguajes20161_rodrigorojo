@@ -30,16 +30,19 @@
   [Rectangle (p 2D-Point?) (b number?) (h number?)])
 
 ;Sección 2
+
 ;setValueA - Dado un arreglo de tipo Array, una posicion y un valor numerico v, regresar otro arreglo con el valor v intercambiado en la posicion indicada del arreglo original.
 (define (setValueA ar x y)
+  ;Funcion auxiliar que dada una lista intercambia un valor en cierto indice por un valor dado.
+  (define (intercambia lst x y)
+    (cond
+      [(zero? x) (cons y (cdr lst))]
+      [else(cons (car lst) (intercambia (cdr lst) (- x 1) y))]))
+  ;Esta es setValueA
   (cond
     [(>= x (MArray-n ar)) (error "setValueA: Out of bounds")]
     [else(MArray (MArray-n ar) (intercambia (MArray-l ar) x y))]))
-;Funcion auxiliar que dada una lista intercambia un valor en cierto indice por un valor dado.
-(define (intercambia lst x y)
-  (cond
-    [(zero? x) (cons y (cdr lst))]
-    [else(cons (car lst) (intercambia (cdr lst) (- x 1) y))]))
+
 
 ;MArray2MList - convierte un arreglo de tipo MArray a una lista de tipo MList
 
@@ -52,19 +55,19 @@
     [(empty? (MArray-l marr)) (MEmpty)]
     [else (MCons (car (MArray-l marr)) (MArray2MList (cdrMarray marr)))]))
 
-;LengthML- Calcula la longitud de 1 MList
-
-(define (lengthML mlst)
-  (cond
-  [(MEmpty? mlst) 0]
-  [else (+ 1 (lengthML (MCons-l mlst)))])) ;Con "-" haces referencia a esa seccion del constructor (en este caso el resto de mlst)
-
 ;concatML- Concatena 2 MList
 (define (concatML ls m)
   (cond
   [(MEmpty? ls) m]
   [(MEmpty? m) ls]
   [else (MCons (MCons-n ls)(concatML (MCons-l ls) m))]))
+
+;LengthML- Calcula la longitud de 1 MList
+
+(define (lengthML mlst)
+  (cond
+  [(MEmpty? mlst) 0]
+  [else (+ 1 (lengthML (MCons-l mlst)))])) ;Con "-" haces referencia a esa seccion del constructor (en este caso el resto de mlst)
 
 ;mapML - Dada una lista de tipo MLista y una funcion de aridad 1, regresar una lista de tipo MLista con la aplicación de la funcion a cada uno de los elementos de la lista original
 (define (mapML funcion lista)
@@ -122,6 +125,14 @@
     [(MEmpty? lst) (MEmpty)]
     [else (MCons (building-loc (MCons-n lst)) (gps-coordinates (MCons-l lst)))]))
 
+;closest-building Dado b un valor de tipo building y una lista de tipo MList de buildings, regresar el edificio mas cercano a b.
+
+(define (closest-building b lst)
+  (cond
+    [(MEmpty? lst) +inf.0]
+    [else (min (haversine (building-loc b) (building-loc (MCons-n lst))) (closest-building b (MCons-l lst)))]))
+     
+
 ;area devuelve el area de una figura
 
 (define (area fig)
@@ -143,21 +154,21 @@
 (test (MArray2MList (MArray 2 '("a" "b"))) (MCons "a" (MCons "b" (MEmpty))))
 (test (MArray2MList (MArray 5 '(15 4 35 12 1))) (MCons 15 (MCons 4 (MCons 35 (MCons 12 (MCons 1 (MEmpty)))))))
 (test (MArray2MList (MArray 4 '("esta" "es" "una" "prueba"))) (MCons "esta" (MCons "es" (MCons "una" (MCons "prueba" (MEmpty))))))
-;LengthML
-(test (lengthML (MEmpty)) 0)
-(test (lengthML (MCons 7 (MCons 4 (MEmpty)))) 2)
-(test (lengthML (MCons 7 (MCons 4 (MCons 3 (MEmpty))))) 3)
-(test (lengthML (MCons 7 (MCons 4 (MCons 3 (MCons 4(MEmpty)))))) 4)
-(test (lengthML (MCons 7 (MCons 4 (MCons 3 (MCons 4 (MCons 5(MEmpty))))))) 5)
 ;concatML
 (test (concatML (MEmpty)(MCons 3 (MEmpty))) (MCons 3 (MEmpty)))
 (test (concatML (MCons 3 (MEmpty)) (MEmpty)) (MCons 3 (MEmpty)))
 (test (concatML (MCons 7 (MCons 4 (MEmpty))) (MCons 1 (MEmpty))) (MCons 7 (MCons 4 (MCons 1 (MEmpty)))))
 (test (concatML (MCons 1(MEmpty)) (MCons 2(MEmpty))) (MCons 1(MCons 2(MEmpty))))
 (test (concatML (MCons 10(MEmpty)) (MCons 20(MCons 30(MEmpty)))) (MCons 10(MCons 20(MCons 30(MEmpty)))))
+;LengthML
+(test (lengthML (MEmpty)) 0)
+(test (lengthML (MCons 7 (MCons 4 (MEmpty)))) 2)
+(test (lengthML (MCons 7 (MCons 4 (MCons 3 (MEmpty))))) 3)
+(test (lengthML (MCons 7 (MCons 4 (MCons 3 (MCons 4(MEmpty)))))) 4)
+(test (lengthML (MCons 7 (MCons 4 (MCons 3 (MCons 4 (MCons 5(MEmpty))))))) 5)
 ;mapML
 (test (mapML add1 (MCons 7 (MCons 4 (MEmpty)))) (MCons 8 (MCons 5 (MEmpty))))
-(test  (mapML (lambda (x) (* x x)) (MCons 10 (MCons 3 (MEmpty)))) (MCons 100 (MCons 9 (MEmpty))))
+(test (mapML (lambda (x) (* x x)) (MCons 10 (MCons 3 (MEmpty)))) (MCons 100 (MCons 9 (MEmpty))))
 (test (mapML add1 (MCons 1(MEmpty))) (MCons 2(MEmpty)))
 (test (mapML (lambda (x) (+ x x)) (MCons 10 (MCons 3 (MEmpty)))) (MCons 20 (MCons 6 (MEmpty))))
 (test (mapML (lambda (x) (+ x 2)) (MCons 2 (MCons 3 (MEmpty)))) (MCons 4 (MCons 5 (MEmpty))))
