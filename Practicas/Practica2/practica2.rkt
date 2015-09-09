@@ -156,6 +156,18 @@
     [(Square? fig) (expt (Square-l fig) 2)]
     [(Rectangle? fig) (* (Rectangle-b fig) (Rectangle-h fig))]))
 
+;in-figure? devuelve si un punto esta dentro de una figura 
+
+(define (in-figure? fig p)
+  (cond
+    [(Circle? fig) (>= (expt (Circle-n fig) 2) (+ (expt (- (2D-Point-m (Circle-p fig)) (2D-Point-m p)) 2)
+                                                  (expt (- (2D-Point-n (Circle-p fig)) (2D-Point-n p)) 2)))]
+    [(Square? fig) (and (>= (2D-Point-m p) (2D-Point-m (Square-p fig))) (>= (2D-Point-n p) (2D-Point-n (Square-p fig)))
+                        (<= (2D-Point-m p) (+ (2D-Point-m (Square-p fig)) (Square-l fig))) (<= (2D-Point-n p) (+ (2D-Point-n (Square-p fig)) (Square-l fig))))]
+    [(Rectangle? fig) (and (>= (2D-Point-m p) (2D-Point-m (Rectangle-p fig))) (>= (2D-Point-n p) (2D-Point-n (Rectangle-p fig)))
+                           (<= (2D-Point-m p) (+ (2D-Point-m (Rectangle-p fig)) (Rectangle-b fig)))
+                           (<= (2D-Point-n p) (+ (2D-Point-n (Rectangle-p fig)) (Rectangle-h fig))))]))
+
 ;Test
 ;setValueA
 (test (setValueA (MArray 5 '(0 1 2 3 4)) 1 6) (MArray 5 '(0 6 2 3 4)))
