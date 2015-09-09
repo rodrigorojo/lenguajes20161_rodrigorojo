@@ -233,6 +233,20 @@
       (MCons
        (GPS 19.510482 -99.23411900000002)
        (MCons (GPS 19.432721893261117 -99.13332939147949) (MCons (GPS 19.3239411016 -99.179806709) (MEmpty)))))
+;buildigs-at-distance
+(test (buildings-at-distance zocalo plazas 0) (MEmpty))
+(test (buildings-at-distance ciencias plazas 50) (MCons
+                                                  (building "Plaza Satelite" (GPS 19.510482 -99.23411900000002))
+                                                  (MCons (building "Plaza Perisur" (GPS 19.304135 -99.19001000000003)) (MEmpty))))
+(test (buildings-at-distance plaza-perisur plazas 80) (MCons
+                                                      (building "Plaza Satelite" (GPS 19.510482 -99.23411900000002))
+                                                      (MCons (building "Plaza Perisur" (GPS 19.304135 -99.19001000000003)) (MEmpty))))
+(test (buildings-at-distance plaza-satelite plazas 100) (MCons
+                                                         (building "Plaza Satelite" (GPS 19.510482 -99.23411900000002))
+                                                         (MCons (building "Plaza Perisur" (GPS 19.304135 -99.19001000000003)) (MEmpty))))
+(test (buildings-at-distance zocalo plazas 20) (MCons
+                                                (building "Plaza Satelite" (GPS 19.510482 -99.23411900000002))
+                                                (MCons (building "Plaza Perisur" (GPS 19.304135 -99.19001000000003)) (MEmpty))))
 ;area
 (test (area (Circle (2D-Point 5 5) 4)) 50.26548245743669)
 (test (area (Square (2D-Point 0 0) 20)) 400)
