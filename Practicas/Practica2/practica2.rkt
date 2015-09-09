@@ -239,3 +239,9 @@
 (test (area (Rectangle (2D-Point 3 4) 5 10)) 50)
 (test (area (Circle (2D-Point 0 3) 10)) 314.1592653589793)
 (test (area (Square (2D-Point 1 10) 12)) 144)
+;in-figure?
+(test (in-figure? (Circle (2D-Point 5 5) 4) (2D-Point 3 2)) #t)
+(test (in-figure? (Rectangle (2D-Point 1 1) 5 2) (2D-Point 7 3)) #f)
+(test (in-figure? (Square (2D-Point 6 6) 6) (2D-Point 8 9)) #t)
+(test (in-figure? (Circle (2D-Point 2 2) 3) (2D-Point 4 3)) #t)
+(test (in-figure? (Rectangle (2D-Point 4 6) 5 3) (2D-Point 6 7)) #t)
