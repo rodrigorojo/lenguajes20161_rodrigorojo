@@ -62,10 +62,11 @@
   (define (printML2 mls)
     (cond
       [(MEmpty?  mls) (~a "]")]
-      [else (string-append  "," (~a (MCons-n mls))  (printML2 (MCons-l mls)))]))  
+      [else (string-append  ", " (~a (MCons-n mls)) (printML2 (MCons-l mls)))]))  
   (cond
     [(MEmpty?  mlst) (~a "[]" )]
-    [else    (string-append  "[" (~a (MCons-n mlst))  (~a (printML2 (MCons-l mlst)) ) )]))
+    [else (string-append  "[" (if (MList? (MCons-n mlst)) (printML (MCons-n mlst)) (~a (MCons-n mlst)))
+                          (~a (printML2 (MCons-l mlst))))]))
 
 ;concatML- Concatena 2 MList
 (define (concatML ls m)
@@ -166,6 +167,11 @@
 (test (MArray2MList (MArray 2 '("a" "b"))) (MCons "a" (MCons "b" (MEmpty))))
 (test (MArray2MList (MArray 5 '(15 4 35 12 1))) (MCons 15 (MCons 4 (MCons 35 (MCons 12 (MCons 1 (MEmpty)))))))
 (test (MArray2MList (MArray 4 '("esta" "es" "una" "prueba"))) (MCons "esta" (MCons "es" (MCons "una" (MCons "prueba" (MEmpty))))))
+;printML
+(test (printML (MEmpty)) "[]")
+(test (printML (MCons 7 (MEmpty))) "[7]")
+(test (printML (MCons 7 (MCons 4 (MEmpty)))) "[7, 4]")
+(test (printML (MCons (MCons 1 (MCons 2 (MEmpty))) (MCons 3 (MEmpty)))) "[[1, 2], 3]")
 ;concatML
 (test (concatML (MEmpty)(MCons 3 (MEmpty))) (MCons 3 (MEmpty)))
 (test (concatML (MCons 3 (MEmpty)) (MEmpty)) (MCons 3 (MEmpty)))
