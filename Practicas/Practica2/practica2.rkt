@@ -55,6 +55,18 @@
     [(empty? (MArray-l marr)) (MEmpty)]
     [else (MCons (car (MArray-l marr)) (MArray2MList (cdrMarray marr)))]))
 
+;printML - imprime una MList en formato "[v1,v2,v3]"
+;Version 1- imprime MList anidadas
+(define (printML mlst)
+  ;Auxiliar que cierra la escritura de la lista
+  (define (printML2 mls)
+    (cond
+      [(MEmpty?  mls) (~a "]")]
+      [else (string-append  "," (~a (MCons-n mls))  (printML2 (MCons-l mls)))]))  
+  (cond
+    [(MEmpty?  mlst) (~a "[]" )]
+    [else    (string-append  "[" (~a (MCons-n mlst))  (~a (printML2 (MCons-l mlst)) ) )]))
+
 ;concatML- Concatena 2 MList
 (define (concatML ls m)
   (cond
