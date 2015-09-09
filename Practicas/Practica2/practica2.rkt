@@ -1,5 +1,6 @@
 #lang plai
 ;Sección 1
+(print-only-errors true)
 
 ;Arreglo
 (define-type Array
@@ -68,6 +69,7 @@
     [else (string-append  "[" (if (MList? (MCons-n mlst)) (printML (MCons-n mlst)) (~a (MCons-n mlst)))
                           (~a (printML2 (MCons-l mlst))))]))
 
+;(printML (MCons (MCons (MCons 1 (MCons 2 (MEmpty)))  (MCons 1 (MCons 2 (MEmpty)))) (MCons 1 (MCons 2 (MEmpty)))))
 ;concatML- Concatena 2 MList
 (define (concatML ls m)
   (cond
@@ -191,6 +193,11 @@
 (test (mapML (lambda (x) (+ x x)) (MCons 10 (MCons 3 (MEmpty)))) (MCons 20 (MCons 6 (MEmpty))))
 (test (mapML (lambda (x) (+ x 2)) (MCons 2 (MCons 3 (MEmpty)))) (MCons 4 (MCons 5 (MEmpty))))
 ;filterML
+(test (filterML (lambda (x) (not (zero? x))) (MCons 2 (MCons 0 (MCons 1 (MEmpty))))) (MCons 2 (MCons 1 (MEmpty))))
+(test (filterML (lambda (x) (not (zero? x))) (MEmpty)) (MEmpty))
+(test (filterML (lambda (x) (eqv? 1 x)) (MCons 7 (MCons 4 (MCons 1 (MCons 2 (MCons 1 (MEmpty))))))) (MCons 1 (MCons 1 (MEmpty))))
+(test (filterML (lambda (n) (= (modulo n 2) 0)) (MCons 1 (MCons 2 (MCons 3 (MCons 4 (MCons 5 (MEmpty))))))) (MCons 2 (MCons 4 (MEmpty))))
+(test (filterML (lambda (x) (not (zero? x))) (MCons 1 (MCons 2 (MCons 0 (MCons 0 (MCons 5 (MEmpty)))))))(MCons 1 (MCons 2 (MCons 5(MEmpty)))))
 ;harvesine
 (test (haversine gps-ciencias gps-zocalo) 13.033219276117368)
 (test (haversine gps-ciencias gps-perisur) 2.44727738966455)
