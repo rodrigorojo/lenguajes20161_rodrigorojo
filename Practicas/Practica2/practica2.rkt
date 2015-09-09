@@ -146,7 +146,15 @@
   (cond
     [(MEmpty? lst) +inf.0]
     [else (min (haversine (building-loc b) (building-loc (MCons-n lst))) (closest-building b (MCons-l lst)))]))
-     
+
+;buildings-at-distance
+
+(define (buildings-at-distance b lst d)
+  (cond
+    [(MEmpty? lst) (MEmpty)]
+    [else (if (<= (haversine (building-loc b) (building-loc (MCons-n lst))) d)
+              (MCons (MCons-n lst) (buildings-at-distance b (MCons-l lst) d))
+              (buildings-at-distance b (MCons-l lst) d))]))
 
 ;area devuelve el area de una figura
 
