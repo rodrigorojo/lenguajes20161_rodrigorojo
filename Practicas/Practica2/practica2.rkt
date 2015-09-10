@@ -59,16 +59,18 @@
 ;MList -> impresion
 ;printML - imprime una MList en formato "[v1,v2,v3]"
 ;Version 1- imprime MList anidadas
+;UPDATE 9/Sept : Versiòn Final.
 (define (printML mlst)
   ;Auxiliar que cierra la escritura de la lista
-  (define (printML2 mls)
+  (define (printML2 mls) ;mls denota el resto de la lista de mlst
     (cond
-      [(MEmpty?  mls) (~a "]")]
-      [else (string-append  ", " (~a (MCons-n mls)) (printML2 (MCons-l mls)))]))  
-  (cond
-    [(MEmpty?  mlst) (~a "[]" )]
-    [else (string-append  "[" (if (MList? (MCons-n mlst)) (printML (MCons-n mlst)) (~a (MCons-n mlst)))
-                          (~a (printML2 (MCons-l mlst))))]))
+      [(MEmpty?  mls) (~a "]")] ;aqui cerramos la lista
+      [else (string-append  ", " (if (MList? (MCons-n mls)) (printML (MCons-n mls)) (~a (MCons-n mls))) (printML2 (MCons-l mls)))]))   
+    (cond
+      [(MEmpty?  mlst) (~a "[]" )]
+      [else (string-append  "[" (if (MList? (MCons-n mlst)) (printML (MCons-n mlst)) (~a (MCons-n mlst)))
+                                (~a (printML2 (MCons-l mlst))))]))
+
 ;Mlist -> int 
 ;LengthML- Calcula la longitud de 1 MList
 (define (lengthML mlst)
@@ -193,6 +195,8 @@
 (test (printML (MCons 7 (MEmpty))) "[7]")
 (test (printML (MCons 7 (MCons 4 (MEmpty)))) "[7, 4]")
 (test (printML (MCons (MCons 1 (MCons 2 (MEmpty))) (MCons 3 (MEmpty)))) "[[1, 2], 3]")
+(test (printML (MCons (MCons 1 (MCons 2 (MCons 3(MEmpty)))) (MCons( MCons 1 (MCons 2 (MEmpty))) (MEmpty)))) "[[1, 2, 3], [1, 2]]")
+
 ;concatML
 (test (concatML (MEmpty)(MCons 3 (MEmpty))) (MCons 3 (MEmpty)))
 (test (concatML (MCons 3 (MEmpty)) (MEmpty)) (MCons 3 (MEmpty)))
