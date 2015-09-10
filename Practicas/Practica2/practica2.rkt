@@ -144,7 +144,7 @@
     [(MEmpty? lst) +inf.0]
     [else (min (haversine (building-loc b) (building-loc (MCons-n lst))) (closest-building b (MCons-l lst)))]))
 
-building -> MList -> N -> MList
+;building -> MList -> N -> MList
 ;buildings-at-distance
 (define (buildings-at-distance b lst d)
   (cond
