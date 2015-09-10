@@ -6,19 +6,18 @@
 (define-type Array
   [MArray (n number?) (l list?)])
 
+;Predicado Any. Ayuda a poder construir MList con cualquier valor
+(define (any? x) #t)
+
 ;Lista
 (define-type MList
   [MEmpty]
   [MCons (n any?) (l MList?)])
 
-;Predicado Any. Ayuda a poder construir MList con cualquier valor
-(define (any? x) #t)
-
 ;Arboles
 (define-type NTree
   [TLEmpty]
   [NodeN (e any?) (l list?)])
-
 
 ;Position
 (define-type Position
@@ -58,8 +57,6 @@
 
 ;MList -> impresion
 ;printML - imprime una MList en formato "[v1,v2,v3]"
-;Version 1- imprime MList anidadas
-;UPDATE 9/Sept : Versiòn Final.
 (define (printML mlst)
   ;Auxiliar que cierra la escritura de la lista
   (define (printML2 mls) ;mls denota el resto de la lista de mlst
@@ -71,14 +68,6 @@
       [else (string-append  "[" (if (MList? (MCons-n mlst)) (printML (MCons-n mlst)) (~a (MCons-n mlst)))
                                 (~a (printML2 (MCons-l mlst))))]))
 
-;Mlist -> int 
-;LengthML- Calcula la longitud de 1 MList
-(define (lengthML mlst)
-  (cond
-  [(MEmpty? mlst) 0]
-  [else (+ 1 (lengthML (MCons-l mlst)))])) ;Con "-" haces referencia a esa seccion del constructor (en este caso el resto de mlst)
-;(printML (MCons (MCons (MCons 1 (MCons 2 (MEmpty)))  (MCons 1 (MCons 2 (MEmpty)))) (MCons 1 (MCons 2 (MEmpty)))))
-
 ; Mlist -> MList
 ;concatML- Concatena 2 MList
 (define (concatML ls m)
@@ -86,6 +75,13 @@
   [(MEmpty? ls) m]
   [(MEmpty? m) ls]
   [else (MCons (MCons-n ls)(concatML (MCons-l ls) m))]))
+
+;Mlist -> int 
+;LengthML- Calcula la longitud de 1 MList
+(define (lengthML mlst)
+  (cond
+  [(MEmpty? mlst) 0]
+  [else (+ 1 (lengthML (MCons-l mlst)))])) ;Con "-" haces referencia a esa seccion del constructor (en este caso el resto de mlst)
 
 ;Mlist-> fun -> MList
 ;mapML - Dada una lista de tipo MLista y una funcion de aridad 1, regresar una lista de tipo MLista con la aplicación de la funcion a cada uno de los elementos de la lista original
@@ -144,9 +140,26 @@
 ;building -> MList
 ;closest-building Dado b un valor de tipo building y una lista de tipo MList de buildings, regresar el edificio mas cercano a b.
 (define (closest-building b lst)
+  ;funcion auxiliar que calcula las distancias y las guarda en una lista junto a su edificio
+  (define (calcula-distancias b lst)
+  (cond
+    [(MEmpty? lst) '()]
+    [else (cons (haversine (building-loc b) (building-loc (MCons-n lst)))
+                (cons (MCons-n lst) (calcula-distancias b (MCons-l lst))))]))
+  ;funcion auxiliar que calcula la distancia minima
+  (define (saca-minimo b lst)
   (cond
     [(MEmpty? lst) +inf.0]
-    [else (min (haversine (building-loc b) (building-loc (MCons-n lst))) (closest-building b (MCons-l lst)))]))
+    [else (min (haversine (building-loc b) (building-loc (MCons-n lst))) (saca-minimo b (MCons-l lst)))]))
+  ;funcion auxiliar que busca en una lista de distancias y edificios la distancia minima y regresa su edificio
+  (define (recorre m d)
+  (cond
+    [(empty? d) 0]
+    [(if (= m (car d)) (car (cdr d)) (recorre m (cdr (cdr d))))]))
+  ;esta es la funcion de closest-building
+  (define m (saca-minimo b lst))
+  (define d (calcula-distancias b lst))
+  (recorre m d)) 
 
 ;building -> MList -> N -> MList
 ;buildings-at-distance
@@ -196,7 +209,6 @@
 (test (printML (MCons 7 (MCons 4 (MEmpty)))) "[7, 4]")
 (test (printML (MCons (MCons 1 (MCons 2 (MEmpty))) (MCons 3 (MEmpty)))) "[[1, 2], 3]")
 (test (printML (MCons (MCons 1 (MCons 2 (MCons 3(MEmpty)))) (MCons( MCons 1 (MCons 2 (MEmpty))) (MEmpty)))) "[[1, 2, 3], [1, 2]]")
-
 ;concatML
 (test (concatML (MEmpty)(MCons 3 (MEmpty))) (MCons 3 (MEmpty)))
 (test (concatML (MCons 3 (MEmpty)) (MEmpty)) (MCons 3 (MEmpty)))
@@ -236,6 +248,14 @@
       (MCons
        (GPS 19.510482 -99.23411900000002)
        (MCons (GPS 19.432721893261117 -99.13332939147949) (MCons (GPS 19.3239411016 -99.179806709) (MEmpty)))))
+;closest-building
+(test (closest-building zocalo plazas) (building "Plaza Satelite" (GPS 19.510482 -99.23411900000002)))
+(test (closest-building ciencias plazas) (building "Plaza Perisur" (GPS 19.304135 -99.19001000000003)))
+(test (closest-building plaza-satelite (MCons zocalo (MCons plaza-satelite (MCons ciencias (MEmpty)))))
+      (building "Plaza Satelite" (GPS 19.510482 -99.23411900000002)))
+(test (closest-building plaza-perisur (MCons zocalo (MCons plaza-satelite (MCons ciencias (MEmpty)))))
+      (building "Facultad de Ciencias" (GPS 19.3239411016 -99.179806709)))
+(test (closest-building ciencias (MCons zocalo(MEmpty))) (building "Zocalo" (GPS 19.432721893261117 -99.13332939147949)))
 ;buildigs-at-distance
 (test (buildings-at-distance zocalo plazas 0) (MEmpty))
 (test (buildings-at-distance ciencias plazas 10) (MCons (building "Plaza Perisur" (GPS 19.304135 -99.19001000000003)) (MEmpty)))
