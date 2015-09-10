@@ -55,6 +55,7 @@
   (cond
     [(empty? (MArray-l marr)) (MEmpty)]
     [else (MCons (car (MArray-l marr)) (MArray2MList (cdrMarray marr)))]))
+
 ;MList -> impresion
 ;printML - imprime una MList en formato "[v1,v2,v3]"
 ;Version 1- imprime MList anidadas
@@ -130,6 +131,7 @@
   (* 12742 (asin (sqrt (+ (expt (sin (/ (- (degrees->radians (GPS-lat gps2)) (degrees->radians (GPS-lat gps1))) 2)) 2)
                               (* (* (cos (degrees->radians (GPS-lat gps1))) (cos (degrees->radians (GPS-lat gps2))))
                                  (expt (sin (/ (- (degrees->radians (GPS-long gps2)) (degrees->radians (GPS-long gps1))) 2)) 2)))))))
+
 ;MList -> MList
 ;gps-coordinates dada una lista de locaciones regresa una lista con su ubicación gps
 (define (gps-coordinates lst)
@@ -232,12 +234,8 @@
        (MCons (GPS 19.432721893261117 -99.13332939147949) (MCons (GPS 19.3239411016 -99.179806709) (MEmpty)))))
 ;buildigs-at-distance
 (test (buildings-at-distance zocalo plazas 0) (MEmpty))
-(test (buildings-at-distance ciencias plazas 50) (MCons
-                                                  (building "Plaza Satelite" (GPS 19.510482 -99.23411900000002))
-                                                  (MCons (building "Plaza Perisur" (GPS 19.304135 -99.19001000000003)) (MEmpty))))
-(test (buildings-at-distance plaza-perisur plazas 80) (MCons
-                                                      (building "Plaza Satelite" (GPS 19.510482 -99.23411900000002))
-                                                      (MCons (building "Plaza Perisur" (GPS 19.304135 -99.19001000000003)) (MEmpty))))
+(test (buildings-at-distance ciencias plazas 10) (MCons (building "Plaza Perisur" (GPS 19.304135 -99.19001000000003)) (MEmpty)))
+(test (buildings-at-distance ciencias plazas 20) (MCons (building "Plaza Perisur" (GPS 19.304135 -99.19001000000003)) (MEmpty)))
 (test (buildings-at-distance plaza-satelite plazas 100) (MCons
                                                          (building "Plaza Satelite" (GPS 19.510482 -99.23411900000002))
                                                          (MCons (building "Plaza Perisur" (GPS 19.304135 -99.19001000000003)) (MEmpty))))
