@@ -32,6 +32,7 @@
 
 ;Sección 2
 
+;Array -> Position -> int -> Array
 ;setValueA - Dado un arreglo de tipo Array, una posicion y un valor numerico v, regresar otro arreglo con el valor v intercambiado en la posicion indicada del arreglo original.
 (define (setValueA ar x y)
   ;Funcion auxiliar que dada una lista intercambia un valor en cierto indice por un valor dado.
@@ -44,9 +45,8 @@
     [(>= x (MArray-n ar)) (error "setValueA: Out of bounds")]
     [else(MArray (MArray-n ar) (intercambia (MArray-l ar) x y))]))
 
-
+;MArray -> MList
 ;MArray2MList - convierte un arreglo de tipo MArray a una lista de tipo MList
-
 (define (MArray2MList marr)
   ;Función auxiliar que regresa un arreglo sin la cabeza
   (define (cdrMarray marr)
@@ -55,7 +55,7 @@
   (cond
     [(empty? (MArray-l marr)) (MEmpty)]
     [else (MCons (car (MArray-l marr)) (MArray2MList (cdrMarray marr)))]))
-
+;MList -> impresion
 ;printML - imprime una MList en formato "[v1,v2,v3]"
 ;Version 1- imprime MList anidadas
 (define (printML mlst)
@@ -68,8 +68,15 @@
     [(MEmpty?  mlst) (~a "[]" )]
     [else (string-append  "[" (if (MList? (MCons-n mlst)) (printML (MCons-n mlst)) (~a (MCons-n mlst)))
                           (~a (printML2 (MCons-l mlst))))]))
-
+;Mlist -> int 
+;LengthML- Calcula la longitud de 1 MList
+(define (lengthML mlst)
+  (cond
+  [(MEmpty? mlst) 0]
+  [else (+ 1 (lengthML (MCons-l mlst)))])) ;Con "-" haces referencia a esa seccion del constructor (en este caso el resto de mlst)
 ;(printML (MCons (MCons (MCons 1 (MCons 2 (MEmpty)))  (MCons 1 (MCons 2 (MEmpty)))) (MCons 1 (MCons 2 (MEmpty)))))
+
+; Mlist -> MList
 ;concatML- Concatena 2 MList
 (define (concatML ls m)
   (cond
@@ -77,22 +84,16 @@
   [(MEmpty? m) ls]
   [else (MCons (MCons-n ls)(concatML (MCons-l ls) m))]))
 
-;LengthML- Calcula la longitud de 1 MList
-
-(define (lengthML mlst)
-  (cond
-  [(MEmpty? mlst) 0]
-  [else (+ 1 (lengthML (MCons-l mlst)))])) ;Con "-" haces referencia a esa seccion del constructor (en este caso el resto de mlst)
-
+;Mlist-> fun -> MList
 ;mapML - Dada una lista de tipo MLista y una funcion de aridad 1, regresar una lista de tipo MLista con la aplicación de la funcion a cada uno de los elementos de la lista original
 (define (mapML funcion lista)
   (cond
     [(MEmpty? lista) (MEmpty)]
     [else (MCons (funcion(MCons-n lista)) (mapML funcion(MCons-l lista)))]))
 
+;MList -> predicado -> MList
 ;filterML - Dada una lista de tipo MLista y un predicado de un argumento, regresar una lista de tipo MLista
 ;sin los elementos que al aplicar el predicado, regresa falso
-
 (define (filterML f l)
   (cond
     [(MEmpty? l) (MEmpty)]
@@ -101,19 +102,16 @@
               (filterML f (MCons-l l)))]))
 
 ;Tipo coordenadas
-
 (define-type Coordinates
   [GPS (lat number?)
        (long number?)])
 
 ;tipo locación
-
 (define-type Location
   [building (name string?)
             (loc GPS?)])
 
 ;; Coordenadas GPS
-
 (define gps-satelite (GPS 19.510482 -99.23411900000002))
 (define gps-ciencias (GPS 19.3239411016 -99.179806709))
 (define gps-zocalo (GPS 19.432721893261117 -99.13332939147949))
@@ -126,29 +124,28 @@
 
 (define plazas (MCons plaza-satelite (MCons plaza-perisur (MEmpty))))
 
+;GPS -> GPS -> N
 ;haversine - Dados dos valores de tipo GPS calcular su distancia usando la formula de haversine.
-
 (define (haversine gps1 gps2)
   (* 12742 (asin (sqrt (+ (expt (sin (/ (- (degrees->radians (GPS-lat gps2)) (degrees->radians (GPS-lat gps1))) 2)) 2)
                               (* (* (cos (degrees->radians (GPS-lat gps1))) (cos (degrees->radians (GPS-lat gps2))))
                                  (expt (sin (/ (- (degrees->radians (GPS-long gps2)) (degrees->radians (GPS-long gps1))) 2)) 2)))))))
-
+;MList -> MList
 ;gps-coordinates dada una lista de locaciones regresa una lista con su ubicación gps
-
 (define (gps-coordinates lst)
   (cond
     [(MEmpty? lst) (MEmpty)]
     [else (MCons (building-loc (MCons-n lst)) (gps-coordinates (MCons-l lst)))]))
 
+;building -> MList
 ;closest-building Dado b un valor de tipo building y una lista de tipo MList de buildings, regresar el edificio mas cercano a b.
-
 (define (closest-building b lst)
   (cond
     [(MEmpty? lst) +inf.0]
     [else (min (haversine (building-loc b) (building-loc (MCons-n lst))) (closest-building b (MCons-l lst)))]))
 
+building -> MList -> N -> MList
 ;buildings-at-distance
-
 (define (buildings-at-distance b lst d)
   (cond
     [(MEmpty? lst) (MEmpty)]
@@ -156,16 +153,16 @@
               (MCons (MCons-n lst) (buildings-at-distance b (MCons-l lst) d))
               (buildings-at-distance b (MCons-l lst) d))]))
 
+;Figure -> N
 ;area devuelve el area de una figura
-
 (define (area fig)
   (cond
     [(Circle? fig) (* pi (expt (Circle-n fig) 2))]
     [(Square? fig) (expt (Square-l fig) 2)]
     [(Rectangle? fig) (* (Rectangle-b fig) (Rectangle-h fig))]))
 
+;Figure -> Position -> Bool
 ;in-figure? devuelve si un punto esta dentro de una figura 
-
 (define (in-figure? fig p)
   (cond
     [(Circle? fig) (>= (expt (Circle-n fig) 2) (+ (expt (- (2D-Point-m (Circle-p fig)) (2D-Point-m p)) 2)
