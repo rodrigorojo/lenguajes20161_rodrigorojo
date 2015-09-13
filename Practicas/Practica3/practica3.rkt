@@ -116,10 +116,12 @@
 (test (nlBT (EmptyBT)) 0)
 (test (nlBT (BNode < (BNode < (EmptyBT) 3 (EmptyBT)) 1 (BNode < (EmptyBT) 2 (EmptyBT)))) 2)
 (test (nlBT arbol-base) 4)
+(test (nlBT (BNode < (BNode < (EmptyBT) 2 (EmptyBT)) 1 (BNode < (EmptyBT) 4 (EmptyBT)))) 2)
 ;nnBT
 (test (nnBT (EmptyBT)) 0)
 (test (nnBT (BNode < (BNode < (EmptyBT) 3 (EmptyBT)) 1 (BNode < (EmptyBT) 2 (EmptyBT)))) 3)
 (test (nnBT arbol-base) 9)
+(test (nlBT (BNode < (BNode < (EmptyBT) 2 (EmptyBT)) 1 (BNode < (EmptyBT) 4 (EmptyBT)))) 2)
 ;mapBT
 (test (mapBT add1 (EmptyBT)) (EmptyBT))
 (test (mapBT add1 (BNode < (EmptyBT) 1 (BNode < (EmptyBT) 2 (EmptyBT)))) (BNode < (EmptyBT) 2 (BNode < (EmptyBT) 3 (EmptyBT))))
@@ -127,7 +129,19 @@
       (BNode < (EmptyBT) 9 (BNode < (EmptyBT) 4 (EmptyBT))))
 ;preorderBT
 (test (preorderBT arbol-base) '("F" "B" "A" "D" "C" "E" "G" "I" "H"))
+(test (preorderBT (BNode < (BNode < (EmptyBT) 3 (EmptyBT)) 1 (BNode < (EmptyBT) 2 (EmptyBT)))) '(1 3 2))
+(test (preorderBT (BNode < (BNode < (EmptyBT) 2 (EmptyBT)) 1 (BNode < (EmptyBT) 4 (EmptyBT)))) '(1 2 4))
+(test (preorderBT (BNode < (BNode < (EmptyBT) 10(EmptyBT)) 12 (BNode < (EmptyBT) 21 (EmptyBT)))) '(12 10 21))
+(test (preorderBT (BNode < (BNode < (EmptyBT) 500(EmptyBT)) 0 (BNode < (EmptyBT) 210 (EmptyBT)))) '(0 500 210))
 ;inorderBT
 (test (inorderBT arbol-base) '("A" "B" "C" "D" "E" "F" "G" "H" "I"))
+(test (inorderBT (BNode < (BNode < (EmptyBT) 3 (EmptyBT)) 1 (BNode < (EmptyBT) 2 (EmptyBT)))) '(3 1 2))
+(test (inorderBT (BNode < (BNode < (EmptyBT) 2 (EmptyBT)) 1 (BNode < (EmptyBT) 4 (EmptyBT)))) '(2 1 4))
+(test (inorderBT (BNode < (BNode < (EmptyBT) 10(EmptyBT)) 12 (BNode < (EmptyBT) 21 (EmptyBT)))) '(10 12 21))
+(test (inorderBT (BNode < (BNode < (EmptyBT) 500(EmptyBT)) 0 (BNode < (EmptyBT) 210 (EmptyBT)))) '(500 0 210))
 ;posorderBT
 (test (posorderBT arbol-base) '("A" "C" "E" "D" "B" "H" "I" "G" "F"))
+(test (posorderBT (BNode < (BNode < (EmptyBT) 3 (EmptyBT)) 1 (BNode < (EmptyBT) 2 (EmptyBT)))) '(3 2 1))
+(test (posorderBT (BNode < (BNode < (EmptyBT) 2 (EmptyBT)) 1 (BNode < (EmptyBT) 4 (EmptyBT)))) '(2 4 1))
+(test (posorderBT (BNode < (BNode < (EmptyBT) 10(EmptyBT)) 12 (BNode < (EmptyBT) 21 (EmptyBT)))) '(10 21 12))
+(test (posorderBT (BNode < (BNode < (EmptyBT) 500(EmptyBT)) 0 (BNode < (EmptyBT) 210 (EmptyBT)))) '(500 210 0))
