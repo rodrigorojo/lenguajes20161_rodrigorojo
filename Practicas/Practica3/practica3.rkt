@@ -112,21 +112,27 @@
 (test (ninBT (EmptyBT)) 0)
 (test (ninBT (BNode < (BNode < (EmptyBT) 3 (EmptyBT)) 1 (BNode < (EmptyBT) 2 (EmptyBT)))) 1)
 (test (ninBT arbol-base) 5)
+(test (ninBT arb1) 0)
+(test (ninBT maxiarb) 9)
 ;nlBT
 (test (nlBT (EmptyBT)) 0)
 (test (nlBT (BNode < (BNode < (EmptyBT) 3 (EmptyBT)) 1 (BNode < (EmptyBT) 2 (EmptyBT)))) 2)
 (test (nlBT arbol-base) 4)
 (test (nlBT (BNode < (BNode < (EmptyBT) 2 (EmptyBT)) 1 (BNode < (EmptyBT) 4 (EmptyBT)))) 2)
+(test (nlBT maxiarb) 8)
 ;nnBT
 (test (nnBT (EmptyBT)) 0)
 (test (nnBT (BNode < (BNode < (EmptyBT) 3 (EmptyBT)) 1 (BNode < (EmptyBT) 2 (EmptyBT)))) 3)
 (test (nnBT arbol-base) 9)
-(test (nlBT (BNode < (BNode < (EmptyBT) 2 (EmptyBT)) 1 (BNode < (EmptyBT) 4 (EmptyBT)))) 2)
+(test (nnBT (BNode < (BNode < (EmptyBT) 2 (EmptyBT)) 1 (BNode < (EmptyBT) 4 (EmptyBT)))) 3)
+(test (nnBT maxiarb) 17)
 ;mapBT
 (test (mapBT add1 (EmptyBT)) (EmptyBT))
 (test (mapBT add1 (BNode < (EmptyBT) 1 (BNode < (EmptyBT) 2 (EmptyBT)))) (BNode < (EmptyBT) 2 (BNode < (EmptyBT) 3 (EmptyBT))))
 (test (mapBT (lambda (x) (* x x)) (BNode < (EmptyBT) 3 (BNode < (EmptyBT) 2 (EmptyBT))))
       (BNode < (EmptyBT) 9 (BNode < (EmptyBT) 4 (EmptyBT))))
+(test (mapBT (lambda (x) (+ x x)) (BNode < (EmptyBT) 1 (BNode < (EmptyBT) 2 (EmptyBT)))) (BNode < (EmptyBT) 2 (BNode < (EmptyBT) 4 (EmptyBT))))
+(test (mapBT (lambda (x) (- 1 x)) (BNode < (EmptyBT) 1 (BNode < (EmptyBT) 2 (EmptyBT)))) (BNode < (EmptyBT) 0 (BNode < (EmptyBT) -1 (EmptyBT))))
 ;preorderBT
 (test (preorderBT arbol-base) '("F" "B" "A" "D" "C" "E" "G" "I" "H"))
 (test (preorderBT (BNode < (BNode < (EmptyBT) 3 (EmptyBT)) 1 (BNode < (EmptyBT) 2 (EmptyBT)))) '(1 3 2))
