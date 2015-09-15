@@ -1,0 +1,175 @@
+\documentclass[letterpaper,11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{listings}
+\usepackage{drawstack}
+
+\title{Lenguajes de Programación 2016-1\\Tarea 1}
+\author{Ricardo Garcia Garcia \and  Juan Carlos López López \and Luis Rodrigo Rojo Morales}
+\date{\today\\ Facultad de Ciencias UNAM}
+
+\begin{document}
+ 
+ \maketitle
+ 
+ {\bf 1. Problema I}
+ \\
+ Hemos visto en clase que la definición de sustitución resulta en una operación ineficiente: en el peor caso es de orden cuadrático en relación al tamaño del programa (considerando el tamaño del programa como el numero de nodos en el árbol de sintaxis abstracta). También se vio la alternativa de diferir la sustitución por medio ambientes. Sin embargo, implementar un ambiente usando un stack no parece ser mucho mas eficiente.
+
+ Responde las siguientes preguntas.
+ \begin{itemize}
+ \item Provee un esquema para un programa que ilustre la no-linealidad de la implementación de ambientes basada en un stack. Explica brevemente porque su ejecución en tiempo no es lineal con respecto al tamaño de su entrada.
+ \item Describe una estructura de datos para un ambiente que un interprete de \texttt{FWAE} pueda usar para mejorar su complejidad
+ \item Muestra como usaría el interpreté esta nueva estructura de datos.
+ \item Indica cual es la nueva complejidad del interprete (análisis del peor caso) y de forma informal pero rigurosa pruébalo.
+ \end{itemize}
+ 
+ {\bf 2. Problema II}
+ \\
+ Dada la siguiente expresión de \texttt{FWAE}:
+ \begin{verbatim}
+ > {with {x 4}
+     {with {f {fun {y} {+ x y}}}
+      {with {x 5}
+        {f 10}}}}
+ \end{verbatim}
+ debe evaluar a $(num\ 14)$ usando alcance estático, mientras que usando alance  dinámico se obtendría $(num\ 15)$, 
+ \\
+\textbf{Respuesta:} 
+\\
+\textit{Evaluando usando alcance estatico.}
+ \begin{verbatim}
+ > {subst {with {x 4}
+     {with {f {fun {y} {+ x y}}}
+      {with {x 5}
+        {f 10}}}}}
+ > {subst {with {f {fun {y} {+ 4 y}}}
+     {with {x 5}
+       {f 10}}}}}
+ > {subst {with {x 5}
+       {f 10}}}}}
+ --------------------------------------
+ >{f {fun {y} {+ x y}}
+ >{f {fun {y} {+ 4 y}}
+ >{f {fun {10} {+ 4 10}}
+ >{f {fun {10} {14}}
+ >(num 14) 
+ \end{verbatim}
+\textit{Ambiente.}
+\\
+\\
+ \begin{tikzpicture}
+  \stacktop{}
+  \separator
+  \cell{y 10}
+  \separator
+  \cell{x 5}
+  \separator
+  \cell{{f (fun (y) (+ 4 y))}}
+  \separator
+  \cell{x 4}
+ \end{tikzpicture}
+\\
+\\
+\textit{Evaluando usando alcance dinamico.}
+ \begin{verbatim}
+ > {subst {with {x 4}
+     {with {f {fun {y} {+ x y}}}
+      {with {x 5}
+        {f 10}}}}}
+ > {subst {with {f {fun {y} {+ x y}}}
+     {with {x 5}
+       {f 10}}}}}
+ > {subst {with {x 5}
+       {f 10}}}}}
+ --------------------------------------
+ >{f {fun {y} {+ x y}}
+ >{f {fun {y} {+ 5 y}}
+ >{f {fun {10} {+ 5 10}}
+ >{f {fun {10} {15}}
+ >(num 15) 
+ \end{verbatim}
+\textit{Ambiente.}
+\\
+\\
+ \begin{tikzpicture}
+  \stacktop{}
+  \separator
+  \cell{y 10}
+  \separator
+  \cell{x 5}
+  \separator
+  \cell{{f (fun (y) (+ 5 y))}}
+  \separator
+  \cell{x 4}
+ \end{tikzpicture}
+\\
+
+
+ Ahora Ben un agudo pero excéntrico estudiante dice que podemos seguir usando alcance dinámico mientras tomemos el valor mas viejo de \verb;x; en el ambiente en vez del nuevo y para este ejemplo el tiene razón.
+ \begin{itemize}
+ \item{¿ Lo que dice Ben esta bien en general? si es el caso justifícalo. }
+ \\
+ \textbf{Respuesta:} 
+ No, lo que dice Ben no esta bien para el caso general, lo que dice solo funciona en este tipo de casos.
+ \item{Si Ben esta equivocado entonces da un programa de contraejemplo y explica
+ por que la estrategia de evaluación de Ben podría producir una respuesta incorrecta.}
+ \\
+ \textbf{Respuesta:} 
+ Por ejemplo tenemos la siguiente expresión de FWAE:
+\begin{verbatim}
+ >{with {x 4}
+   {with {x 6}
+    {with {x 7}
+     {with {f {fun {y} {+ x y}}}
+      {with {x 5}
+       {with {x 3}
+        {f 10}}}}}}}
+\end{verbatim}
+\\
+El ambiente seria:
+\\
+ \begin{tikzpicture}
+  \stacktop{}
+  \separator
+  \cell{x 3}
+  \separator
+  \cell{x 5}
+  \separator
+  \cell{{f (fun (y) (+ x y))}}
+  \separator
+  \cell{x 7}
+  \separator
+  \cell{x 6}
+  \separator
+  \cell{x 4}
+ \end{tikzpicture}
+\\
+El valor mas viejo de x es x 4, pero en alcance dinamico el valor de x seria x 5 y en alcance estatico el valor de x seria x 7, por lo tanto lo que dice Ben no se cumple.
+
+ \end{itemize}
+ 
+ {\bf 3. Problema III}
+ \\
+Dada la siguiente expresión de \texttt{FWAE} con \verb;with; multi-parametrico:
+\begin{verbatim}
+{with {{x 5} {adder {fun {x} {fun {y} {+ x y}}}} {z 3}}
+    {with {{y 10} {add5 {adder x}}}
+          {add5 {with {{x {+ 10 z}} {y {add5 0}}}
+                  {+ {+ y x} z}}}}}
+\end{verbatim}
+\begin{itemize}
+\item Da la forma Bruijn de la expresión anterior.
+\\
+\textbf{Respuesta:} 
+\begin{verbatim}
+{with {{5} {adder {fun {x} {fun {y} {+ x y}}}} {3}}
+    {with {{10} {add5 {adder <0 0>}}}
+          {add5 {with {{+ 10 <1 2>} {y {add5 0}}}
+                  {+ {+ <0 1> <0 0>} <2 2>}}}}}
+\end{verbatim}
+\item Realiza la corrida de esta expresión, es decir escribe explícitamente cada una de las llamadas tanto para \texttt{subst} y \texttt{interp}, escribiendo además los resultados parciales en sintaxis concreta.
+\end{itemize}
+\end{document}
+ \end{document}
