@@ -20,6 +20,45 @@
  Responde las siguientes preguntas.
  \begin{itemize}
  \item Provee un esquema para un programa que ilustre la no-linealidad de la implementación de ambientes basada en un stack. Explica brevemente porque su ejecución en tiempo no es lineal con respecto al tamaño de su entrada.
+ \\
+ \textbf{Respuesta:} 
+ Por ejemplo:
+ 
+ \begin{verbatim}
+ > {subst {with {x 1}
+    {with {y {+ x 1}}
+      {with {z {- x 1}}
+	{+ x {+ y z}}}}}}
+ > {subst {with {y {+ x 1}}
+     {with {z {- x 1}}
+      {+ x {+ y z}}}}}
+ > {subst {with {z {- x 1}}
+    {+ x {+ y z}}}}
+ --------------------------------------
+ > {+ x {+ y z}}
+ > {+ 1 {+ y z}}
+ > {+ 1 {+ 2 z}}
+ > {+ 1 {+ 2 0}}
+ > {+ 1 2}
+ > (num 3)
+ 
+ \end{verbatim}
+
+ \begin{tikzpicture}
+  \stacktop{}
+  \separator
+  \cell{z (- 1 1)}
+  \separator
+  \cell{y (+ 1 1)}
+  \separator
+  \cell{x 1}
+ \end{tikzpicture}
+ 
+ Para la pila primero entra x, luego entra y y para saber su valor tiene que recorrer toda la pila hasta x, luego entra z
+ y para saber su valor tiene que recorrer toda la pila hasta x, luego para evaluar para sacar el valor de x hay que recorrer
+ toda la pila hasta x, para y hasta y y para z hasta z, usando evaluación glotona, pero para cada elemento se tuvo que recorrer
+ toda la pila al menos una vez por lo que no es lineal, es cuadrático.
+ 
  \item Describe una estructura de datos para un ambiente que un interprete de \texttt{FWAE} pueda usar para mejorar su complejidad
  \item Muestra como usaría el interpreté esta nueva estructura de datos.
  \item Indica cual es la nueva complejidad del interprete (análisis del peor caso) y de forma informal pero rigurosa pruébalo.
@@ -127,7 +166,7 @@
        {with {x 3}
         {f 10}}}}}}}
 \end{verbatim}
-\\
+
 El ambiente seria:
 \\
  \begin{tikzpicture}
