@@ -60,7 +60,15 @@
  toda la pila al menos una vez por lo que no es lineal, es cuadrático.
  
  \item Describe una estructura de datos para un ambiente que un interprete de \texttt{FWAE} pueda usar para mejorar su complejidad
+
+  \textbf{Respuesta:}
+    Utilizando una lista para poder simular el comportamiento de un stack, esto nos ayuda a poder reducir la complejidad en tiempo hasta O(n)
+    debido a que a lo más recorreremos la lista 1 sola vez
  \item Muestra como usaría el interpreté esta nueva estructura de datos.
+  \textbf{Respuesta: }
+    Dada la secciòn de codigo por analizar, basta con usarla del modo (expresion env) donde env es la implementacion de lista (que recordemos simula un stack) y guardara en cada
+    subambiente, las variables y el ambiente siguiente, de la forma: (env0, (env0 + env1)). 
+ 
  \item Indica cual es la nueva complejidad del interprete (análisis del peor caso) y de forma informal pero rigurosa pruébalo.
  \end{itemize}
  
