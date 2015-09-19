@@ -61,7 +61,7 @@
                               (* (* (cos (degrees->radians (GPS-lat gps1))) (cos (degrees->radians (GPS-lat gps2))))
                                  (expt (sin (/ (- (degrees->radians (GPS-long gps2)) (degrees->radians (GPS-long gps1))) 2)) 2)))))))
 
-;total-distance - Dada una lista de trackpoints, regresar la distancia total recorrida
+;total-distance - Dada una lista de trackpoints, regresar la distancia total recorrida.
 (define (total-distance tkp)
   (cond
     [(empty? tkp) 0]
@@ -73,20 +73,34 @@
        [trackpoint (loc hr zone unix-time) loc]))
      (+ (haversine gps1 gps2) (total-distance (cdr tkp)))]))
 
-;average-hr - Dada una lista de trackpoints, regresar el promedio del ritmo cardiaco, el resultado debe ser un entero
+;average-hr - Dada una lista de trackpoints, regresar el promedio del ritmo cardiaco, el resultado debe ser un entero.
 (define (average-hr tkp)
   (cond
     [(empty? tkp) 0]
     [else(round(/ (add-hr tkp) (length tkp)))]))
-;Funcion auxiliar para sumar hr de una lista de trackpoints
+
+;Funcion auxiliar para sumar hr de una lista de trackpoints.
 (define (add-hr tkp)
   (cond
     [(empty? tkp) 0]
     [else
-     (define gps1 (type-case Frame (car tkp)
+     (define hr1 (type-case Frame (car tkp)
        [trackpoint (loc hr zone unix-time) hr]))
-     (+ gps1 (add-hr (cdr tkp)))]))
+     (+ hr1 (add-hr (cdr tkp)))]))
 
+;max-hr - Dada una lista de trackpoints, regresar el máximo ritmo cardiaco, el resultado debe ser un entero.
+(define (max-hr tkp)
+  (cond
+    [(empty? tkp) empty]
+    [else(apply max (list-hr tkp))]))
+;Funcion auxiliar que pasa los hr de una lista de trackpoints a una lista de enteros
+(define (list-hr tkp)
+  (cond
+    [(empty? tkp) empty]
+    [else
+     (define hr1 (type-case Frame (car tkp)
+       [trackpoint (loc hr zone unix-time) hr]))
+     (cons hr1 (list-hr (cdr tkp)))]))
 ;Seccion 2
 
 ;ninBT - Dado un árbol de tipo BTree, determinar el número de nodos internos que tiene.
