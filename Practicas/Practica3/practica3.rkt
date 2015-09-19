@@ -40,6 +40,20 @@
   (cond
     [(empty? mzones) empty]))
 
+;create-trackpoints - Dado una lista en la que cada elemento de la lista contiene: un tiempo en formato UNIX,
+;una lista con la latitud y longitud y finalmente el ritmo cardiaco. Como segundo parámetro se tiene una lista
+;de zonas cardiacas con lo que se tiene que regresar una lista de trackpoints que contengan la información dada.
+
+(define (create-trackpoints lst zc)
+  (cond
+    [(empty? lst) '()]
+    [else
+     (define tr-loc (GPS (car (car (cdr (car lst)))) (car (cdr (car (cdr (car lst)))))))
+     (define tr-hr (car (cdr (cdr (car lst)))))
+     (define tr-zone (get-zone 'resting zc))
+     (define tr-time (car (car lst)))
+     (cons (trackpoint tr-loc tr-hr tr-zone tr-time) (create-trackpoints (cdr lst) zc))]))
+
 ;Seccion 2
 
 ;ninBT - Dado un árbol de tipo BTree, determinar el número de nodos internos que tiene.
@@ -108,6 +122,12 @@
 (test (get-zone 'fat-burning my-zones) (fat-burning 128.0 140.0))
 (test (get-zone 'aerobic my-zones) (aerobic 141.0 153.0))
 (test (get-zone 'maximum my-zones) (maximum 167.0 180.0))
+;create-trackpoints
+(test (create-trackpoints (take raw-data 4) my-zones) (list
+(trackpoint (GPS 19.4907258 -99.24101) 104 (resting 50 114.0) 1425619654)
+(trackpoint (GPS 19.4907258 -99.24101) 104 (resting 50 114.0) 1425619655)
+(trackpoint (GPS 19.4907258 -99.24101) 108 (resting 50 114.0) 1425619658)
+(trackpoint (GPS 19.4907107 -99.2410833) 106 (resting 50 114.0) 1425619662)))
 ;ninBT
 (test (ninBT (EmptyBT)) 0)
 (test (ninBT (BNode < (BNode < (EmptyBT) 3 (EmptyBT)) 1 (BNode < (EmptyBT) 2 (EmptyBT)))) 1)
