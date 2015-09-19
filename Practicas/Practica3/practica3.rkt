@@ -73,6 +73,20 @@
        [trackpoint (loc hr zone unix-time) loc]))
      (+ (haversine gps1 gps2) (total-distance (cdr tkp)))]))
 
+;average-hr - Dada una lista de trackpoints, regresar el promedio del ritmo cardiaco, el resultado debe ser un entero
+(define (average-hr tkp)
+  (cond
+    [(empty? tkp) 0]
+    [else(round(/ (add-hr tkp) (length tkp)))]))
+;Funcion auxiliar para sumar hr de una lista de trackpoints
+(define (add-hr tkp)
+  (cond
+    [(empty? tkp) 0]
+    [else
+     (define gps1 (type-case Frame (car tkp)
+       [trackpoint (loc hr zone unix-time) hr]))
+     (+ gps1 (add-hr (cdr tkp)))]))
+
 ;Seccion 2
 
 ;ninBT - Dado un árbol de tipo BTree, determinar el número de nodos internos que tiene.
