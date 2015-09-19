@@ -54,6 +54,13 @@
      (define tr-time (car (car lst)))
      (cons (trackpoint tr-loc tr-hr tr-zone tr-time) (create-trackpoints (cdr lst) zc))]))
 
+;GPS -> GPS -> N
+;haversine - Dados dos valores de tipo GPS calcular su distancia usando la formula de haversine.
+(define (haversine gps1 gps2)
+  (* 12742 (asin (sqrt (+ (expt (sin (/ (- (degrees->radians (GPS-lat gps2)) (degrees->radians (GPS-lat gps1))) 2)) 2)
+                              (* (* (cos (degrees->radians (GPS-lat gps1))) (cos (degrees->radians (GPS-lat gps2))))
+                                 (expt (sin (/ (- (degrees->radians (GPS-long gps2)) (degrees->radians (GPS-long gps1))) 2)) 2)))))))
+
 ;total-distance - Dada una lista de trackpoints, regresar la distancia total recorrida
 (define (total-distance tkp)
   (cond
@@ -65,6 +72,7 @@
      (define gps2 (type-case Frame (car(cdr tkp))
        [trackpoint (loc hr zone unix-time) loc]))
      (+ (haversine gps1 gps2) (total-distance (cdr tkp)))]))
+
 ;Seccion 2
 
 ;ninBT - Dado un árbol de tipo BTree, determinar el número de nodos internos que tiene.
@@ -139,6 +147,11 @@
 (trackpoint (GPS 19.4907258 -99.24101) 104 (resting 50 114.0) 1425619655)
 (trackpoint (GPS 19.4907258 -99.24101) 108 (resting 50 114.0) 1425619658)
 (trackpoint (GPS 19.4907107 -99.2410833) 106 (resting 50 114.0) 1425619662)))
+;total-distance
+(test (total-distance '()) 0)
+(test (total-distance (create-trackpoints (take raw-data 4) my-zones)) 0.007864840450045972)
+(test (total-distance (create-trackpoints (take raw-data 100) my-zones)) 0.9509291243812747)
+(test (total-distance (create-trackpoints raw-data my-zones)) 5.051934549322941)
 ;ninBT
 (test (ninBT (EmptyBT)) 0)
 (test (ninBT (BNode < (BNode < (EmptyBT) 3 (EmptyBT)) 1 (BNode < (EmptyBT) 2 (EmptyBT)))) 1)
