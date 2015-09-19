@@ -101,6 +101,22 @@
      (define hr1 (type-case Frame (car tkp)
        [trackpoint (loc hr zone unix-time) hr]))
      (cons hr1 (list-hr (cdr tkp)))]))
+
+;collapse-trackpoints - Dada una lista de trackpoints y un epsilon e, obtener una nueva lista en que se
+;agrupen los deltas consecutivos dado que se cumpla lo siguiente: la distancia de un trackpoint al otro trackpoint
+;debe ser menor o igual a e y los trackpoints deben tener el mismo ritmo cardiaco.
+
+(define (collapse-trackpoints lst e)
+  (cond
+    [(empty? lst) '()]
+    [(empty? (cdr lst)) (list (car lst))]
+    [else
+     (define x (car lst))
+     (define y (car (cdr lst)))
+     (append (if (and (= (trackpoint-hr x) (trackpoint-hr y))
+              (< (haversine (trackpoint-loc x) (trackpoint-loc y)) e))
+         '() (list (car lst))) (collapse-trackpoints (cdr lst) e))]))
+
 ;Seccion 2
 
 ;ninBT - Dado un árbol de tipo BTree, determinar el número de nodos internos que tiene.
@@ -197,6 +213,11 @@
 (test (max-hr trackpoints2) 165)
 (test (max-hr trackpoints3) 136)
 (test (max-hr trackpoints4) 165)
+;collapse-trackpoints
+(test (collapse-trackpoints (create-trackpoints (take raw-data 4) my-zones) 0.01) (list
+(trackpoint (GPS 19.4907258 -99.24101) 104 (resting 50 114.0) 1425619655)
+(trackpoint (GPS 19.4907258 -99.24101) 108 (resting 50 114.0) 1425619658)
+(trackpoint (GPS 19.4907107 -99.2410833) 106 (resting 50 114.0) 1425619662)))
 ;ninBT
 (test (ninBT (EmptyBT)) 0)
 (test (ninBT (BNode < (BNode < (EmptyBT) 3 (EmptyBT)) 1 (BNode < (EmptyBT) 2 (EmptyBT)))) 1)
