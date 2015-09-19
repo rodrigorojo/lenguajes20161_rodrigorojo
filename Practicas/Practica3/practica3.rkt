@@ -91,7 +91,7 @@
 ;max-hr - Dada una lista de trackpoints, regresar el máximo ritmo cardiaco, el resultado debe ser un entero.
 (define (max-hr tkp)
   (cond
-    [(empty? tkp) empty]
+    [(empty? tkp) 0]
     [else(apply max (list-hr tkp))]))
 ;Funcion auxiliar que pasa los hr de una lista de trackpoints a una lista de enteros
 (define (list-hr tkp)
@@ -155,6 +155,11 @@
 
     
 ;Tests
+;Listas usadas en las pruebas
+(define trackpoints1 (create-trackpoints (take raw-data 100) my-zones))
+(define trackpoints2 (create-trackpoints raw-data my-zones))
+(define trackpoints3 (create-trackpoints (take raw-data 50) my-zones))
+(define trackpoints4 (create-trackpoints (take raw-data 400) my-zones))
 ;Zones
 (test (zones 50 180)(list
                      (resting 50 114.0)
@@ -180,6 +185,18 @@
 (test (total-distance (create-trackpoints (take raw-data 4) my-zones)) 0.007864840450045972)
 (test (total-distance (create-trackpoints (take raw-data 100) my-zones)) 0.9509291243812747)
 (test (total-distance (create-trackpoints raw-data my-zones)) 5.051934549322941)
+;average-hr
+(test (average-hr empty) 0)
+(test (average-hr trackpoints1) 134)
+(test (average-hr trackpoints2) 150)
+(test (average-hr trackpoints3) 128)
+(test (average-hr trackpoints4) 147)
+;max-hr
+(test (max-hr empty) 0)
+(test (max-hr trackpoints1) 147)
+(test (max-hr trackpoints2) 165)
+(test (max-hr trackpoints3) 136)
+(test (max-hr trackpoints4) 165)
 ;ninBT
 (test (ninBT (EmptyBT)) 0)
 (test (ninBT (BNode < (BNode < (EmptyBT) 3 (EmptyBT)) 1 (BNode < (EmptyBT) 2 (EmptyBT)))) 1)
