@@ -54,6 +54,17 @@
      (define tr-time (car (car lst)))
      (cons (trackpoint tr-loc tr-hr tr-zone tr-time) (create-trackpoints (cdr lst) zc))]))
 
+;total-distance - Dada una lista de trackpoints, regresar la distancia total recorrida
+(define (total-distance tkp)
+  (cond
+    [(empty? tkp) 0]
+    [(empty? (cdr tkp)) 0]
+    [else
+     (define gps1 (type-case Frame (car tkp)
+       [trackpoint (loc hr zone unix-time) loc]))
+     (define gps2 (type-case Frame (car(cdr tkp))
+       [trackpoint (loc hr zone unix-time) loc]))
+     (+ (haversine gps1 gps2) (total-distance (cdr tkp)))]))
 ;Seccion 2
 
 ;ninBT - Dado un árbol de tipo BTree, determinar el número de nodos internos que tiene.
