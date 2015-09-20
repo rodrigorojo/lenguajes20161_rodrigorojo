@@ -48,10 +48,10 @@
   (cond
     [(empty? lst) '()]
     [else
-     (define tr-loc (GPS (car (car (cdr (car lst)))) (car (cdr (car (cdr (car lst)))))))
-     (define tr-hr (car (cdr (cdr (car lst)))))
+     (define tr-loc (GPS (first (second (car lst))) (second (second (car lst)))))
+     (define tr-hr (third (car lst)))
      (define tr-zone (get-zone 'resting zc))
-     (define tr-time (car (car lst)))
+     (define tr-time (first (car lst)))
      (cons (trackpoint tr-loc tr-hr tr-zone tr-time) (create-trackpoints (cdr lst) zc))]))
 
 ;GPS -> GPS -> N
@@ -112,7 +112,7 @@
     [(empty? (cdr lst)) (list (car lst))]
     [else
      (define x (car lst))
-     (define y (car (cdr lst)))
+     (define y (cadr lst))
      (append (if (and (= (trackpoint-hr x) (trackpoint-hr y))
               (< (haversine (trackpoint-loc x) (trackpoint-loc y)) e))
          '() (list (car lst))) (collapse-trackpoints (cdr lst) e))]))
