@@ -38,6 +38,7 @@
 
 ;bpm->zone Dado una lista de frecuencias cardiacas y una lista de zonas de frecuencia cardiaca regresar
 ;una lista de zonas por cada frecuencia cardiaca en la lista original.
+;List->List->List 
 
 (define (bpm->zone lst z)
   (cond
@@ -67,6 +68,7 @@
 ;create-trackpoints - Dado una lista en la que cada elemento de la lista contiene: un tiempo en formato UNIX,
 ;una lista con la latitud y longitud y finalmente el ritmo cardiaco. Como segundo parámetro se tiene una lista
 ;de zonas cardiacas con lo que se tiene que regresar una lista de trackpoints que contengan la información dada.
+;List-> List ->List
 
 (define (create-trackpoints lst zc)
   (cond
@@ -86,6 +88,7 @@
                                  (expt (sin (/ (- (degrees->radians (GPS-long gps2)) (degrees->radians (GPS-long gps1))) 2)) 2)))))))
 
 ;total-distance - Dada una lista de trackpoints, regresar la distancia total recorrida.
+;List->Int
 (define (total-distance tkp)
   (cond
     [(empty? tkp) 0]
@@ -98,11 +101,8 @@
      (+ (haversine gps1 gps2) (total-distance (cdr tkp)))]))
 
 ;average-hr - Dada una lista de trackpoints, regresar el promedio del ritmo cardiaco, el resultado debe ser un entero.
+;List ->Int
 (define (average-hr tkp)
-  (cond
-    [(empty? tkp) 0]
-    [else(round(/ (add-hr tkp) (length tkp)))]))
-
 ;Funcion auxiliar para sumar hr de una lista de trackpoints.
 (define (add-hr tkp)
   (cond
@@ -111,12 +111,15 @@
      (define hr1 (type-case Frame (car tkp)
        [trackpoint (loc hr zone unix-time) hr]))
      (+ hr1 (add-hr (cdr tkp)))]))
-
-;max-hr - Dada una lista de trackpoints, regresar el máximo ritmo cardiaco, el resultado debe ser un entero.
-(define (max-hr tkp)
   (cond
     [(empty? tkp) 0]
-    [else(apply max (list-hr tkp))]))
+    [else(round(/ (add-hr tkp) (length tkp)))]))
+
+
+
+;max-hr - Dada una lista de trackpoints, regresar el máximo ritmo cardiaco, el resultado debe ser un entero.
+;List-> Int
+(define (max-hr tkp)
 ;Funcion auxiliar que pasa los hr de una lista de trackpoints a una lista de enteros
 (define (list-hr tkp)
   (cond
@@ -125,11 +128,15 @@
      (define hr1 (type-case Frame (car tkp)
        [trackpoint (loc hr zone unix-time) hr]))
      (cons hr1 (list-hr (cdr tkp)))]))
+  (cond
+    [(empty? tkp) 0]
+    [else(apply max (list-hr tkp))]))
+
 
 ;collapse-trackpoints - Dada una lista de trackpoints y un epsilon e, obtener una nueva lista en que se
 ;agrupen los deltas consecutivos dado que se cumpla lo siguiente: la distancia de un trackpoint al otro trackpoint
 ;debe ser menor o igual a e y los trackpoints deben tener el mismo ritmo cardiaco.
-
+;List->Int->List
 (define (collapse-trackpoints lst e)
   (cond
     [(empty? lst) '()]
@@ -144,7 +151,7 @@
 ;Seccion 2
 
 ;ninBT - Dado un árbol de tipo BTree, determinar el número de nodos internos que tiene.
-
+;BT->Int
 (define (ninBT bt)
   (cond
     [(EmptyBT? bt) 0]
@@ -152,7 +159,7 @@
     [else (+ 1 (ninBT (BNode-l bt)) (ninBT (BNode-r bt)))]))
 
 ;nlBT - Dado un árbol de tipo BTree, determinar el número de hojas no vacías.
-
+;BT->Int
 (define (nlBT bt)
   (cond
     [(EmptyBT? bt) 0]
@@ -160,34 +167,34 @@
     [else (+ (nlBT (BNode-l bt)) (nlBT (BNode-r bt)))]))
 
 ;nnBT - Dado un árbol de tipo BTree, determinar el número de nodos que tiene. Las hojas vacías no cuentan.
-
+;BT->Int
 (define (nnBT bt)
   (+ (ninBT bt) (nlBT bt)))
 
 ;mapBT - Dado una función de aridad 1 y un árbol de tipo BTree, aplicar la función sobre todos los valores de
 ;los nodos del árbol (las funciones de aridad 1 sólo regresas números).
-
+;Funcion->BT->Funcion(BT)
 (define (mapBT f bt)
   (cond
     [(EmptyBT? bt) (EmptyBT)]
     [else (bnn (mapBT f (BNode-l bt)) (f (BNode-e bt)) (mapBT f (BNode-r bt)))]))
 
 ;preorderBT - Dado un árbol de tipo BTree, regresar una lista de sus elementos recorridos en preorden.
-
+;BT ->List
 (define (preorderBT bt)
   (cond
     [(EmptyBT? bt) '()]
     [else (append (list (BNode-e bt)) (preorderBT (BNode-l bt)) (preorderBT (BNode-r bt)))]))
 
 ;inorderBT - Dado un árbol de tipo BTree, regresar una lista de sus elementos recorridos en inorden.
-
+;BT ->List
 (define (inorderBT bt)
   (cond
     [(EmptyBT? bt) '()]
     [else (append (inorderBT (BNode-l bt)) (list (BNode-e bt)) (inorderBT (BNode-r bt)))]))
 
 ;posorderBT - Dado un árbol de tipo BTree, regresar una lista de sus elementos recorridos en post-orden.
-
+;BT ->List
 (define (posorderBT bt)
   (cond
     [(EmptyBT? bt) '()]
@@ -210,6 +217,34 @@
                      (aerobic 141.0 153.0)
                      (anaerobic 154.0 166.0)
                      (maximum 167.0 180.0)))
+
+(test (zones 100 200) (list (resting 100 149.0) 
+                            (warm-up 150.0 159.0) 
+                            (fat-burning 160.0 169.0) 
+                            (aerobic 170.0 179.0) 
+                            (anaerobic 180.0 189.0) 
+                            (maximum 190.0 200.0)))
+
+(test (zones 0 50)    (list (resting 0 24.0) 
+                            (warm-up 25.0 29.0) 
+                            (fat-burning 30.0 34.0) 
+                            (aerobic 35.0 39.0) 
+                            (anaerobic 40.0 44.0) 
+                            (maximum 45.0 50.0)))
+
+(test (zones 12 230)  (list (resting 12 120.0) 
+                            (warm-up 121.0 141.79999999999998) 
+                            (fat-burning 142.79999999999998 163.6) 
+                            (aerobic 164.6 185.4) 
+                            (anaerobic 186.4 207.20000000000002) 
+                            (maximum 208.20000000000002 230.0)))
+
+(test (zones 10 20)   (list (resting 10 14.0)
+                            (warm-up 15.0 15.0)
+                            (fat-burning 16.0 16.0)
+                            (aerobic 17.0 17.0)
+                            (anaerobic 18.0 18.0)
+                            (maximum 19.0 20.0)))
 ;get-zone
 (test (get-zone 'resting my-zones) (resting 50 114.0))
 (test (get-zone 'warm-up my-zones) (warm-up 115.0 127.0))
