@@ -36,9 +36,33 @@
     [(eqv? sym 'maximum) (list-ref lst 5)]
     [else (error "Symbol not in list")]))
 
-(define (bpm->zone lst mzones)
+;bpm->zone Dado una lista de frecuencias cardiacas y una lista de zonas de frecuencia cardiaca regresar
+;una lista de zonas por cada frecuencia cardiaca en la lista original.
+
+(define (bpm->zone lst z)
   (cond
-    [(empty? mzones) empty]))
+    [(empty? z) '()]
+    [(empty? lst) '()]
+    [else (append
+           (if (and (>= (car lst) (resting-low (first z)))
+                    (<= (car lst) (resting-high (first z))))
+               (list (first z)) '())
+           (if (and (>= (car lst) (warm-up-low (second z)))
+                    (<= (car lst) (warm-up-high (second z))))
+               (list (second z)) '())
+           (if (and (>= (car lst) (fat-burning-low (third z)))
+                    (<= (car lst) (fat-burning-high (third z))))
+               (list (third z)) '())
+           (if (and (>= (car lst) (aerobic-low (fourth z)))
+                    (<= (car lst) (aerobic-high (fourth z))))
+               (list (fourth z)) '())
+           (if (and (>= (car lst) (anaerobic-low (fifth z)))
+                    (<= (car lst) (anaerobic-high (fifth z))))
+               (list (fifth z)) '())
+           (if (and (>= (car lst) (maximum-low (sixth z)))
+                    (<= (car lst) (maximum-high (sixth z))))
+               (list (sixth z)) '())
+           (bpm->zone (cdr lst) z))]))
 
 ;create-trackpoints - Dado una lista en la que cada elemento de la lista contiene: un tiempo en formato UNIX,
 ;una lista con la latitud y longitud y finalmente el ritmo cardiaco. Como segundo parámetro se tiene una lista
@@ -192,6 +216,12 @@
 (test (get-zone 'fat-burning my-zones) (fat-burning 128.0 140.0))
 (test (get-zone 'aerobic my-zones) (aerobic 141.0 153.0))
 (test (get-zone 'maximum my-zones) (maximum 167.0 180.0))
+;bpm->zone
+(test (bpm->zone empty my-zones) '())
+(test (bpm->zone '(50 60) my-zones) (list (resting 50 114.0) (resting 50 114.0)))
+(test (bpm->zone '(140 141) my-zones) (list (fat-burning 128.0 140.0) (aerobic 141.0 153.0)))             
+(test (bpm->zone '(60 120 150) my-zones) (list (resting 50 114.0) (warm-up 115.0 127.0) (aerobic 141.0 153.0)))
+(test (bpm->zone '(130 160 170) my-zones) (list (fat-burning 128.0 140.0) (anaerobic 154.0 166.0) (maximum 167.0 180.0)))
 ;create-trackpoints
 (test (create-trackpoints '() my-zones) '())
 (test (create-trackpoints (take raw-data 1) my-zones)
