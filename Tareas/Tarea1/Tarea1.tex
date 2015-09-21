@@ -65,6 +65,7 @@
     Utilizando una lista para poder simular el comportamiento de un stack, esto nos ayuda a poder reducir la complejidad en tiempo hasta O(n)
     debido a que a lo más recorreremos la lista 1 sola vez realizando las comparaciones correspondientes.
  \item Muestra como usaría el interpreté esta nueva estructura de datos.
+ 
   \textbf{Respuesta: }
     Dada la secciòn de codigo por analizar, basta con usarla del modo (expresion env) donde env es la implementacion de lista (que recordemos simula un stack) y guardara en cada
     subambiente, las variables y el ambiente siguiente, de la forma: 
@@ -77,8 +78,7 @@
     \\
     ...
     \\
-    env n = ((varn valn), ... ,(var1 val1))
-    
+    env n = ((varn valn), ... ,(var1 val1))  
     \\
     con esto, la implementacion de nuestro interprete se modifica. Recibiremos una expresion y su ambiente (por default siempre sera env0). Analizamos los casos como venimos haciendo normalmente
     (Obs: para esto hacemos varias funciones que nos quiten las etiquetas del Lenguaje). Los casos num, add y sub son similares a los anteriores, simplemente llamamos recursivamente la funcion interp
@@ -87,19 +87,20 @@
     Para el caso de las funciones basta con usar nuestro tipo ClosureV, quedando de esta forma el caso:    [fun (bound-id bound-body) (closureV bound-id bound-body env)]
     Finalmente para el caso de la aplicacion de funcion:
     \begin{verbatim} 
-     [app (fun-expr arg-expr)
-    ;Creamos variable local
-      (local ([define fun-val (interp fun-expr env)])
-          ;Si esa variable es un closure, llamamos la funcion interp sobre el cuerpo del closure y la variable de la funcion
-          (if (closureV? fun-val)
-               (interp (closureV-body fun-val)
-               ;Ademas crearemosun sub-cache (sub ambiente)  
-                       (aSub (closureV-param fun-val)
-                             (interp arg-expr env)
-                             (closureV-env fun-val)))
-                             ;Sino, simplemente devolvemos un error
-               (error 'interp (string-append (~a fun-expr) " expression is not a function"))))]))
-    
+[app (fun-expr arg-expr)
+;Creamos variable local
+  (local ([define fun-val (interp fun-expr env)])
+    ;Si esa variable es un closure, llamamos la funcion interp 
+    ;sobre el cuerpo del closure y la variable de la funcion
+    (if (closureV? fun-val)
+        (interp (closureV-body fun-val)
+        ;Ademas crearemos un sub-cache (sub ambiente)
+                (aSub (closureV-param fun-val)
+                      (interp arg-expr env)
+                      (closureV-env fun-val)))
+                      ;Sino, simplemente devolvemos un error
+         (error 'interp (string-append 
+                         (~a fun-expr) " expression is not a function"))))]))   
     
      \end{verbatim}
     
