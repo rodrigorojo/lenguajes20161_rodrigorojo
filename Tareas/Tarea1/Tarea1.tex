@@ -260,5 +260,103 @@ Dada la siguiente expresión de \texttt{FWAE} con \verb;with; multi-parametrico:
 \end{verbatim}
 \item Realiza la corrida de esta expresión, es decir escribe explícitamente cada una de las llamadas tanto para \texttt{subst} y \texttt{interp}, escribiendo además los resultados parciales en sintaxis concreta.
 \end{itemize}
+\begin{verbatim}
+>{parse {with {{x 5} {adder {fun {x} {fun {y} {+ x y}}}} {z 3}}
+    {with {{y 10} {add5 {adder x}}}
+          {add5 {with {{x {+ 10 z}} {y {add5 0}}}
+                  {+ {+ y x} z}}}}}}
+>{parse {with {{parse {x 5}} {parse {adder {fun {x} {fun {y} {+ x y}}}}} {parse {z 3}}
+    {parse {with {{y 10} {add5 {adder x}}}
+          {add5 {with {{x {+ 10 z}} {y {add5 0}}}
+                  {+ {+ y x} z}}}}}}}
+>{parse {with {{parse {(id x) (num 5)}} {parse {adder {parse {fun {x} {fun {y} {+ x y}}}}} {parse {z 3}}
+    {parse {with {{y 10} {add5 {adder x}}}
+          {add5 {with {{x {+ 10 z}} {y {add5 0}}}
+                  {+ {+ y x} z}}}}}}}
+>{parse {with {{parse {(id x) (num 5)}} {parse {adder {parse {fun {x} {fun {y} {+ x y}}}}} {parse {z 3}}
+    {parse {with {{y 10} {add5 {adder x}}}
+          {add5 {with {{x {+ 10 z}} {y {add5 0}}}
+                  {+ {+ y x} z}}}}}}}
+>{with {{parse {(id x) (num 5)}} {parse {adder {parse {fun {Parse {x}} {parse {fun {y} {+ x y}}}}} {parse {z 3}}
+    {parse {with {{y 10} {add5 {adder x}}}
+          {add5 {with {{x {+ 10 z}} {y {add5 0}}}
+                  {+ {+ y x} z}}}}}}
+>{with {{parse {(id x) (num 5)}} {parse {adder {parse {fun {(id x)} {fun {parse y} {Parse + x y}}} {parse {z 3}}
+    {parse {with {{y 10} {add5 {adder x}}}
+          {add5 {with {{x {+ 10 z}} {y {add5 0}}}
+                  {+ {+ y x} z}}}}}}
+>{with {{parse {(id x) (num 5)}} {parse {adder {fun {(id x)} {fun {(id y)} {add {parse x} {parse y}}} {parse {z 3}}
+    {parse {with {{y 10} {add5 {adder x}}}
+          {add5 {with {{x {+ 10 z}} {y {add5 0}}}
+                  {+ {+ y x} z}}}}}}
+>{with {{parse {(id x) (num 5)}} { {adder {fun {(id x)} {fun {(id y)} {add (id x) (id y)}} {(id z) (num 3)}
+    {parse {with {{y 10} {add5 {adder x}}}
+          {add5 {with {{x {+ 10 z}} {y {add5 0}}}
+                  {+ {+ y x} z}}}}}}
+>{with { {(id x) (num 5)} {adder {fun {(id x)} {fun {(id y)} {add (id x) (id y)}}}} {(id z) (num 3)}
+    {parse {with {{y 10} {add5 {adder x}}}
+          {add5 {with {{x {+ 10 z}} {y {add5 0}}}
+                  {+ {+ y x} z}}}}}}
+>{with { {(id x) (num 5)} {adder {fun {(id x)} {fun {(id y)} {add (id x) (id y)}}}} {(id z) (num 3)}
+     {with {{parse {y 10}} {parse {add5 {adder x}}}}
+          {parse {add5 {with {{x {+ 10 z}} {y {add5 0}}}
+                  {+ {+ y x} z}}}}}
+>{with { {(id x) (num 5)} {adder {fun {(id x)} {fun {(id y)} {add (id x) (id y)}}}} {(id z) (num 3)}
+     {with {(id y) (num 10)} {add5 {parse {adder x}}}}
+          {parse {add5 {with {{x {+ 10 z}} {y {add5 0}}}
+                  {+ {+ y x} z}}}}}
+>{with { {(id x) (num 5)} {adder {fun {(id x)} {fun {(id y)} {add (id x) (id y)}}}} {(id z) (num 3)}
+     {with {(id y) (num 10)} {add5  {adder (id x)}}}
+          {parse {add5 {with {{x {+ 10 z}} {y {add5 0}}}
+                  {+ {+ y x} z}}}}}
+>{with { {(id x) (num 5)} {adder {fun {(id x)} {fun {(id y)} {add (id x) (id y)}}}} {(id z) (num 3)}
+     {with {(id y) (num 10)} {add5  {adder (id x)}}}
+          {add5 {parse {with {{x {+ 10 z}} {y {add5 0}}}
+                  {+ {+ y x} z}}}}}}
+>{with { {(id x) (num 5)} {adder {fun {(id x)} {fun {(id y)} {add (id x) (id y)}}}} {(id z) (num 3)}
+     {with {(id y) (num 10)} {add5  {adder (id x)}}}
+          {add5 {with {{parse {x {+ 10 z}}} {parse {y {add5 0}}}}
+                  {parse{+ {+ y x} z}}}}}}
+>{with { {(id x) (num 5)} {adder {fun {(id x)} {fun {(id y)} {add (id x) (id y)}}}} {(id z) (num 3)}
+     {with {(id y) (num 10)} {add5  {adder (id x)}}}
+          {add5 {with {{parse x {+ 10 z}} {parse y {add5 0}}}
+                  {parse{+ {+ y x} z}}}}}}
+>{with { {(id x) (num 5)} {adder {fun {(id x)} {fun {(id y)} {add (id x) (id y)}}}} {(id z) (num 3)}
+     {with {(id y) (num 10)} {add5  {adder (id x)}}}
+          {add5 {with {(id x) {parse {+ 10 z}} {(id y) parse {add5 0}}}
+                  {parse{+ {+ y x} z}}}}}}
+>{with { {(id x) (num 5)} {adder {fun {(id x)} {fun {(id y)} {add (id x) (id y)}}}} {(id z) (num 3)}
+     {with {(id y) (num 10)} {add5  {adder (id x)}}}
+          {add5 {with {(id x) {add parse 10 parse z}} {(id y) {add5 (num 0)}}}
+                  {parse{+ {+ y x} z}}}}}}
+>{with { {(id x) (num 5)} {adder {fun {(id x)} {fun {(id y)} {add (id x) (id y)}}}} {(id z) (num 3)}
+     {with {(id y) (num 10)} {add5  {adder (id x)}}}
+          {add5 {with {(id x) {add (num 10) (id z)}} {(id y) {add5 (num 0)}}}
+                  {parse{+ {+ y x} z}}}}}}
+>{with { {(id x) (num 5)} {adder {fun {(id x)} {fun {(id y)} {add (id x) (id y)}}}} {(id z) (num 3)}
+     {with {(id y) (num 10)} {add5  {adder (id x)}}}
+          {add5 {with {(id x) {add (num 10) (id z)}} {(id y) {add5 (num 0)}}}
+                  {add parse{+ y x} parse z}}}}}
+>{with { {(id x) (num 5)} {adder {fun {(id x)} {fun {(id y)} {add (id x) (id y)}}}} {(id z) (num 3)}
+     {with {(id y) (num 10)} {add5  {adder (id x)}}}
+          {add5 {with {(id x) {add (num 10) (id z)}} {(id y) {add5 (num 0)}}}
+                  {add {add parse y parse x} (id z)}}}}}
+>{with { {(id x) (num 5)} {adder {fun {(id x)} {fun {(id y)} {add (id x) (id y)}}}} {(id z) (num 3)}
+     {with {(id y) (num 10)} {add5  {adder (id x)}}}
+          {add5 {with {(id x) {add (num 10) (id z)}} {(id y) {add5 (num 0)}}}
+                  {add {add (id y) (id x)} (id z)}}}}}
+
+
+
+
+
+
+
+
+
+
+
+\end{verbatim}
+
 \end{document}
  \end{document}
