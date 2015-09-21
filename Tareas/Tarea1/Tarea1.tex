@@ -260,7 +260,7 @@ Dada la siguiente expresión de \texttt{FWAE} con \verb;with; multi-parametrico:
 \end{verbatim}
 \item Realiza la corrida de esta expresión, es decir escribe explícitamente cada una de las llamadas tanto para \texttt{subst} y \texttt{interp}, escribiendo además los resultados parciales en sintaxis concreta.
 \end{itemize}
-\begin{verbatim}
+\begin{lstlisting}[breaklines]
 >{parse {with {{x 5} {adder {fun {x} {fun {y} {+ x y}}}} {z 3}}
     {with {{y 10} {add5 {adder x}}}
           {add5 {with {{x {+ 10 z}} {y {add5 0}}}
@@ -356,7 +356,7 @@ Dada la siguiente expresión de \texttt{FWAE} con \verb;with; multi-parametrico:
 
 
 
-\end{verbatim}
+\end{lstlisting}
 
 \end{document}
  \end{document}
