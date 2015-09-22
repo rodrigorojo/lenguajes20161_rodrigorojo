@@ -62,13 +62,13 @@
  \item Describe una estructura de datos para un ambiente que un interprete de \texttt{FWAE} pueda usar para mejorar su complejidad
 
   \textbf{Respuesta: }
-    Utilizando una lista para poder simular el comportamiento de un stack, esto nos ayuda a poder reducir la complejidad en tiempo hasta O(n)
-    debido a que a lo más recorreremos la lista 1 sola vez realizando las comparaciones correspondientes.
+    Podríamos utilizar una Tabla Hash, debido a que en el caso promedio y con una buena funcion hash, su complejidad de búsqueda/acceso es O(1). El hecho de tener una buena funcion hash, nos evita el peor de los casos O(n)
+    
  \item Muestra como usaría el interpreté esta nueva estructura de datos.
  
   \textbf{Respuesta: }
-    Dada la secciòn de codigo por analizar, basta con usarla del modo (expresion env) donde env es la implementacion de lista (que recordemos simula un stack) y guardara en cada
-    subambiente, las variables y el ambiente siguiente, de la forma: 
+    Dada la secciòn de codigo por analizar, basta con usarla del modo (expresion env) donde env es la implementacion de tabla hash  y guardara en cada
+    subambiente, las variables y el ambiente siguiente, de la forma (se presentan de esta manera para mayor comodidad): 
     \\
     env 0 = ()
     \\
@@ -107,7 +107,8 @@
  
  \item Indica cual es la nueva complejidad del interprete (análisis del peor caso) y de forma informal pero rigurosa pruébalo.
   \\
-  La nueva complejidad es O(n).
+  Debido a la propiedad que habiamos descrito anteriormente, con una buena funcion hash logramos que la complejidad de busqueda/acceso nos quede en O(1), con ello, a la hora de realizar nuestras comparaciones de busqueda
+  tenemos que a lo mas realizaremos n comparaciones diferentes en el peor de los casos, por lo tanto la complejidad en tiempo de la ejecucion  del interprete sería O(n).
   
  
  
