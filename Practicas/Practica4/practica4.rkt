@@ -5,9 +5,18 @@
 (print-only-errors true)
 
 (define (desugar expr)
-  ;; Implementar desugar
-  (error 'desugar "Not implemented"))
+  (cond
+    [(numS? expr) (num (numS-n expr))]
+    [(idS? expr) (id (idS-name expr))]
+    [(binopS? expr) (binop (binopS-f expr) (desugar (binopS-l expr)) (desugar (binopS-r expr)))]
+    [(funS? expr) (fun (funS-params expr) (desugar (funS-body expr)))]
+    [(appS? expr) (app (desugar (appS-fun expr)) (map (lambda (x)
+                                                        (desugar x))
+                                                      appS-args))]))
 
+ ;[withS (bindings body) (app (fun (map (lambda (x) (bind-name x)) bindings)
+         ;                         (desugar body))
+           ;                  (map (lambda (x) (desugar (bind-val x))) bindings))] 
 
 (test (desugar (parse '{+ 3 4})) (binop + (num 3) (num 4)))
 (test (desugar (parse '{+ {- 3 4} 7})) (binop + (binop - (num 3) (num 4)) (num 7)))
