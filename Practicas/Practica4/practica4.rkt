@@ -2,25 +2,55 @@
 
 (require "practica4-base.rkt")
 
-(print-only-errors true)
+;(print-only-errors true)
+
+;(define (desugar expr)
+ ; (cond
+ ;   [(numS? expr) (num (numS-n expr))]
+  ;  [(idS? expr) (id (idS-name expr))]
+   ; [(binopS? expr) (binop (binopS-f expr) (desugar (binopS-l expr)) (desugar (binopS-r expr)))]
+    ;[(funS? expr) (fun (funS-params expr) (desugar (funS-body expr)))]
+    ;[(appS? expr) (app (desugar (appS-fun expr)) (map (lambda (x)
+     ;                                                   (desugar x))
+      ;                                                appS-args))]
+    
+    ;))
+
 
 (define (desugar expr)
+  ;Funciones auxiliares: getName-Val nos ayudan a poder trabajar con el with*S
+  (define (getName lst)
   (cond
-    [(numS? expr) (num (numS-n expr))]
-    [(idS? expr) (id (idS-name expr))]
-    [(binopS? expr) (binop (binopS-f expr) (desugar (binopS-l expr)) (desugar (binopS-r expr)))]
-    [(funS? expr) (fun (funS-params expr) (desugar (funS-body expr)))]
-    [(appS? expr) (app (desugar (appS-fun expr)) (map (lambda (x)
-                                                        (desugar x))
-                                                      appS-args))]))
+    [(empty? lst) empty]
+    [else  (type-case Binding (car lst)
+        [bind (name val) (cons name (getName (cdr lst)))])]))
 
- ;[withS (bindings body) (app (fun (map (lambda (x) (bind-name x)) bindings)
-         ;                         (desugar body))
-           ;                  (map (lambda (x) (desugar (bind-val x))) bindings))] 
+  (define (getVal lst)
+    (cond
+      [(empty? lst) empty]
+      [else (type-case Binding (car lst)
+          [bind (name val) (cons (desugar val) (getVal (cdr lst)))])]))
+  
+  (type-case FAES expr
+    [numS (n) (num n)]
+    [idS (x) (id x)]
+    [binopS (f l r) (binop f (desugar l) (desugar r))]
+    [withS (bindings body) (app (fun (map (lambda (bind) 
+                                            (bind-name bind)) bindings)
+                                     (desugar body))
+                                (map (lambda (bind)
+                                       (desugar (bind-val bind))) bindings))]
+    [funS (params body) (fun params (desugar body))]
+    [appS (fun args) (app (desugar fun) (map (lambda (arg) (desugar arg)) args))]
+    [with*S (bindings body) (app (fun (getName bindings) (desugar body)) (getVal bindings))]))
 
+
+
+(test (desugar  (numS 3)) (num 3))
+(test (desugar (idS 'x)) (id 'x))
 (test (desugar (parse '{+ 3 4})) (binop + (num 3) (num 4)))
 (test (desugar (parse '{+ {- 3 4} 7})) (binop + (binop - (num 3) (num 4)) (num 7)))
-(test (desugar (parse '{with {{x {+ 5 5}}} x})) (app (fun '(x) (id 'x)) (list (binop + (num 5) (num 5))) ))
+(test (desugar (parse '{with {{x (+ 5 5)}} x})) (app (fun '(x) (id 'x)) (list (binop + (num 5) (num 5))) ))
 
 (define (cparse sexp)
   (desugar (parse sexp)))
