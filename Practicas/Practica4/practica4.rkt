@@ -3,7 +3,6 @@
 
 (require "practica4-base.rkt")
 
-;(print-only-errors true)
 
 ;(define (desugar expr)
  ; (cond
@@ -38,9 +37,9 @@
     [binopS (f l r) (binop f (desugar l) (desugar r))]
     [withS (bindings body) (app (fun (map (lambda (bind) 
                                             (bind-name bind)) bindings)
-                                     (desugar body))
+                                            (desugar body))
                                 (map (lambda (bind)
-                                       (desugar (bind-val bind))) bindings))]
+                                            (desugar (bind-val bind))) bindings))]
     [funS (params body) (fun params (desugar body))]
     [appS (fun args) (app (desugar fun) (map (lambda (arg) (desugar arg)) args))]
     [with*S (bindings body) (app (fun (getName bindings) (desugar body)) (getVal bindings))]))
@@ -52,6 +51,7 @@
 (test (desugar (parse '{+ 3 4})) (binop + (num 3) (num 4)))
 (test (desugar (parse '{+ {- 3 4} 7})) (binop + (binop - (num 3) (num 4)) (num 7)))
 (test (desugar (parse '{with {{x (+ 5 5)}} x})) (app (fun '(x) (id 'x)) (list (binop + (num 5) (num 5))) ))
+(test/exn (rinterp (cparse '{{fun {x y} y} 3 {+ 2 x}})) "x symbol is not in the env")
 
 (define (cparse sexp)
   (desugar (parse sexp)))
@@ -59,7 +59,7 @@
 (define (interp expr env)
  (type-case FAE expr
    [num (n) (numV n)]
-   [id (x) (error "id not implemented")]
+   [id (x) (lookup x env)]
    [fun (params f) (closureV params f env)]
    [app (f x) (error "app not implemented")]
    [binop (op x y) (numV (op (numV-n (interp x env)) (numV-n (interp y env))))]))
@@ -67,6 +67,13 @@
 
 (define (rinterp expr)
   (interp expr (mtSub)))
+
+;Funcion auxiliar: dado un nombre de variable y el ambiente, buscamos la existencia del primero en el segundo. Nos auxiliamos de la definicion de Env.
+(define (lookup name env)
+  (type-case Env env
+   [mtSub () (error 'lookup "Variable libre" (symbol->string name))]
+   [aSub (nombre valor ambiente)(cond [(symbol=? nombre name) valor]
+                                      [else (lookup name ambiente)])]))
 
 (test (rinterp (cparse '3)) (numV 3))
 (test (rinterp (cparse '{+ 3 4})) (numV 7))
