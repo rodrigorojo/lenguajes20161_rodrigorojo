@@ -1,4 +1,5 @@
 #lang plai
+(print-only-errors true)
 
 (require "practica4-base.rkt")
 
@@ -56,8 +57,13 @@
   (desugar (parse sexp)))
 
 (define (interp expr env)
-  ;; Implementar interp
-  (error 'interp "Not implemented"))
+ (type-case FAE expr
+   [num (n) (numV n)]
+   [id (x) (error "id not implemented")]
+   [fun (params f) (closureV params f env)]
+   [app (f x) (error "app not implemented")]
+   [binop (op x y) (numV (op (numV-n (interp x env)) (numV-n (interp y env))))]))
+
 
 (define (rinterp expr)
   (interp expr (mtSub)))
