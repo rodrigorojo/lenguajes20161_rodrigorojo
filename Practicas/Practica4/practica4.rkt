@@ -4,19 +4,6 @@
 (require "practica4-base.rkt")
 
 
-;(define (desugar expr)
- ; (cond
- ;   [(numS? expr) (num (numS-n expr))]
-  ;  [(idS? expr) (id (idS-name expr))]
-   ; [(binopS? expr) (binop (binopS-f expr) (desugar (binopS-l expr)) (desugar (binopS-r expr)))]
-    ;[(funS? expr) (fun (funS-params expr) (desugar (funS-body expr)))]
-    ;[(appS? expr) (app (desugar (appS-fun expr)) (map (lambda (x)
-     ;                                                   (desugar x))
-      ;                                                appS-args))]
-    
-    ;))
-
-
 (define (desugar expr)
   ;Funciones auxiliares: getName-Val nos ayudan a poder trabajar con el with*S
   (define (getName lst)
@@ -68,7 +55,21 @@
 (define (rinterp expr)
   (interp expr (mtSub)))
 
-;Funcion auxiliar: dado un nombre de variable y el ambiente, buscamos la existencia del primero en el segundo. Nos auxiliamos de la definicion de Env.
+;Funcion auxiliar subst.
+(define (subst expr sub-id val)
+  (type-case FAE expr
+    [num (n) expr]
+    [binop (o l r) (o (subst l sub-id val)
+                    (subst r sub-id val))]
+    [id (v) (if (symbol=? v sub-id) val expr)]
+    [fun (p b) (if (symbol=? p sub-id)
+                   expr
+                   (fun p (subst b sub-id val)))]
+    [app (f e) (app (subst f sub-id val)
+                    (subst e sub-id val))]))
+
+;Funcion auxiliar: dado un nombre de variable y el ambiente, buscamos la existencia del primero en el segundo.
+;Nos auxiliamos de la definicion de Env.
 (define (lookup name env)
   (type-case Env env
    [mtSub () (error 'lookup "Variable libre" (symbol->string name))]
