@@ -1,5 +1,5 @@
 #lang plai
-(print-only-errors true)
+;(print-only-errors true)
 
 (require "practica4-base.rkt")
 
@@ -48,7 +48,11 @@
    [num (n) (numV n)]
    [id (x) (lookup x env)]
    [fun (params f) (closureV params f env)]
-   [app (f x) (error "app not implemented")]
+   [app (f a)
+        (local ([define v (interp f env)])
+          (map (lambda (x)
+                 (interp x env))
+               a))]            
    [binop (op x y) (numV (op (numV-n (interp x env)) (numV-n (interp y env))))]))
 
 
