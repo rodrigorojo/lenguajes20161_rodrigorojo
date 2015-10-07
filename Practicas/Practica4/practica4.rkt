@@ -29,7 +29,14 @@
                                             (desugar (bind-val bind))) bindings))]
     [funS (params body) (fun params (desugar body))]
     [appS (fun args) (app (desugar fun) (map (lambda (arg) (desugar arg)) args))]
-    [with*S (bindings body) (app (fun (getName bindings) (desugar body)) (getVal bindings))]))
+    [with*S (bindings body) (matryoshka bindings body)]))
+
+(define (matryoshka bindings body)
+  (cond
+    [(empty? bindings) (desugar body)]
+    [else (app (fun (list (bind-name (car bindings)))
+                    (matryoshka (cdr bindings) body))
+               (list (desugar (bind-val (car bindings)))))]))
 
 
 
