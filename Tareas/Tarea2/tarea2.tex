@@ -23,6 +23,7 @@ que gustes, pero debes mantener el programa relativamente corto:
 \textbf{penalizaremos cualquier programa que consideremos excesivamente
   largo o confuso } (Hint: es posible resolver este problema con un programa
 de unas cuantas docenas de lineas).
+\\
 
 \textbf{Respuesta: }
 Java pertenece al regímen \textbf{glotón} Analizando el código al realizar la ejecucion el resultado es la excepcion division entre cero.
@@ -68,6 +69,21 @@ el comportamiento de Haskell.
 Si no puedes encontrar un programa como el que se pide, defiende tus razones
 de por que no puede existir, luego considera el mismo lenguaje con cons, first
 y rest añadidos.
+\\
+
+\textbf{Respuesta: }
+En el archivo ej3.rkt usa interprete original:
+\begin{verbatim}
+ > (rinterp (cparse '{{fun {x} x}1}))
+ (exprV (num 1) (mtSub))
+\end{verbatim}
+El archivo ej3doug.rkt usa el interprete de doug
+\begin{verbatim}
+ > (rinterp (cparse '{{fun {x} x}1}))
+(numV 1)
+\end{verbatim}
+Evaluan la misma expresion pero los resultados son diferentes
+
 
 \section*{Problema IV}
 Ningún lenguaje perezoso en la historia ha tenido operaciones de estado (tales
