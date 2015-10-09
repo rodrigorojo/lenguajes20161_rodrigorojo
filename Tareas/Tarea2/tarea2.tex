@@ -21,15 +21,15 @@ pregunta. El mismo programa, ejecutado en cada uno de los dos regímenes, debe
 producir resultados distintos. Puedes usar todas las características de Java
 que gustes, pero debes mantener el programa relativamente corto:
 \textbf{penalizaremos cualquier programa que consideremos excesivamente
-  largo o confuso} (Hint: es posible resolver este problema con un programa
+  largo o confuso } (Hint: es posible resolver este problema con un programa
 de unas cuantas docenas de lineas).
 
-Debes anexar tanto el código fuente de tu programa (en un archivo aparte al PDF de
-la tarea) así como una respuesta a la pregunta de si Java es glotón o perezoso,
-y una explicación de porque su programa determina esto. Es decir, deben proveer una
-respuesta breve e inambigua (p.ej. "Java es perezoso'') seguida de una descripción
-del resultado que obtendrías bajo cada régimen, junto con una breve explicación
-de por que ese régimen generaría tal resultado.
+\textbf{Respuesta: }
+Java pertenece al regímen \textbf{glotón} Analizando el código al realizar la ejecucion el resultado es la excepcion division entre cero.
+A la hora de ejecutar el codigo en su equivalente version de Haskell tenemos que devuelve 5.0
+Esto se debe a la forma en como esta evaluando, en el llamado a la funcion \textbf{comp} donde el parametro es 5/0 el resultado es 5, ya que se espera hasta el ultimo momento
+para evaluar la expresion.
+
 
 \section*{Problema III}
 En nuestro intérprete perezoso, identificamos 3 puntos en el lenguaje donde
