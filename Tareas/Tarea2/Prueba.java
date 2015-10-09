@@ -1,11 +1,6 @@
 public class Prueba{
 
-public static double evGlotona(){
-		int a =3;
-		int b = 4;
-	double c = Math.sqrt(a + b);
-	return c;
-}	
+
 
 public static int f( int a ){
     return 5;
