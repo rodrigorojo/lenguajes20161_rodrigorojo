@@ -15,6 +15,19 @@ con expresiones aritméticas, funciones y aplicaciones de funciones.
 ¿Es FAE un lenguaje Turing-Completo?. Debes proveer una respuesta breve e inambigua, seguida de una justificación más extensa de tu respuesta.
 Hint: Investiguen sobre el combinador Y
 
+\textbf{Respuesta: }
+Un lenguaje de paradigma funcional necesita tener condicionales y recursion para que sea un lenguaje turing completo.
+Con FAE podemos hacer condicionales haciendo un if0 y con una funcion que verifique si es cero para usarla en el iterprete,
+y para la recursión, pues el convinador Y es una función de alto orden que toma como paramero una funcion que no es 
+recursiva y devuelve una función que lo es como estamos trabajando en racket este tiene funciones anonimas entonces puedes hacer por ejemplo:
+(define factorial
+    (lambda (f)
+      (lambda (n)
+        (if (= n 0)
+            1
+            (* n (f (- n 1)))))))
+que no usas factorial dentro de factorial pero hace la recursion con la funcion anonima entonces como el lenguaje anfitrion de FAE es racket podemos implementar funciones de FAE de esta manera
+Basicamente es Extender la gramatica FAE a una RCFAE (recursion-condicionales-expresiones aritméticas) como lo vimos en clase.
 \section*{Problema II}
 ¿Java es glotón o perezoso? Escribe un programa para determinar la respuesta a esta
 pregunta. El mismo programa, ejecutado en cada uno de los dos regímenes, debe
