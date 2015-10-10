@@ -100,4 +100,8 @@ es el problema que ilustra la ejecución de dicho programa. Por favor usa la
 noción original (sin cache) de perezosos sin cambio alguno. Si presentas un
 ejemplo lo suficientemente ilustrativo (el cual no necesita ser muy largo), tu
 explicación sera muy pequeña.
+\\
+
+\textbf{Respuesta: }
+Para responder este ejercicio usamos una función en Haskell (primos(n)), porque Haskell usa evaluación perezosa, esta funcion nos regresa una lista de primos hasta n, para hacer esto usamos una lista infinita con elementos que cumplen una condicion (ser primo), gracias a la evaluación perezosa podemos definirlo con una lista infinita y evaluar hasta n y tambien no hace una asignacion de una lista infinita a una variable. En comparacion java, que usa evaluación glotona, no podriamos hacer una lista infinita porque tendria que hacer asignacion a una variable de la lista infinita y se acabaria la memoria.
 \end{document}
