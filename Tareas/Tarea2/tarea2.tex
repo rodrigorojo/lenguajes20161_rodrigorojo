@@ -82,7 +82,11 @@ El archivo ej3doug.rkt usa el interprete de doug
  > (rinterp (cparse '{{fun {x} x}1}))
 (numV 1)
 \end{verbatim}
-Evaluan la misma expresion pero los resultados son diferentes
+Evaluan la misma expresion pero los resultados son diferentes, esto pasa porque cuando 
+evalua cuando llega la parte de hacer el lookup, el interprete original hace lookup y
+ya devuelve lo que le de y el de doug con lo que de lookup hace strict y lo que va a hacer
+strict es seguir haciendo strict hasta que obtenga algo que no es exprV y en este caso
+en algun momento strict va a dar (numV 1) y eso es lo que va a devolver strict. 
 
 
 \section*{Problema IV}
