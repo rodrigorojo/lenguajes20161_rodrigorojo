@@ -1,5 +1,5 @@
 #lang plai
-;(print-only-errors true)
+(print-only-errors true)
 
 (require "practica4-base.rkt")
 
@@ -51,33 +51,24 @@
   (desugar (parse sexp)))
 
 (define (interp expr env)
+  ;auxiliar para sacar el ambiente para app
+  (define (aux params args env)
+  (cond
+    [(empty? params) env]
+    [else (aux (cdr params) (cdr args) (aSub (car params) (interp (car args) env) env))]))
+  ;este es interp
  (type-case FAE expr
    [num (n) (numV n)]
    [id (x) (lookup x env)]
    [fun (params f) (closureV params f env)]
-   [app (f a)
-        (local ([define v (interp f env)])
-          (map (lambda (x)
-                 (interp x env))
-               a))]            
+   [app (fun-expr arg-expr) 
+         (local ([define fun-val (interp fun-expr env)])
+           (interp (closureV-body fun-val)
+                   (aux (closureV-param fun-val) arg-expr (closureV-env fun-val))))]
    [binop (op x y) (numV (op (numV-n (interp x env)) (numV-n (interp y env))))]))
-
 
 (define (rinterp expr)
   (interp expr (mtSub)))
-
-;Funcion auxiliar subst.
-(define (subst expr sub-id val)
-  (type-case FAE expr
-    [num (n) expr]
-    [binop (o l r) (o (subst l sub-id val)
-                    (subst r sub-id val))]
-    [id (v) (if (symbol=? v sub-id) val expr)]
-    [fun (p b) (if (symbol=? p sub-id)
-                   expr
-                   (fun p (subst b sub-id val)))]
-    [app (f e) (app (subst f sub-id val)
-                    (subst e sub-id val))]))
 
 ;Funcion auxiliar: dado un nombre de variable y el ambiente, buscamos la existencia del primero en el segundo.
 ;Nos auxiliamos de la definicion de Env.
