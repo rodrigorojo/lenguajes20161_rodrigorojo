@@ -5,19 +5,6 @@
 
 
 (define (desugar expr)
-  ;Funciones auxiliares: getName-Val nos ayudan a poder trabajar con el with*S
-  (define (getName lst)
-  (cond
-    [(empty? lst) empty]
-    [else  (type-case Binding (car lst)
-        [bind (name val) (cons name (getName (cdr lst)))])]))
-
-  (define (getVal lst)
-    (cond
-      [(empty? lst) empty]
-      [else (type-case Binding (car lst)
-          [bind (name val) (cons (desugar val) (getVal (cdr lst)))])]))
-  
   (type-case FAES expr
     [numS (n) (num n)]
     [idS (x) (id x)]
@@ -39,7 +26,6 @@
                (list (desugar (bind-val (car bindings)))))]))
 
 
-
 (test (desugar  (numS 3)) (num 3))
 (test (desugar (idS 'x)) (id 'x))
 (test (desugar (parse '{+ 3 4})) (binop + (num 3) (num 4)))
@@ -54,8 +40,23 @@
   ;auxiliar para sacar el ambiente para app
   (define (aux params args env)
   (cond
-    [(empty? params) env]
+    [(or (empty? params) (empty? args)) env]
     [else (aux (cdr params) (cdr args) (aSub (car params) (interp (car args) env) env))]))
+  ;auxiliar checa si un argumento esta en el ambiente
+  (define (check arg env)
+  (cond
+    [(binop? arg) (and (check (binop-l arg) env) (check (binop-r arg) env))]
+    [(id? arg) (type-case Env env
+                  [mtSub () #f]
+                  [aSub (name value e)
+                        (if (symbol=? name (id-name arg))
+                            #t (check arg e))])]
+    [else #t]))
+  ;auxiliar checa si una lista argumentos estan en el ambiente
+  (define (checkAll args env)
+  (cond
+    [(empty? args) #t]
+    [else (and (check (car args) env) (checkAll (cdr args) env))]))
   ;este es interp
  (type-case FAE expr
    [num (n) (numV n)]
@@ -63,13 +64,15 @@
    [fun (params f) (closureV params f env)]
    [app (fun-expr arg-expr) 
          (local ([define fun-val (interp fun-expr env)])
-           (interp (closureV-body fun-val)
-                   (aux (closureV-param fun-val) arg-expr (closureV-env fun-val))))]
+           (if (checkAll arg-expr env)
+               (interp (closureV-body fun-val)
+                       (aux (closureV-param fun-val) arg-expr (closureV-env fun-val)))
+               (error "x symbol is not in the env")))]
    [binop (op x y) (numV (op (numV-n (interp x env)) (numV-n (interp y env))))]))
 
 (define (rinterp expr)
   (interp expr (mtSub)))
-
+   
 ;Funcion auxiliar: dado un nombre de variable y el ambiente, buscamos la existencia del primero en el segundo.
 ;Nos auxiliamos de la definicion de Env.
 (define (lookup name env)
