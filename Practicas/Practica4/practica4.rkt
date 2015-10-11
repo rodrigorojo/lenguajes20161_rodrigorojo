@@ -31,7 +31,6 @@
 (test (desugar (parse '{+ 3 4})) (binop + (num 3) (num 4)))
 (test (desugar (parse '{+ {- 3 4} 7})) (binop + (binop - (num 3) (num 4)) (num 7)))
 (test (desugar (parse '{with {{x (+ 5 5)}} x})) (app (fun '(x) (id 'x)) (list (binop + (num 5) (num 5))) ))
-(test/exn (rinterp (cparse '{{fun {x y} y} 3 {+ 2 x}})) "x symbol is not in the env")
 
 (define (cparse sexp)
   (desugar (parse sexp)))
@@ -45,13 +44,16 @@
   ;auxiliar checa si un argumento esta en el ambiente
   (define (check arg env)
   (cond
+    [(num? arg) #t]
     [(binop? arg) (and (check (binop-l arg) env) (check (binop-r arg) env))]
     [(id? arg) (type-case Env env
                   [mtSub () #f]
                   [aSub (name value e)
                         (if (symbol=? name (id-name arg))
                             #t (check arg e))])]
-    [else #t]))
+    [(fun? arg) #t]
+    [(app? arg) #t]
+    [else (#f)]))
   ;auxiliar checa si una lista argumentos estan en el ambiente
   (define (checkAll args env)
   (cond
@@ -103,3 +105,4 @@
 (test (rinterp (cparse '{with* {{x 3} {y {+ 2 x}} {x 10} {z {+ x y}}} z})) (numV 15))
 (test/exn (rinterp (cparse '{with {{x 10} {x 20}} x})) "El id x está repetido")
 (test (rinterp (cparse '{with* {{x 10} {x 20}} x})) (numV 20))
+(test/exn (rinterp (cparse '{{fun {x y} y} 3 {+ 2 x}})) "x symbol is not in the env")
