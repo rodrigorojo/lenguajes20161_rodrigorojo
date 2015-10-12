@@ -22,3 +22,22 @@ asociadas a los trackpoints están igual mal porque siempre usan la zona resting
 tengan mas cuidado en como definen sus pruebas.
 
 **Calificación: 9.5**
+
+## Tareas
+
+### Tarea 2
+
+Problema 1: Tenian que indicar que usando que FAE es equivalente a calculo lambda se pueden definir los conceptos de verdadero, falso y condicional
+por medio de funciones, al final se hacen bolas no importa que el lenguaje
+anfitrión sea racket o otro lenguaje por medio del combinador Y si se tiene
+funciones de primera clase se puede definir el combinador Y y entonces obtener
+funciones recursivas.
+
+Problema 2: Muy bien, ejemplo claro y simple.
+
+Problema 3: Muy bien, solo quisiera que pensaran en el caso de que lugar de regresar un numero hubiera sido el identificador de una lista infinita.
+
+Problema 4: Todo lo que dijeron esta bien pero la pregunta era porque los
+lenguajes perezosos no hay operaciones de estado lo cual no contestaron ni remotamente.
+
+**Calificación: 7**
