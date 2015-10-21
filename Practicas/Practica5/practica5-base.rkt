@@ -18,28 +18,46 @@
          (l FAES?)
          (r FAES?)])
 
-(define-type FAE
-  [num (n number?)]
+;(define-type FAE
+ ; [num (n number?)]
+  ;[id (name symbol?)]
+ ; [fun (params (listof symbol?))
+  ;     (body FAE?)]
+  ;[app (fun FAE?)
+   ;    (args (listof FAE?))]
+  ;[binop (f procedure?)
+   ;      (l FAE?)
+    ;     (r FAE?)])
+
+(define-type RCFAEL
   [id (name symbol?)]
-  [fun (params (listof symbol?))
-       (body FAE?)]
-  [app (fun FAE?)
-       (args (listof FAE?))]
-  [binop (f procedure?)
-         (l FAE?)
-         (r FAE?)])
+  [num (n number?)]
+  [bool (b Bool?)]
+  [If (Cond RCFAEL?) (Then RCFAEL?) (Else RCFAEL?)]
+  [Equal? (x RCFAEL?) (y RCFAEL?)]
+  [op (o RCFAEL?)]
+  [binop (l RCFAEL?) (r RCFAEL?)]
+)
 
-(define-type FAE-Value
-  [numV (n number?)]
-  [closureV (param (listof symbol?))
-            (body FAE?)
-            (env Env?)])
+(define-type Bool
+  [True]
+  [False])
 
-(define-type Env
-  [mtSub]
-  [aSub (name symbol?) 
-        (value FAE-Value?) 
-        (env Env?)])
+(define-type MList
+  [Empty]
+  [Cons (x RCFAEL?) (y RCFAEL?)])
+
+;(define-type FAE-Value
+ ; [numV (n number?)]
+  ;[closureV (param (listof symbol?))
+   ;         (body FAE?)
+    ;        (env Env?)])
+
+;(define-type Env
+ ; [mtSub]
+ ; [aSub (name symbol?) 
+  ;      (value FAE-Value?) 
+   ;     (env Env?)])
 
 ; FUNCIONES AUXILIARES
 
