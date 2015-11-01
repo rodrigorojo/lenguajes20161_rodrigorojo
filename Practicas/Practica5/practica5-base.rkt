@@ -83,7 +83,9 @@
     [(<) <]
     [(>) >]
     [(<=) <=]
-    [(>=) >=]))
+    [(>=) >=]
+   ; [(or) or]
+    ))
 
   
 ;; buscaRepetido: listof(X) (X X -> boolean) -> X
@@ -116,8 +118,9 @@
     [(boolean? sexp) (boolS sexp)]
     [(list? sexp)
      (case (car sexp)
+       [(if) (IfS (parse (cadr sexp)) (parse(caddr sexp))(parse(cadddr sexp)))]
        [(with) (withS (parse-bindings (cadr sexp) #f) (parse (caddr sexp)))]
        [(with*) (with*S (parse-bindings (cadr sexp) #t) (parse (caddr sexp)))]
        [(fun) (funS (cadr sexp) (parse (caddr sexp)))]
-       [(+ - / *) (binopS (elige-binop (car sexp)) (parse (cadr sexp)) (parse (caddr sexp)))]
+       [(+ - / * > < <= >=) (binopS (elige-binop (car sexp)) (parse (cadr sexp)) (parse (caddr sexp)))]
        [else (appS (parse (car sexp)) (map parse (cdr sexp)))])]))
