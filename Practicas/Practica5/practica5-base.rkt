@@ -1,63 +1,64 @@
 #lang plai
 
 (define-type Binding
-  [bind (name symbol?) (val FAES?)])
+  [bind (name symbol?) (val RCFAELS?)])
 
-(define-type FAES
-  [numS (n number?)]
-  [withS (bindings (listof bind?))
-         (body FAES?)]
-  [with*S (bindings (listof bind?))
-          (body FAES?)]
+(define-type RCFAELS
   [idS (name symbol?)]
+  [numS (n number?)]
+  [boolS (b boolean?)]
+  [mlistS (l MList?)]
+  [IfS (Cond RCFAELS?) (Then RCFAELS?) (Else RCFAELS?)]
+  [Equal?S (x RCFAELS?) (y RCFAELS?)]
+  [opS (f procedure?) (o RCFAELS?)]
+  [binopS (f procedure?) (l RCFAELS?) (r RCFAELS?)]
+  [withS (bindings (listof bind?))
+         (body RCFAELS?)]
+  [with*S (bindings (listof bind?))
+          (body RCFAELS?)]
   [funS (params (listof symbol?))
-        (body FAES?)]
-  [appS (fun FAES?)
-        (args (listof FAES?))]
-  [binopS (f procedure?)
-         (l FAES?)
-         (r FAES?)])
+        (body RCFAELS?)]
+  [appS (fun RCFAELS?)
+        (args (listof RCFAELS?))])
 
-;(define-type FAE
+;(define-type RCFAEL
  ; [num (n number?)]
   ;[id (name symbol?)]
  ; [fun (params (listof symbol?))
-  ;     (body FAE?)]
-  ;[app (fun FAE?)
-   ;    (args (listof FAE?))]
+  ;     (body RCFAEL?)]
+  ;[app (fun RCFAEL?)
+   ;    (args (listof RCFAEL?))]
   ;[binop (f procedure?)
-   ;      (l FAE?)
-    ;     (r FAE?)])
+   ;      (l RCFAEL?)
+    ;     (r RCFAEL?)])
 
 (define-type RCFAEL
   [id (name symbol?)]
   [num (n number?)]
-  [bool (b Bool?)]
+  [bool (b boolean?)]
+  [mlist (l MList?)]
   [If (Cond RCFAEL?) (Then RCFAEL?) (Else RCFAEL?)]
   [Equal? (x RCFAEL?) (y RCFAEL?)]
-  [op (o RCFAEL?)]
-  [binop (l RCFAEL?) (r RCFAEL?)]
+  [op (f procedure?) (o RCFAEL?)]
+  [binop (f procedure?) (l RCFAEL?) (r RCFAEL?)]
 )
-
-(define-type Bool
-  [True]
-  [False])
 
 (define-type MList
   [Empty]
   [Cons (x RCFAEL?) (y RCFAEL?)])
 
-;(define-type FAE-Value
- ; [numV (n number?)]
-  ;[closureV (param (listof symbol?))
-   ;         (body FAE?)
-    ;        (env Env?)])
+(define-type RCFAEL-Value
+  [numV (n number?)]
+  [boolV (b boolean?)]
+  [closureV (param (listof symbol?))
+            (body RCFAEL?)
+            (env Env?)])
 
-;(define-type Env
- ; [mtSub]
- ; [aSub (name symbol?) 
-  ;      (value FAE-Value?) 
-   ;     (env Env?)])
+(define-type Env
+  [mtSub]
+  [aSub (name symbol?) 
+        (value RCFAEL-Value?) 
+        (env Env?)])
 
 ; FUNCIONES AUXILIARES
 
@@ -73,12 +74,17 @@
         (map (lambda (b) (bind (car b) (parse (cadr b)))) lst)
         (error 'parse-bindings (string-append "El id " (symbol->string (car bindRep)) " está repetido")))))
 
-(define (elige s)
+(define (elige-binop s)
   (case s
     [(+) +]
     [(-) -]
     [(*) *]
-    [(/) /]))
+    [(/) /]
+    [(<) <]
+    [(>) >]
+    [(<=) <=]
+    [(>=) >=]))
+
   
 ;; buscaRepetido: listof(X) (X X -> boolean) -> X
 ;; Dada una lista, busca repeticiones dentro de la misma
@@ -102,15 +108,16 @@
     [else (member? x (cdr l) comparador)]))
 
 ;; A::= <number>|<symbol>|listof(<A>)
-;; parse: A -> FAES
+;; parse: A -> RCFAELS
 (define (parse sexp)
   (cond
     [(symbol? sexp) (idS sexp)]
     [(number? sexp) (numS sexp)]
+    [(boolean? sexp) (boolS sexp)]
     [(list? sexp)
      (case (car sexp)
        [(with) (withS (parse-bindings (cadr sexp) #f) (parse (caddr sexp)))]
        [(with*) (with*S (parse-bindings (cadr sexp) #t) (parse (caddr sexp)))]
        [(fun) (funS (cadr sexp) (parse (caddr sexp)))]
-       [(+ - / *) (binopS (elige (car sexp)) (parse (cadr sexp)) (parse (caddr sexp)))]
+       [(+ - / *) (binopS (elige-binop (car sexp)) (parse (cadr sexp)) (parse (caddr sexp)))]
        [else (appS (parse (car sexp)) (map parse (cdr sexp)))])]))
