@@ -25,6 +25,14 @@ tengan mas cuidado en como definen sus pruebas.
 
 ## Tareas
 
+### Tarea 1
+Problema I: Es O(1) cuando no hay colisiones, cuidado con eso.
+Problema II: Tu ejemplo es correcto pero el valor en alcance dinamico 
+seria 3 no 5.
+Problem III: Te falto sustituir add5 por su coordenada lexica.
+
+**Calificación: 9**
+
 ### Tarea 2
 
 Problema 1: Tenian que indicar que usando que FAE es equivalente a calculo lambda se pueden definir los conceptos de verdadero, falso y condicional
