@@ -23,6 +23,12 @@ tengan mas cuidado en como definen sus pruebas.
 
 **Calificación: 9.5**
 
+### Practica 4
+
+Su implementación tiene un bug en el with multi-parametrico
+
+**Calificación: 9.5**
+
 ## Tareas
 
 ### Tarea 1
