@@ -119,6 +119,7 @@
     [(list? sexp)
      (case (car sexp)
        [(if) (IfS (parse (cadr sexp)) (parse(caddr sexp))(parse(cadddr sexp)))]
+       [(equal?) (Equal?S (parse (cadr sexp)) (parse (caddr sexp)))]
        [(with) (withS (parse-bindings (cadr sexp) #f) (parse (caddr sexp)))]
        [(with*) (with*S (parse-bindings (cadr sexp) #t) (parse (caddr sexp)))]
        [(fun) (funS (cadr sexp) (parse (caddr sexp)))]
