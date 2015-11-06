@@ -84,8 +84,22 @@
     [(>) >]
     [(<=) <=]
     [(>=) >=]
-   ; [(or) or]
+    [(and) 'and]
+    [(or) 'or]
     ))
+
+(define (elige-op x)
+  (case x
+    [(inc) 'inc]
+    [(dec) 'dec]
+    [(zero?) 'zero?]
+    [(num?) 'num?]
+    [(neg) 'neg]
+    [(bool) 'bool]
+    [(first) 'first]
+    [(rest) 'rest]
+    [(empty) 'empty]
+    [(list) 'list]))
 
   
 ;; buscaRepetido: listof(X) (X X -> boolean) -> X
@@ -123,5 +137,6 @@
        [(with) (withS (parse-bindings (cadr sexp) #f) (parse (caddr sexp)))]
        [(with*) (with*S (parse-bindings (cadr sexp) #t) (parse (caddr sexp)))]
        [(fun) (funS (cadr sexp) (parse (caddr sexp)))]
-       [(+ - / * > < <= >=) (binopS (elige-binop (car sexp)) (parse (cadr sexp)) (parse (caddr sexp)))]
+       [(+ - / * > < <= >= and or) (binopS (elige-binop (car sexp)) (parse (cadr sexp)) (parse (caddr sexp)))]
+       [(inc dec zero? num? neg bool? first rest empty? list?) (opS (elige-op (cadr sexp)) (parse (caddr sexp)))]
        [else (appS (parse (car sexp)) (map parse (cdr sexp)))])]))
