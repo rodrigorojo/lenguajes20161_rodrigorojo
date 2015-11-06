@@ -42,14 +42,15 @@
   [op (f procedure?) (o RCFAEL?)]
   [binop (f procedure?) (l RCFAEL?) (r RCFAEL?)]
 )
-
+(define (any? x) #t)
 (define-type MList
   [Empty]
-  [Cons (x RCFAEL?) (y RCFAEL?)])
+  [Cons (n any?) (l MList?)])
 
 (define-type RCFAEL-Value
   [numV (n number?)]
   [boolV (b boolean?)]
+  [mlistV (ml MList?)]
   [closureV (param (listof symbol?))
             (body RCFAEL?)
             (env Env?)])
@@ -84,22 +85,22 @@
     [(>) >]
     [(<=) <=]
     [(>=) >=]
-    [(and) 'and]
-    [(or) 'or]
+    [(and) (lambda(and) and)]
+    [(or) (lambda(or) or)]
     ))
 
 (define (elige-op x)
   (case x
-    [(inc) 'inc]
-    [(dec) 'dec]
-    [(zero?) 'zero?]
-    [(num?) 'num?]
-    [(neg) 'neg]
-    [(bool) 'bool]
-    [(first) 'first]
-    [(rest) 'rest]
-    [(empty) 'empty]
-    [(list) 'list]))
+    [(inc) (lambda(inc) inc)]
+    [(dec) (lambda(dec) dec)]
+    [(zero?) (lambda(zero) zero)]
+    [(num?) (lambda(num?) num?)]
+    [(neg) (lambda (neg) neg)]
+    [(bool) (lambda(bool) bool)]
+    [(first) (lambda(first) first)]
+    [(rest) (lambda(rest) rest)]
+    [(empty) (lambda(empty) empty)]
+    [(list) (lambda(list) list)]))
 
   
 ;; buscaRepetido: listof(X) (X X -> boolean) -> X
@@ -133,6 +134,7 @@
     [(list? sexp)
      (case (car sexp)
        [(if) (IfS (parse (cadr sexp)) (parse(caddr sexp))(parse(cadddr sexp)))]
+       [(list) (mlistS (parse (cadr sexp)))]
        [(equal?) (Equal?S (parse (cadr sexp)) (parse (caddr sexp)))]
        [(with) (withS (parse-bindings (cadr sexp) #f) (parse (caddr sexp)))]
        [(with*) (with*S (parse-bindings (cadr sexp) #t) (parse (caddr sexp)))]
