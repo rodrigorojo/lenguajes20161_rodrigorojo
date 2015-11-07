@@ -24,10 +24,7 @@
 ;(define-type RCFAEL
  ; [num (n number?)]
   ;[id (name symbol?)]
- ; [fun (params (listof symbol?))
-  ;     (body RCFAEL?)]
-  ;[app (fun RCFAEL?)
-   ;    (args (listof RCFAEL?))]
+ ; 
   ;[binop (f procedure?)
    ;      (l RCFAEL?)
     ;     (r RCFAEL?)])
@@ -41,7 +38,12 @@
   [Equal? (x RCFAEL?) (y RCFAEL?)]
   [op (f procedure?) (o RCFAEL?)]
   [binop (f procedure?) (l RCFAEL?) (r RCFAEL?)]
+  [fun (params (listof symbol?))
+       (body RCFAEL?)]
+  [app (fun RCFAEL?)
+       (args (listof RCFAEL?))]
 )
+
 (define (any? x) #t)
 (define-type MList
   [Empty]

@@ -5,9 +5,14 @@
 
 
 (define (desugar expr)
-  (type-case FAES expr
+  (type-case RCFAELS expr
     [numS (n) (num n)]
     [idS (x) (id x)]
+    [boolS (b) (bool b)]
+    [mlistS (l) (mlist l)]
+    [IfS (c t e) (If (desugar c) (desugar t) (desugar e))]
+    [Equal?S (x y) (Equal? (desugar x) (desugar y))]
+    [opS (f o) (op f (desugar o))]
     [binopS (f l r) (binop f (desugar l) (desugar r))]
     [withS (bindings body) (app (fun (map (lambda (bind) 
                                             (bind-name bind)) bindings)
@@ -60,9 +65,18 @@
     [(empty? args) #t]
     [else (and (check (car args) env) (checkAll (cdr args) env))]))
   ;este es interp
- (type-case FAE expr
+ (type-case RCFAEL expr
    [num (n) (numV n)]
    [id (x) (lookup x env)]
+   [bool (b) (boolV b)]
+   [mlist (l) (mlistV l)]
+   [If (c t e) (if (equal? (interp c) (boolV true))
+                   (interp t) (interp e))]
+   [Equal? (x y) (cond
+                   [(and (num? x) (num? y)) (if (= (num-n x) (num-n y)) (boolV true) (boolV false))]
+                   [(and (bool? x) (bool? y)) (if (equal? (bool-b x) (bool-b y)) (boolV true) (boolV false))]
+                   ;[(and (mlist? x) (mlist? y)) ()
+                   [else (boolV false)])]
    [fun (params f) (closureV params f env)]
    [app (fun-expr arg-expr) 
          (local ([define fun-val (interp fun-expr env)])
@@ -70,6 +84,8 @@
                (interp (closureV-body fun-val)
                        (aux (closureV-param fun-val) arg-expr (closureV-env fun-val)))
                (error "x symbol is not in the env")))]
+   ;este op no es correcto
+   [op (f o) (numV 0)]
    [binop (op x y) (numV (op (numV-n (interp x env)) (numV-n (interp y env))))]))
 
 (define (rinterp expr)
@@ -106,3 +122,8 @@
 (test/exn (rinterp (cparse '{with {{x 10} {x 20}} x})) "El id x está repetido")
 (test (rinterp (cparse '{with* {{x 10} {x 20}} x})) (numV 20))
 (test/exn (rinterp (cparse '{{fun {x y} y} 3 {+ 2 x}})) "x symbol is not in the env")
+
+;nuevas pruebas
+(test (rinterp (cparse true)) (boolV true))
+(test (rinterp (cparse '(equal? 4 5))) (boolV false))
+
