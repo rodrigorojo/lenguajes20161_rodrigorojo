@@ -86,7 +86,9 @@
                (error "x symbol is not in the env")))]
    ;este op no es correcto
    [op (f o) (numV 0)]
-   [binop (op x y) (numV (op (numV-n (interp x env)) (numV-n (interp y env))))]))
+   [binop (op x y) (if (or (equal? op +) (equal? op -) (equal? op *) (equal? op /))
+                       (numV (op (numV-n (interp x env)) (numV-n (interp y env))))
+                       (boolV (op (numV-n (interp x env)) (numV-n (interp y env)))))]))
 
 (define (rinterp expr)
   (interp expr (mtSub)))
@@ -126,4 +128,4 @@
 ;nuevas pruebas
 (test (rinterp (cparse true)) (boolV true))
 (test (rinterp (cparse '(equal? 4 5))) (boolV false))
-
+(test (rinterp (cparse '(< 3 4))) (boolV true))
