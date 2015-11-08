@@ -4,10 +4,11 @@
   [bind (name symbol?) (val RCFAELS?)])
 
 (define-type RCFAELS
+  [MEmptyS]
   [idS (name symbol?)]
   [numS (n number?)]
   [boolS (b boolean?)]
-  [mlistS (l MList?)]
+  [ConsS (h RCFAELS?)(t RCFAELS?)]
   [IfS (Cond RCFAELS?) (Then RCFAELS?) (Else RCFAELS?)]
   [Equal?S (x RCFAELS?) (y RCFAELS?)]
   [opS (f procedure?) (o RCFAELS?)]
@@ -37,10 +38,11 @@
     ;     (r RCFAEL?)])
 
 (define-type RCFAEL
+  [MEmpty]
   [id (name symbol?)]
   [num (n number?)]
   [bool (b boolean?)]
-  [mlist (l MList?)]
+  [Cons (h RCFAEL?)(t RCFAEL?)]
   [If (Cond RCFAEL?) (Then RCFAEL?) (Else RCFAEL?)]
   [Equal? (x RCFAEL?) (y RCFAEL?)]
   [op (f procedure?) (o RCFAEL?)]
@@ -60,7 +62,9 @@
 (define (any? x) #t)
 (define-type MList
   [Empty]
-  [Cons (n any?) (l MList?)])
+  [MCons (n any?) (l MList?)])
+
+
 
 (define-type RCFAEL-Value
   [numV (n number?)]
@@ -139,9 +143,15 @@
     [(comparador (car l) x) #t]
     [else (member? x (cdr l) comparador)]))
 
+
 ;; A::= <number>|<symbol>|listof(<A>)
 ;; parse: A -> RCFAELS
 (define (parse sexp)
+ ;;parseL
+(define (parseL l)
+    [cond
+      [(empty? (cdr l)) (ConsS (parse (car l)) (MEmptyS))]
+      [else (ConsS(parse (car l))(parseL (cdr l)))]])
   (cond
     [(symbol? sexp) (idS sexp)]
     [(number? sexp) (numS sexp)]
@@ -149,7 +159,9 @@
     [(list? sexp)
      (case (car sexp)
        [(if) (IfS (parse (cadr sexp)) (parse(caddr sexp))(parse(cadddr sexp)))]
-       [(list) (mlistS (parse (cadr sexp)))]
+       [(list) (if(empty? (cdr sexp))
+                   (ConsS (MEmptyS) (MEmptyS))
+                   (parseL (cdr sexp)))]
        [(equal?) (Equal?S (parse (cadr sexp)) (parse (caddr sexp)))]
        [(with) (withS (parse-bindings (cadr sexp) #f) (parse (caddr sexp)))]
        [(with*) (with*S (parse-bindings (cadr sexp) #t) (parse (caddr sexp)))]
