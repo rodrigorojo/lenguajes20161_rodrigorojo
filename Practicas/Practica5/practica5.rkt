@@ -6,10 +6,11 @@
 
 (define (desugar expr)
   (type-case RCFAELS expr
+    [MEmptyS () (MEmpty)]
     [numS (n) (num n)]
     [idS (x) (id x)]
     [boolS (b) (bool b)]
-    [mlistS (l) (mlist l)]
+    [ConsS (h t) (Cons (desugar h) (desugar t))]
     [IfS (c t e) (If (desugar c) (desugar t) (desugar e))]
     [Equal?S (x y) (Equal? (desugar x) (desugar y))]
     [opS (f o) (op f (desugar o))]
@@ -66,10 +67,11 @@
     [else (and (check (car args) env) (checkAll (cdr args) env))]))
   ;este es interp
  (type-case RCFAEL expr
+   [MEmpty () (EmptyV)] 
    [num (n) (numV n)]
    [id (x) (lookup x env)]
    [bool (b) (boolV b)]
-   [mlist (l) (mlistV l)]
+   [Cons (h t) (mlistV (interp h env) (interp t env))]
    [If (c t e) (if (equal? (interp c) (boolV true))
                    (interp t) (interp e))]
    [Equal? (x y) (cond
