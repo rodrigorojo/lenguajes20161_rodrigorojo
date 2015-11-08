@@ -19,7 +19,13 @@
   [funS (params (listof symbol?))
         (body RCFAELS?)]
   [appS (fun RCFAELS?)
-        (args (listof RCFAELS?))])
+        (args (listof RCFAELS?))]
+  [newboxS (value-expr RCFAELS?)]
+  [setboxS (box-expr RCFAELS?)
+           (value-epxr RCFAELS?)]
+  [openboxS (box-expr RCFAELS?)]
+  [seqnS (expr1 RCFAELS?)
+         (expr2 RCFAELS?)])
 
 ;(define-type RCFAEL
  ; [num (n number?)]
@@ -42,7 +48,12 @@
        (body RCFAEL?)]
   [app (fun RCFAEL?)
        (args (listof RCFAEL?))]
-)
+  [newbox (value-expr RCFAEL?)]
+  [setbox (box-expr RCFAEL?)
+           (value-epxr RCFAEL?)]
+  [openbox (box-expr RCFAEL?)]
+  [seqn (expr1 RCFAEL?)
+         (expr2 RCFAEL?)])
 
 (define (any? x) #t)
 (define-type MList
