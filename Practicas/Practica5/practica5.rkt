@@ -11,6 +11,7 @@
     [idS (x) (id x)]
     [boolS (b) (bool b)]
     [ConsS (h t) (Cons (desugar h) (desugar t))]
+    [recS (n ne b) (rec n (desugar ne)(desugar b))]
     [IfS (c t e) (If (desugar c) (desugar t) (desugar e))]
     [Equal?S (x y) (Equal? (desugar x) (desugar y))]
     [opS (f o) (op f (desugar o))]
@@ -65,6 +66,17 @@
   (cond
     [(empty? args) #t]
     [else (and (check (car args) env) (checkAll (cdr args) env))]))
+  ;auxiliar para la interp de rec
+  (define (cyclically-bind-and-interp bound-name named-expr env)
+  (local ([define rec-ext-env
+            (lambda (want-name)
+              (cond
+                [(symbol=? want-name bound-name)
+                 (closureV (fun-params named-expr)
+                           (fun-body named-expr)
+                           rec-ext-env)]
+                [else (lookup want-name env)]))])
+    rec-ext-env))
   ;este es interp
  (type-case RCFAEL expr
    [MEmpty () (EmptyV)] 
@@ -72,6 +84,8 @@
    [id (x) (lookup x env)]
    [bool (b) (boolV b)]
    [Cons (h t) (mlistV (interp h env) (interp t env))]
+   [rec (bound-id named-expr bound-body) (interp named-expr env )]
+    
    [If (c t e) (if (equal? (interp c) (boolV true))
                    (interp t) (interp e))]
    [Equal? (x y) (cond
@@ -86,7 +100,7 @@
                (interp (closureV-body fun-val)
                        (aux (closureV-param fun-val) arg-expr (closureV-env fun-val)))
                (error "x symbol is not in the env")))]
-   ;este op no es correcto
+   
    [op (f a) (cond
                  [(numV? a) (let ((r (f (numV-n a))))
                    (if (boolean? r)

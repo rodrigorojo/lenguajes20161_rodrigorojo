@@ -9,6 +9,9 @@
   [numS (n number?)]
   [boolS (b boolean?)]
   [ConsS (h RCFAELS?)(t RCFAELS?)]
+  [recS (name symbol?)
+        (named-expr RCFAELS?)
+        (body RCFAELS?)]
   [IfS (Cond RCFAELS?) (Then RCFAELS?) (Else RCFAELS?)]
   [Equal?S (x RCFAELS?) (y RCFAELS?)]
   [opS (f procedure?) (o RCFAELS?)]
@@ -43,6 +46,9 @@
   [num (n number?)]
   [bool (b boolean?)]
   [Cons (h RCFAEL?)(t RCFAEL?)]
+  [rec (name symbol?)
+        (named-expr RCFAEL?)
+        (body RCFAEL?)]
   [If (Cond RCFAEL?) (Then RCFAEL?) (Else RCFAEL?)]
   [Equal? (x RCFAEL?) (y RCFAEL?)]
   [op (f procedure?) (o RCFAEL?)]
@@ -79,7 +85,8 @@
   [mtSub]
   [aSub (name symbol?) 
         (value RCFAEL-Value?) 
-        (env Env?)])
+        (env Env?)]
+  )
 
 ; FUNCIONES AUXILIARES
 
@@ -163,6 +170,7 @@
        [(list) (if(empty? (cdr sexp))
                    (ConsS (MEmptyS) (MEmptyS))
                    (parseL (cdr sexp)))]
+       [(rec) (recS (caadr sexp) (parse (cadadr sexp)) (parse (caddr sexp)))]
        [(equal?) (Equal?S (parse (cadr sexp)) (parse (caddr sexp)))]
        [(with) (withS (parse-bindings (cadr sexp) #f) (parse (caddr sexp)))]
        [(with*) (with*S (parse-bindings (cadr sexp) #t) (parse (caddr sexp)))]
