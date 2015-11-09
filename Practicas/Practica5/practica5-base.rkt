@@ -168,5 +168,5 @@
        [(with*) (with*S (parse-bindings (cadr sexp) #t) (parse (caddr sexp)))]
        [(fun) (funS (cadr sexp) (parse (caddr sexp)))]
        [(+ - / * > < <= >= and or) (binopS (elige-binop (car sexp)) (parse (cadr sexp)) (parse (caddr sexp)))]
-       [(inc dec zero? num? neg bool? first rest empty? list?) (opS (elige-op (cadr sexp)) (parse (caddr sexp)))]
+       [(inc dec zero? num? neg bool? first rest empty? list?) (opS (elige-op (car sexp)) (parse (cadr sexp)))]
        [else (appS (parse (car sexp)) (map parse (cdr sexp)))])]))
