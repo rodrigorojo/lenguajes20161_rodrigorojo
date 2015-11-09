@@ -67,9 +67,10 @@
 
 
 (define-type RCFAEL-Value
+  [EmptyV]
   [numV (n number?)]
   [boolV (b boolean?)]
-  [mlistV (ml MList?)]
+  [mlistV (h RCFAEL?)(t RCFAEL?)]
   [closureV (param (listof symbol?))
             (body RCFAEL?)
             (env Env?)])
@@ -110,16 +111,16 @@
 
 (define (elige-op x)
   (case x
-    [(inc) (lambda(inc) inc)]
-    [(dec) (lambda(dec) dec)]
-    [(zero?) (lambda(zero) zero)]
-    [(num?) (lambda(num?) num?)]
-    [(neg) (lambda (neg) neg)]
-    [(bool) (lambda(bool) bool)]
-    [(first) (lambda(first) first)]
-    [(rest) (lambda(rest) rest)]
-    [(empty) (lambda(empty) empty)]
-    [(list) (lambda(list) list)]))
+    [(inc) add1]
+    [(dec) sub1]
+    [(zero?) zero?]
+    [(num?) num?]
+    [(neg) not]
+    [(bool?)  boolean?]
+    [(first) first]
+    [(rest) rest]
+    [(empty?) empty?]
+    [(list?) list?]))
 
   
 ;; buscaRepetido: listof(X) (X X -> boolean) -> X

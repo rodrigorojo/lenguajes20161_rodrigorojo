@@ -1,4 +1,4 @@
- #lang plai
+#lang plai
 (print-only-errors true)
 
 (require "practica5-base.rkt")
@@ -87,7 +87,16 @@
                        (aux (closureV-param fun-val) arg-expr (closureV-env fun-val)))
                (error "x symbol is not in the env")))]
    ;este op no es correcto
-   [op (f o) (numV 0)]
+   [op (f a) (cond
+                 [(numV? a) (let ((r (f (numV-n a))))
+                   (if (boolean? r)
+                       (boolV r)
+                       (numV r)))]
+                 [(boolV? a) (let ((r (f (boolV-b a))))
+                   (if (boolean? r)
+                       (boolV r)
+                       (numV r)))])]
+               
    [binop (op x y) (if (or (equal? op +) (equal? op -) (equal? op *) (equal? op /))
                        (numV (op (numV-n (interp x env)) (numV-n (interp y env))))
                        (boolV (op (numV-n (interp x env)) (numV-n (interp y env)))))]))
