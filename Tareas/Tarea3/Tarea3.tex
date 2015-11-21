@@ -1,0 +1,111 @@
+\documentclass{article}
+\usepackage[left=2cm,right=2cm,top=3cm,bottom=3cm,letterpaper]{geometry}
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{listings}% http://ctan.org/pkg/listings
+\lstset{
+  basicstyle=\ttfamily,
+  mathescape
+}
+
+\title{Lenguajes de Programación 2016-1\\Tarea 3}
+\author{Ricardo Garcia Garcia \and  Juan Carlos López López \and Luis Rodrigo Rojo Morales}
+\date{\today\\ Facultad de Ciencias UNAM}
+  
+\begin{document}
+\maketitle
+\section*{Problema I}
+Haga el juicio de tipo para la función fibonacci y el predicado empty?\\
+
+\begin{lstlisting}
+(define fibonacci
+  $\boxed{1}$(lambda (n)
+    $\boxed{2}$(cond
+      [$\boxed{3}$(<= n 2) $\boxed{4}$1]
+      [$\boxed{5}$else $\boxed{6}$(+ $\boxed{7}$(fibonacci $\boxed{8}$(- n 1)) $\boxed{9}$(fibonacci $\boxed{10}$(- n 2)))])))
+\end{lstlisting}
+
+\begin{center}
+ \begin{tabular}{ | l | c | r | }
+  \hline
+  Accion & Stack & Sustitución \\ \hline \hline
+  Inicio & [$\boxed{1}$] = [n] $\rightarrow$ [$\boxed{2}$] 									& Vacio	\\
+	 & [$\boxed{3}$] = boolean		     										&   	\\
+	 & [$<=$] = [n] $\rightarrow$ [2] $\rightarrow$ [$\boxed{3}$] = 
+	 number $\rightarrow$ number $\rightarrow$ boolean									& 	\\ 
+	 & [$\boxed{4}$] = number												&	\\ 
+	 & [else] = [$\boxed{6}$] $\rightarrow$ [$\boxed{5}$]									&	\\
+	 & [+] = [$\boxed{7}$] $\rightarrow$ [$\boxed{9}$] $\rightarrow$ [$\boxed{6}$] = 
+	 number $\rightarrow$ number $\rightarrow$ number									&	\\ 
+	 & [$\boxed{1}$] = [$\boxed{8}$] $\rightarrow$ [$\boxed{7}$]								&	\\
+	 & [-] = [n] $\rightarrow$ [1] $\rightarrow$ [$\boxed{8}$] = [n] $\rightarrow$ [2] $\rightarrow$ [$\boxed{10}$] =
+	   number $\rightarrow$ number $\rightarrow$ number									&	\\
+	 & [$\boxed{1}$] = [$\boxed{10}$] $\rightarrow$ [$\boxed{9}$] 								&	\\ 
+	 & [$\boxed{2}$] = [$\boxed{4}$] = [$\boxed{6}$]									&	\\ \hline
+ \end{tabular}
+
+\end{center}
+
+\section*{Problema II}
+Considera el siguiente programa:
+
+\begin{verbatim}
+(+ 1 (first (cons true empty)))
+\end{verbatim}
+
+Este programa tiene un error de tipos.
+
+Genera restricciones para este programa. Aísla el conjunto mas pequeño de
+estas restricciones tal que, resultas juntas, identifiquen el error de tipos.
+
+Siéntete libre de etiquetar las sub-expresiones del programa con superíndices
+para usarlos cuando escribas y resuelvas tus restricciones.
+
+\section*{Problema III}
+Considera la siguiente expresión con tipos:
+
+\begin{verbatim}
+{fun {f : C1 } : C2
+  {fun {x : C3 } : C4
+    {fun {y : C5 } : C6
+      {cons x {f {f y}}}}}}
+\end{verbatim}
+
+Dejamos los tipos sin especificar (Cn) para que sean llenados por el proceso
+de inferencia de tipos. Deriva restricciones de tipos para el programa anterior.
+Luego resuelve estas restricciones. A partir de estas soluciones, rellena los
+valores de las Cn. Asegúrate de mostrar todos los pasos especificados por los
+algoritmos (i.e., escribir la respuesta basándose en la intuición o el conocimiento
+es insuficiente). Deberás usar variables de tipo cuando sea necesario.
+Para no escribir tanto, puedes etiquetar cada expresión con una variable de tipos
+apropiada, y presentar el resto del algoritmo en términos solamente de estas
+variables de tipos.
+
+\section*{Problema IV}
+Considera los juicios de tipos discutidos en clase para un lenguaje glotón
+(en el capitulo de \textbf{Juicios de Tipos} del libro de Shriram).
+Considera ahora la versión perezosa del lenguaje. Pon especial atención a
+las reglas de tipado para:
+
+\begin{itemize}
+\item definición de funciones
+\item aplicación de funciones
+\end{itemize}
+
+Para cada una de estas, si crees que la regla original no cambia, explica por que no
+(Si crees que ninguna de las dos cambia, puedes responder las dos partes juntas).
+Si crees que algún otro juicio de tipos debe cambiar, menciónalo también.
+
+\section*{Problema V}
+¿Cuáles son las ventajas y desventajas de tener polimorfismo explícito e implícito
+en los lenguajes de programación?
+
+\section*{Problema VI}
+Da las ventajas y desventajas de tener lenguajes de dominio especifico (DSL)
+y de propósito general. También da al menos tres ejemplos de lenguajes DSL,
+cada ejemplo debe indicar el propósito del DSL y un ejemplo documentando su uso.
+\end{document}
