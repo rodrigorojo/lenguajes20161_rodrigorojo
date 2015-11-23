@@ -381,6 +381,37 @@ estas restricciones tal que, resultas juntas, identifiquen el error de tipos.
 Siéntete libre de etiquetar las sub-expresiones del programa con superíndices
 para usarlos cuando escribas y resuelvas tus restricciones.
 
+\textbf {Respuesta: }
+\\
+$\boxed{1}$(+ $\boxed{2}$1  $\boxed{3}$ (first $\boxed{4}$ (cons $\boxed{5}$ true $\boxed{6}$ empty)))
+
+\textbf {Conjunto de Restricciones: }
+\\
+Si e1 y e2 expresiones cuales quiera dentro del lenguaje entonces:
+ \\
+ 1-[(+ e1 e2)]= number si [e1]= number y [e2]= number
+ \\
+ 2-Si e es un numero entonces [e]= number
+ \\
+ 3-[(first e)]= number si [e]= nlist
+ \\
+ 4-[(cons e1 e2)]= nlist si [e1]= number y [e2]= nlist
+ \\
+ 5- si e=true o e=false entonces [e]=boolean 
+ \\
+\textbf{Inferencia: }
+  \\
+  Tenemos que: 
+  \\
+  A)Para [$\boxed{1}$] =[(+ 1 (first (cons true empty)))] = number si [1] = number y [(first (cons true empty))]= number (1)\\ 
+  B)Para [$\boxed{2}$] = [1] number (2)\\
+  C)Para [$\boxed{3}$] = [(first (cons true empty))]= number si [(cons true empty)]=nlist (3)\\
+  D)Para [$\boxed{4}$] = [(cons true empty)]=nlist si [true]= number y [empty] = nlist (4)\\
+  E)Para [$\boxed{5}$] = [true]!=number sino que [true] = boolean (5)\\
+  Por E) tenemos que el programa no puede continuar debido al error de tipos dadas las reglas del conjunto de restricciones
+    
+  
+
 \section*{Problema III}
 Considera la siguiente expresión con tipos:
 
