@@ -272,96 +272,20 @@ Haga el juicio de tipo para la función fibonacci y el predicado empty?\\
 
 \begin{lstlisting}
  (define Empty?
-  $\boxed{1}$(lambda (l)
-    $\boxed{2}$(if $\boxed{3}$(= $\boxed{4}$(length l) 0)  $\boxed{5}$true $\boxed{6}$false)))
+  (lambda (l)
+    (if (= (length l) 0)  true false)))
 \end{lstlisting}
 
 \begin{center}
- \begin{longtable}{ | l | p{10 cm} | p{5 cm} | }
- \hline
- Acción & Stack & Sustitución \\ \hline \hline
- Inicio & [$\boxed{1}$] = [l] $\rightarrow$ [$\boxed{2}$] 				& Vacio	\\
-	& [$\boxed{3}$] = boolean							&	\\
-	& [=] = [$\boxed{4}$] $\rightarrow$ [0] $\rightarrow$ [$\boxed{3}$] =
-	  number $\rightarrow$ number $\rightarrow$ boolean				&	\\
-	& [length] = [l] $\rightarrow$ [$\boxed{4}$] =
-	  list $\rightarrow$ number							&	\\ 
-	& [$\boxed{5}$] = boolean							&	\\
-	& [$\boxed{6}$] = boolean							&	\\
-	& [$\boxed{2}$] = [$\boxed{5}$] $|$ [$\boxed{6}$]				&	\\ \hline
-	 
- Paso 3 & [$\boxed{3}$] = boolean							& [$\boxed{1}$] $\mapsto$ [l] $\rightarrow$ [$\boxed{2}$] \\
-	& [=] = [$\boxed{4}$] $\rightarrow$ [0] $\rightarrow$ [$\boxed{3}$] =
-	  number $\rightarrow$ number $\rightarrow$ boolean				&	\\
-	& [length] = [l] $\rightarrow$ [$\boxed{4}$] =
-	  list $\rightarrow$ number							&	\\ 
-	& [$\boxed{5}$] = boolean							&	\\
-	& [$\boxed{6}$] = boolean							&	\\
-	& [$\boxed{2}$] = [$\boxed{5}$] $|$ [$\boxed{6}$]				&	\\ \hline
-	 
- Paso 3 & [=] = [$\boxed{4}$] $\rightarrow$ [0] $\rightarrow$ boolean =
-	  number $\rightarrow$ number $\rightarrow$ boolean				& [$\boxed{1}$] $\mapsto$ [l] $\rightarrow$ [$\boxed{2}$] \\
-	& [length] = [l] $\rightarrow$ [$\boxed{4}$] =
-	  list $\rightarrow$ number							& [$\boxed{3}$] $\mapsto$ boolean \\ 
-	& [$\boxed{5}$] = boolean							&	\\
-	& [$\boxed{6}$] = boolean							&	\\
-	& [$\boxed{2}$] = [$\boxed{5}$] $|$ [$\boxed{6}$]				&	\\ \hline
- 
- Paso 5 & [$\boxed{4}$] = number							& [$\boxed{1}$] $\mapsto$ [l] $\rightarrow$ [$\boxed{2}$] \\
-	& [0] = number									& [$\boxed{3}$] $\mapsto$ boolean \\ 
-	& [length] = [l] $\rightarrow$ [$\boxed{4}$] =
-	  list $\rightarrow$ number							&	\\
-	& [$\boxed{5}$] = boolean							&	\\
-	& [$\boxed{6}$] = boolean							&	\\
-	& [$\boxed{2}$] = [$\boxed{5}$] $|$ [$\boxed{6}$]				&	\\ \hline
- 
- Paso 3 & [0] = number									& [$\boxed{1}$] $\mapsto$ [l] $\rightarrow$ [$\boxed{2}$] \\ 
-	& [length] = [l] $\rightarrow$ number =
-	  list $\rightarrow$ number							& [$\boxed{3}$] $\mapsto$ boolean \\
-	& [$\boxed{5}$] = boolean							& [$\boxed{4}$] $\mapsto$ number \\
-	& [$\boxed{6}$] = boolean							&	\\
-	& [$\boxed{2}$] = [$\boxed{5}$] $|$ [$\boxed{6}$]				&	\\ \hline
+ \begin{longtable}{c c c c}
+ $\surd$ &	&	& \\ \cline{1-1}
+ $\Gamma \vdash (l) : list$ &	&  & \\ \cline{1-1}
+ $\Gamma (length (list \gets num))$ & $\surd$ & & \\ \cline{1-2}
+ $\Gamma \vdash (length  \quad l):number$ & $\Gamma \vdash 0:number$ & $\surd$ & $\surd$ \\ \hline
+ \multicolumn{2}{c}{$\Gamma \vdash (=(length  \quad l) \quad 0):bool$} & $\Gamma \vdash true:bool$ & $\Gamma \vdash false:bool$ \\ \hline
+ \multicolumn{4}{c}{$\Gamma [l \gets list] \vdash (if...):bool$} \\ \hline
+ \multicolumn{4}{c}{$\Gamma \vdash (empty?:bool) \vdash \{(lambda(l)):list \quad if...\}:bool$} \\
 
- Paso 3 & [length] = [l] $\rightarrow$ number =
-	  list $\rightarrow$ number							& [$\boxed{1}$] $\mapsto$ [l] $\rightarrow$ [$\boxed{2}$] \\
-	& [$\boxed{5}$] = boolean							& [$\boxed{3}$] $\mapsto$ boolean \\
-	& [$\boxed{6}$] = boolean							& [$\boxed{4}$] $\mapsto$ number \\
-	& [$\boxed{2}$] = [$\boxed{5}$] $|$ [$\boxed{6}$]				& [0] $\mapsto$ number \\ \hline
-
- Paso 5 & [l] = list									& [$\boxed{1}$] $\mapsto$ [l] $\rightarrow$ [$\boxed{2}$] \\
-	& [$\boxed{5}$] = boolean							& [$\boxed{3}$] $\mapsto$ boolean \\
-	& [$\boxed{6}$] = boolean							& [$\boxed{4}$] $\mapsto$ number \\
-	& [$\boxed{2}$] = [$\boxed{5}$] $|$ [$\boxed{6}$]				& [0] $\mapsto$ number \\ \hline
-
- Paso 3 & [$\boxed{5}$] = boolean							& [$\boxed{1}$] $\mapsto$ list $\rightarrow$ [$\boxed{2}$] \\
-	& [$\boxed{6}$] = boolean							& [$\boxed{3}$] $\mapsto$ boolean \\
-	& [$\boxed{2}$] = [$\boxed{5}$] $|$ [$\boxed{6}$]				& [$\boxed{4}$] $\mapsto$ number \\
-	&	& [0] $\mapsto$ number \\
-	&	& [l] $\mapsto$ list \\ \hline
- 
- Paso 3 & [$\boxed{6}$] = boolean						& [$\boxed{1}$] $\mapsto$ list $\rightarrow$ [$\boxed{2}$] \\
-	& [$\boxed{2}$] = boolean $|$ [$\boxed{6}$]				& [$\boxed{3}$] $\mapsto$ boolean \\
-	&	& [$\boxed{4}$] $\mapsto$ number \\
-	&	& [0] $\mapsto$ number \\ 
-	&	& [l] $\mapsto$ list \\
-	&	& [$\boxed{5}$] $\mapsto$ boolean \\ \hline
- 
- Paso 3 & [$\boxed{2}$] = boolean $|$ boolean				& [$\boxed{1}$] $\mapsto$ list $\rightarrow$ [$\boxed{2}$] \\
-	&	& [$\boxed{3}$] $\mapsto$ boolean \\
-	&	& [$\boxed{4}$] $\mapsto$ number \\
-	&	& [0] $\mapsto$ number \\ 
-	&	& [l] $\mapsto$ list \\
-	&	& [$\boxed{5}$] $\mapsto$ boolean \\ 
-	&	& [$\boxed{6}$] $\mapsto$ boolean \\ \hline
- 
- Paso 3 & Vacio & [$\boxed{1}$] $\mapsto$ list $\rightarrow$ boolean \\
-	&	& [$\boxed{3}$] $\mapsto$ boolean \\
-	&	& [$\boxed{4}$] $\mapsto$ number \\
-	&	& [0] $\mapsto$ number \\ 
-	&	& [l] $\mapsto$ list \\
-	&	& [$\boxed{5}$] $\mapsto$ boolean \\ 
-	&	& [$\boxed{6}$] $\mapsto$ boolean \\ 
-	&	& [$\boxed{2}$] $\mapsto$ boolean \\ \hline
 \end{longtable}
 
 \end{center}
