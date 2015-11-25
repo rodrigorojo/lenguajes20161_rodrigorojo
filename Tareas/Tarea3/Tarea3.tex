@@ -26,248 +26,30 @@ Haga el juicio de tipo para la función fibonacci y el predicado empty?\\
 
 \begin{lstlisting}
 (define fibonacci
-  $\boxed{1}$(lambda (n)
-    $\boxed{2}$(cond
-      [$\boxed{3}$(<= n 2) $\boxed{4}$1]
-      [$\boxed{5}$else $\boxed{6}$(+ $\boxed{7}$(fibonacci $\boxed{8}$(- n 1)) $\boxed{9}$(fibonacci $\boxed{10}$(- n 2)))])))
+  (lambda (n)
+    (cond
+      [(<= n 2) 1]
+      [else (+ (fibonacci (- n 1)) (fibonacci (- n 2)))])))
 \end{lstlisting}
 
+\newcolumntype{C}[1]{>{\hsize=#1\hsize\centering\arraybackslash}X}%
+
 \begin{center}
- \begin{longtable}{ | l | p{10 cm} | p{5 cm} | }
-  \hline
-  Acción & Stack & Sustitución \\ \hline \hline
-  Inicio & [$\boxed{1}$] = [n] $\rightarrow$ [$\boxed{2}$] 									& Vacio	\\
-	 & [$\boxed{3}$] = boolean		     										&   	\\
-	 & [$<=$] = [n] $\rightarrow$ [2] $\rightarrow$ [$\boxed{3}$] = 
-	 number $\rightarrow$ number $\rightarrow$ boolean									& 	\\ 
-	 & [$\boxed{4}$] = number												&	\\ 
-	 & [else] = [$\boxed{5}$] = [$\boxed{6}$]										&	\\
-	 & [+] = [$\boxed{7}$] $\rightarrow$ [$\boxed{9}$] $\rightarrow$ [$\boxed{6}$] = 
-	 number $\rightarrow$ number $\rightarrow$ number									&	\\ 
-	 & [$\boxed{1}$] = [$\boxed{8}$] $\rightarrow$ [$\boxed{7}$]								&	\\
-	 & [-] = [n] $\rightarrow$ [1] $\rightarrow$ [$\boxed{8}$] = [n] $\rightarrow$ [2] $\rightarrow$ [$\boxed{10}$] =
-	   number $\rightarrow$ number $\rightarrow$ number									&	\\
-	 & [$\boxed{1}$] = [$\boxed{10}$] $\rightarrow$ [$\boxed{9}$] 								&	\\ 
-	 & [$\boxed{2}$] = [$\boxed{4}$] = [$\boxed{6}$]									&	\\ \hline
-	 
-  Paso 3 & [$\boxed{3}$] = boolean		     										& [$\boxed{1}$] $\mapsto$ [n] $\rightarrow$ [$\boxed{2}$]  \\
-	 & [$<=$] = [n] $\rightarrow$ [2] $\rightarrow$ [$\boxed{3}$] = 
-	 number $\rightarrow$ number $\rightarrow$ boolean									& 	\\ 
-	 & [$\boxed{4}$] = number												&	\\ 
-	 & [else] = [$\boxed{5}$] = [$\boxed{6}$]										&	\\
-	 & [+] = [$\boxed{7}$] $\rightarrow$ [$\boxed{9}$] $\rightarrow$ [$\boxed{6}$] = 
-	 number $\rightarrow$ number $\rightarrow$ number									&	\\ 
-	 & [n] $\rightarrow$ [$\boxed{2}$] = [$\boxed{8}$] $\rightarrow$ [$\boxed{7}$]						&	\\
-	 & [-] = [n] $\rightarrow$ [1] $\rightarrow$ [$\boxed{8}$] = [n] $\rightarrow$ [2] $\rightarrow$ [$\boxed{10}$] =
-	   number $\rightarrow$ number $\rightarrow$ number									&	\\
-	 & [n] $\rightarrow$ [$\boxed{2}$] = [$\boxed{10}$] $\rightarrow$ [$\boxed{9}$] 					&	\\ 
-	 & [$\boxed{2}$] = [$\boxed{4}$] = [$\boxed{6}$]									&	\\ \hline
-	 
-  Paso 3  & [$<=$] = [n] $\rightarrow$ [2] $\rightarrow$ boolean = 
-	 number $\rightarrow$ number $\rightarrow$ boolean									& [$\boxed{1}$] $\mapsto$ [n] $\rightarrow$ [$\boxed{2}$]	\\ 
-	 & [$\boxed{4}$] = number												& [$\boxed{3}$] $\mapsto$ boolean	\\ 
-	 & [else] = [$\boxed{5}$] = [$\boxed{6}$]										&	\\
-	 & [+] = [$\boxed{7}$] $\rightarrow$ [$\boxed{9}$] $\rightarrow$ [$\boxed{6}$] = 
-	 number $\rightarrow$ number $\rightarrow$ number									&	\\ 
-	 & [n] $\rightarrow$ [$\boxed{2}$] = [$\boxed{8}$] $\rightarrow$ [$\boxed{7}$]						&	\\
-	 & [-] = [n] $\rightarrow$ [1] $\rightarrow$ [$\boxed{8}$] = [n] $\rightarrow$ [2] $\rightarrow$ [$\boxed{10}$] =
-	   number $\rightarrow$ number $\rightarrow$ number									&	\\
-	 & [n] $\rightarrow$ [$\boxed{2}$] = [$\boxed{10}$] $\rightarrow$ [$\boxed{9}$] 					&	\\ 
-	 & [$\boxed{2}$] = [$\boxed{4}$] = [$\boxed{6}$]									&	\\ \hline
-	 
-  Paso 5 & [n] = number 													& [$\boxed{1}$] $\mapsto$ [n] $\rightarrow$ [$\boxed{2}$]	\\ 
-	 & [2] = number														& [$\boxed{3}$] $\mapsto$ boolean \\
-	 & [$\boxed{4}$] = number												& 	\\ 
-	 & [else] = [$\boxed{5}$] = [$\boxed{6}$]										&	\\
-	 & [+] = [$\boxed{7}$] $\rightarrow$ [$\boxed{9}$] $\rightarrow$ [$\boxed{6}$] = 
-	 number $\rightarrow$ number $\rightarrow$ number									&	\\ 
-	 & [n] $\rightarrow$ [$\boxed{2}$] = [$\boxed{8}$] $\rightarrow$ [$\boxed{7}$]						&	\\
-	 & [-] = [n] $\rightarrow$ [1] $\rightarrow$ [$\boxed{8}$] = [n] $\rightarrow$ [2] $\rightarrow$ [$\boxed{10}$] =
-	   number $\rightarrow$ number $\rightarrow$ number									&	\\
-	 & [n] $\rightarrow$ [$\boxed{2}$] = [$\boxed{10}$] $\rightarrow$ [$\boxed{9}$] 					&	\\ 
-	 & [$\boxed{2}$] = [$\boxed{4}$] = [$\boxed{6}$]									&	\\ \hline
-	 
-  Paso 3 & [2] = number														& [$\boxed{1}$] $\mapsto$ number $\rightarrow$ [$\boxed{2}$] \\
-	 & [$\boxed{4}$] = number												& [$\boxed{3}$] $\mapsto$ boolean	\\ 
-	 & [else] = [$\boxed{5}$] = [$\boxed{6}$]										& [n] $\mapsto$ number	\\
-	 & [+] = [$\boxed{7}$] $\rightarrow$ [$\boxed{9}$] $\rightarrow$ [$\boxed{6}$] = 
-	 number $\rightarrow$ number $\rightarrow$ number									&	\\ 
-	 & number $\rightarrow$ [$\boxed{2}$] = [$\boxed{8}$] $\rightarrow$ [$\boxed{7}$]					&	\\
-	 & [-] = number $\rightarrow$ [1] $\rightarrow$ [$\boxed{8}$] = number $\rightarrow$ [2] $\rightarrow$ [$\boxed{10}$] =
-	   number $\rightarrow$ number $\rightarrow$ number									&	\\
-	 & number $\rightarrow$ [$\boxed{2}$] = [$\boxed{10}$] $\rightarrow$ [$\boxed{9}$] 					&	\\ 
-	 & [$\boxed{2}$] = [$\boxed{4}$] = [$\boxed{6}$]									&	\\ \hline
-	 
- Paso 3  & [$\boxed{4}$] = number												& [$\boxed{1}$] $\mapsto$ number $\rightarrow$ [$\boxed{2}$]	\\ 
-	 & [else] = [$\boxed{5}$] = [$\boxed{6}$]										& [$\boxed{3}$] $\mapsto$ boolean	\\
-	 & [+] = [$\boxed{7}$] $\rightarrow$ [$\boxed{9}$] $\rightarrow$ [$\boxed{6}$] = 
-	 number $\rightarrow$ number $\rightarrow$ number									& [n] $\mapsto$ number	\\ 
-	 & number $\rightarrow$ [$\boxed{2}$] = [$\boxed{8}$] $\rightarrow$ [$\boxed{7}$]					& [2] $\mapsto$ number	\\
-	 & [-] = number $\rightarrow$ [1] $\rightarrow$ [$\boxed{8}$] = number $\rightarrow$ number $\rightarrow$ [$\boxed{10}$] =
-	   number $\rightarrow$ number $\rightarrow$ number									&	\\
-	 & number $\rightarrow$ [$\boxed{2}$] = [$\boxed{10}$] $\rightarrow$ [$\boxed{9}$] 					&	\\ 
-	 & [$\boxed{2}$] = [$\boxed{4}$] = [$\boxed{6}$]									&	\\ \hline
-	 
- Paso 3  & [else] = [$\boxed{5}$] = [$\boxed{6}$]										& [$\boxed{1}$] $\mapsto$ number $\rightarrow$ [$\boxed{2}$]	\\
-	 & [+] = [$\boxed{7}$] $\rightarrow$ [$\boxed{9}$] $\rightarrow$ [$\boxed{6}$] = 
-	 number $\rightarrow$ number $\rightarrow$ number									& [$\boxed{3}$] $\mapsto$ boolean	\\ 
-	 & number $\rightarrow$ [$\boxed{2}$] = [$\boxed{8}$] $\rightarrow$ [$\boxed{7}$]					& [n] $\mapsto$ number	\\
-	 & [-] = number $\rightarrow$ [1] $\rightarrow$ [$\boxed{8}$] = number $\rightarrow$ number $\rightarrow$ [$\boxed{10}$] =
-	   number $\rightarrow$ number $\rightarrow$ number									& [2] $\mapsto$ number	\\
-	 & number $\rightarrow$ [$\boxed{2}$] = [$\boxed{10}$] $\rightarrow$ [$\boxed{9}$] 					& [$\boxed{4}$] $\mapsto$ number	\\ 
-	 & [$\boxed{2}$] = number = [$\boxed{6}$]										&	\\ \hline
-	 
- Paso 3  & [+] = [$\boxed{7}$] $\rightarrow$ [$\boxed{9}$] $\rightarrow$ [$\boxed{6}$] = 
-	 number $\rightarrow$ number $\rightarrow$ number									& [$\boxed{1}$] $\mapsto$ number $\rightarrow$ [$\boxed{2}$]	\\ 
-	 & number $\rightarrow$ [$\boxed{2}$] = [$\boxed{8}$] $\rightarrow$ [$\boxed{7}$]					& [$\boxed{3}$] $\mapsto$ boolean	\\
-	 & [-] = number $\rightarrow$ [1] $\rightarrow$ [$\boxed{8}$] = number $\rightarrow$ number $\rightarrow$ [$\boxed{10}$] =
-	   number $\rightarrow$ number $\rightarrow$ number									& [n] $\mapsto$ number	\\
-	 & number $\rightarrow$ [$\boxed{2}$] = [$\boxed{10}$] $\rightarrow$ [$\boxed{9}$] 					& [2] $\mapsto$ number	\\ 
-	 & [$\boxed{2}$] = number = [$\boxed{6}$]										& [$\boxed{4}$] $\mapsto$ number	\\ 
-	 &	& [$\boxed{5}$] $\mapsto$ [$\boxed{6}$] \\ \hline
-	 
- Paso 5  & [$\boxed{7}$] = number												& [$\boxed{1}$] $\mapsto$ number $\rightarrow$ [$\boxed{2}$] \\
-	 & [$\boxed{9}$] = number												& [$\boxed{3}$] $\mapsto$ boolean \\
-	 & [$\boxed{6}$] = number												& [n] $\mapsto$ number	\\ 
-	 & number $\rightarrow$ [$\boxed{2}$] = [$\boxed{8}$] $\rightarrow$ [$\boxed{7}$]					& [2] $\mapsto$ number	\\
-	 & [-] = number $\rightarrow$ [1] $\rightarrow$ [$\boxed{8}$] = number $\rightarrow$ number $\rightarrow$ [$\boxed{10}$] =
-	   number $\rightarrow$ number $\rightarrow$ number									& [$\boxed{4}$] $\mapsto$ number	\\
-	 & number $\rightarrow$ [$\boxed{2}$] = [$\boxed{10}$] $\rightarrow$ [$\boxed{9}$] 					& [$\boxed{5}$] $\mapsto$ [$\boxed{6}$]	\\ 
-	 & [$\boxed{2}$] = number = [$\boxed{6}$]										& 	\\ \hline
-	 
- Paso 3  & [$\boxed{9}$] = number												& [$\boxed{1}$] $\mapsto$ number $\rightarrow$ [$\boxed{2}$] \\
-	 & [$\boxed{6}$] = number												& [$\boxed{3}$] $\mapsto$ boolean	\\ 
-	 & number $\rightarrow$ [$\boxed{2}$] = [$\boxed{8}$] $\rightarrow$ number						& [n] $\mapsto$ number	\\
-	 & [-] = number $\rightarrow$ [1] $\rightarrow$ [$\boxed{8}$] = number $\rightarrow$ number $\rightarrow$ [$\boxed{10}$] =
-	   number $\rightarrow$ number $\rightarrow$ number									& [2] $\mapsto$ number	\\
-	 & number $\rightarrow$ [$\boxed{2}$] = [$\boxed{10}$] $\rightarrow$ [$\boxed{9}$] 					& [$\boxed{4}$] $\mapsto$ number	\\ 
-	 & [$\boxed{2}$] = number = [$\boxed{6}$]										& [$\boxed{5}$] $\mapsto$ [$\boxed{6}$]	\\ 
-	 &	& [$\boxed{7}$] $\mapsto$ number \\ \hline
-	 
- Paso 3  & [$\boxed{6}$] = number												& [$\boxed{1}$] $\mapsto$ number $\rightarrow$ [$\boxed{2}$] \\ 
-	 & number $\rightarrow$ [$\boxed{2}$] = [$\boxed{8}$] $\rightarrow$ number						& [$\boxed{3}$] $\mapsto$ boolean	\\
-	 & [-] = number $\rightarrow$ [1] $\rightarrow$ [$\boxed{8}$] = number $\rightarrow$ number $\rightarrow$ [$\boxed{10}$] =
-	   number $\rightarrow$ number $\rightarrow$ number									& [n] $\mapsto$ number	\\
-	 & number $\rightarrow$ [$\boxed{2}$] = [$\boxed{10}$] $\rightarrow$ number	 					& [2] $\mapsto$ number	\\ 
-	 & [$\boxed{2}$] = number = [$\boxed{6}$]										& [$\boxed{4}$] $\mapsto$ number	\\ 
-	 &	& [$\boxed{5}$] $\mapsto$ [$\boxed{6}$] \\
-	 &	& [$\boxed{7}$] $\mapsto$ number \\ 
-	 &	& [$\boxed{9}$] $\mapsto$ number \\ \hline
-	 
- Paso 3  & number $\rightarrow$ [$\boxed{2}$] = [$\boxed{8}$] $\rightarrow$ number						& [$\boxed{1}$] $\mapsto$ number $\rightarrow$ [$\boxed{2}$]	\\
-	 & [-] = number $\rightarrow$ [1] $\rightarrow$ [$\boxed{8}$] = number $\rightarrow$ number $\rightarrow$ [$\boxed{10}$] =
-	   number $\rightarrow$ number $\rightarrow$ number									& [$\boxed{3}$] $\mapsto$ boolean	\\
-	 & number $\rightarrow$ [$\boxed{2}$] = [$\boxed{10}$] $\rightarrow$ number	 					& [n] $\mapsto$ number	\\ 
-	 & [$\boxed{2}$] = number = number											& [2] $\mapsto$ number	\\ 
-	 &	& [$\boxed{4}$] $\mapsto$ number \\
-	 &	& [$\boxed{5}$] $\mapsto$ number \\
-	 &	& [$\boxed{7}$] $\mapsto$ number \\ 
-	 &	& [$\boxed{9}$] $\mapsto$ number \\ 
-	 &	& [$\boxed{6}$] $\mapsto$ number \\ \hline
-	 
- Paso 5  & number = [$\boxed{8}$]						 						& [$\boxed{1}$] $\mapsto$ number $\rightarrow$ [$\boxed{2}$]	\\
-	 & [$\boxed{2}$] = number												& [$\boxed{3}$] $\mapsto$ boolean \\
-	 & [-] = number $\rightarrow$ [1] $\rightarrow$ [$\boxed{8}$] = number $\rightarrow$ number $\rightarrow$ [$\boxed{10}$] =
-	   number $\rightarrow$ number $\rightarrow$ number									& [n] $\mapsto$ number	\\
-	 & number $\rightarrow$ [$\boxed{2}$] = [$\boxed{10}$] $\rightarrow$ number	 					& [2] $\mapsto$ number	\\ 
-	 & [$\boxed{2}$] = number = number											& [$\boxed{4}$] $\mapsto$ number	\\ 
-	 &	& [$\boxed{5}$] $\mapsto$ number \\
-	 &	& [$\boxed{7}$] $\mapsto$ number \\ 
-	 &	& [$\boxed{9}$] $\mapsto$ number \\ 
-	 &	& [$\boxed{6}$] $\mapsto$ number \\ \hline
+ \begin{tabularx}{\textwidth}{C{1} C{1} C{1} C{1} C{1} C{1} C{1}}
+  & & & $\surd$ & $\surd$ & $\surd$ & $\surd$ \\ \cline{4-7}
+  & & & $\Gamma \vdash n : number$ & $\Gamma \vdash 1 : number$ & $\Gamma \vdash n : number$ & $\Gamma \vdash 2 : number$ \\ \cline{4-7}
+  & & & \multicolumn{2}{C{2}}{$\Gamma \vdash (- \quad n \quad 1):number $} & \multicolumn{2}{C{2}}{$\Gamma \vdash (- \quad n \quad 2):number $} \\ \cline{4-7}
+  $\surd$ & $\surd$ & & \multicolumn{2}{C{2}}{$\Gamma(fibonacci(number \rightarrow number) \vdash \Gamma \vdash (- \quad n \quad 1):number $} & \multicolumn{2}{C{2}}{$\Gamma(fibonacci(number \rightarrow number) \vdash \Gamma \vdash (- \quad n \quad 2):number $} \\ \cline{1-2} \cline{4-7}
+  $\Gamma \vdash n : number$ & $\Gamma \vdash 2 : number$ & $\surd$ & \multicolumn{2}{C{2}}{$\Gamma \vdash (fibonacci(- \quad n \quad 1)):number $} & \multicolumn{2}{C{2}}{$\Gamma \vdash (fibonacci(- \quad n \quad 2)):number $} \\ \hline
+  \multicolumn{2}{C{2}}{$\Gamma \vdash (<= \quad n \quad 2):bool $} & $\Gamma \vdash 1 : number$ & \multicolumn{4}{C{4}}{$\Gamma \vdash (+ (fibonacci(- \quad n \quad 1)) \quad (fibonacci(- \quad n \quad 2))):number$} \\ \hline
+  \multicolumn{7}{C{7}}{$\Gamma [n \gets number] \vdash (cond \quad
+      [(<= \quad n \quad 2)\quad 1] \quad
+      [else \quad (+ (fibonacci (- \quad n \quad 1)) \quad (fibonacci (- \quad n \quad 2)))]) :number$} \\ \hline
+  \multicolumn{7}{C{7}}{$\Gamma [fibonacci \gets number] \vdash \{(lambda(n:number)):number \quad (cond \quad
+      [(<= \quad n \quad 2)\quad 1] \quad
+      [else \quad (+ (fibonacci (- \quad n \quad 1)) \quad (fibonacci (- \quad n \quad 2)))])\}:number \rightarrow number$}
  
- Paso 4  & [$\boxed{2}$] = number												& [$\boxed{1}$] $\mapsto$ number $\rightarrow$ [$\boxed{2}$] \\
-	 & [-] = number $\rightarrow$ [1] $\rightarrow$ number = number $\rightarrow$ number $\rightarrow$ [$\boxed{10}$] =
-	   number $\rightarrow$ number $\rightarrow$ number									& [$\boxed{3}$] $\mapsto$ boolean	\\
-	 & number $\rightarrow$ [$\boxed{2}$] = [$\boxed{10}$] $\rightarrow$ number	 					& [n] $\mapsto$ number	\\ 
-	 & [$\boxed{2}$] = number = number											& [2] $\mapsto$ number \\ 
-	 &	& [$\boxed{4}$] $\mapsto$ number \\
-	 &	& [$\boxed{5}$] $\mapsto$ number \\
-	 &	& [$\boxed{7}$] $\mapsto$ number \\ 
-	 &	& [$\boxed{9}$] $\mapsto$ number \\ 
-	 &	& [$\boxed{6}$] $\mapsto$ number \\ 
-	 &	& [$\boxed{8}$] $\mapsto$ number \\ \hline
-	 
- Paso 3  & [-] = number $\rightarrow$ [1] $\rightarrow$ number = number $\rightarrow$ number $\rightarrow$ [$\boxed{10}$] =
-	   number $\rightarrow$ number $\rightarrow$ number								& [$\boxed{1}$] $\mapsto$ number $\rightarrow$ number	\\
-	 & number $\rightarrow$ number = [$\boxed{10}$] $\rightarrow$ number	 					& [$\boxed{3}$] $\mapsto$ boolean	\\ 
-	 & number = number = number											& [n] $\mapsto$ number \\ 
-	 &	& [2] $\mapsto$ number \\
-	 &	& [$\boxed{4}$] $\mapsto$ number \\
-	 &	& [$\boxed{5}$] $\mapsto$ number \\
-	 &	& [$\boxed{7}$] $\mapsto$ number \\ 
-	 &	& [$\boxed{9}$] $\mapsto$ number \\ 
-	 &	& [$\boxed{6}$] $\mapsto$ number \\ 
-	 &	& [$\boxed{8}$] $\mapsto$ number \\ 
-	 &	& [$\boxed{2}$] $\mapsto$ number \\ \hline
-	 
- Paso 5  & [1] = number								& [$\boxed{1}$] $\mapsto$ number $\rightarrow$ number	\\
-	 & number = [$\boxed{10}$]						& [$\boxed{3}$] $\mapsto$ boolean \\
-	 & number $\rightarrow$ number = [$\boxed{10}$] $\rightarrow$ number	& [n] $\mapsto$ number	\\ 
-	 & number = number = number						& [2] $\mapsto$ number \\ 
-	 &	& [$\boxed{4}$] $\mapsto$ number \\
-	 &	& [$\boxed{5}$] $\mapsto$ number \\
-	 &	& [$\boxed{7}$] $\mapsto$ number \\ 
-	 &	& [$\boxed{9}$] $\mapsto$ number \\ 
-	 &	& [$\boxed{6}$] $\mapsto$ number \\ 
-	 &	& [$\boxed{8}$] $\mapsto$ number \\ 
-	 &	& [$\boxed{2}$] $\mapsto$ number \\ \hline
-	 
- Paso 3  & number = [$\boxed{10}$]						& [$\boxed{1}$] $\mapsto$ number $\rightarrow$ number \\
-	 & number $\rightarrow$ number = [$\boxed{10}$] $\rightarrow$ number	& [$\boxed{3}$] $\mapsto$ boolean \\ 
-	 & number = number = number						& [n] $\mapsto$ number \\ 
-	 &	& [2] $\mapsto$ number \\
-	 &	& [$\boxed{4}$] $\mapsto$ number \\
-	 &	& [$\boxed{5}$] $\mapsto$ number \\
-	 &	& [$\boxed{7}$] $\mapsto$ number \\ 
-	 &	& [$\boxed{9}$] $\mapsto$ number \\ 
-	 &	& [$\boxed{6}$] $\mapsto$ number \\ 
-	 &	& [$\boxed{8}$] $\mapsto$ number \\ 
-	 &	& [$\boxed{2}$] $\mapsto$ number \\ 
-	 &	& [1] $\mapsto$ number \\ \hline
-	 
- Paso 4  & number $\rightarrow$ number = number $\rightarrow$ number	& [$\boxed{1}$] $\mapsto$ number $\rightarrow$ number \\ 
-	 & number = number = number					& [$\boxed{3}$] $\mapsto$ boolean \\ 
-	 &	& [n] $\mapsto$ number \\
-	 &	& [2] $\mapsto$ number \\
-	 &	& [$\boxed{4}$] $\mapsto$ number \\
-	 &	& [$\boxed{5}$] $\mapsto$ number \\
-	 &	& [$\boxed{7}$] $\mapsto$ number \\ 
-	 &	& [$\boxed{9}$] $\mapsto$ number \\ 
-	 &	& [$\boxed{6}$] $\mapsto$ number \\ 
-	 &	& [$\boxed{8}$] $\mapsto$ number \\ 
-	 &	& [$\boxed{2}$] $\mapsto$ number \\ 
-	 &	& [1] $\mapsto$ number \\ 
-	 &	& [$\boxed{10}$] $\mapsto$ number \\ \hline
-	 
- Paso 1  & number = number = number					& [$\boxed{1}$] $\mapsto$ number $\rightarrow$ number \\ 
-	 &	& [$\boxed{3}$] $\mapsto$ boolean \\
-	 &	& [n] $\mapsto$ number \\
-	 &	& [2] $\mapsto$ number \\
-	 &	& [$\boxed{4}$] $\mapsto$ number \\
-	 &	& [$\boxed{5}$] $\mapsto$ number \\
-	 &	& [$\boxed{7}$] $\mapsto$ number \\ 
-	 &	& [$\boxed{9}$] $\mapsto$ number \\ 
-	 &	& [$\boxed{6}$] $\mapsto$ number \\ 
-	 &	& [$\boxed{8}$] $\mapsto$ number \\ 
-	 &	& [$\boxed{2}$] $\mapsto$ number \\ 
-	 &	& [1] $\mapsto$ number \\ 
-	 &	& [$\boxed{10}$] $\mapsto$ number \\ \hline
-	 
- Paso 1  & vacio& [$\boxed{1}$] $\mapsto$ number $\rightarrow$ number \\ 
-	 &	& [$\boxed{3}$] $\mapsto$ boolean \\
-	 &	& [n] $\mapsto$ number \\
-	 &	& [2] $\mapsto$ number \\
-	 &	& [$\boxed{4}$] $\mapsto$ number \\
-	 &	& [$\boxed{5}$] $\mapsto$ number \\
-	 &	& [$\boxed{7}$] $\mapsto$ number \\ 
-	 &	& [$\boxed{9}$] $\mapsto$ number \\ 
-	 &	& [$\boxed{6}$] $\mapsto$ number \\ 
-	 &	& [$\boxed{8}$] $\mapsto$ number \\ 
-	 &	& [$\boxed{2}$] $\mapsto$ number \\ 
-	 &	& [1] $\mapsto$ number \\ 
-	 &	& [$\boxed{10}$] $\mapsto$ number \\ \hline
- \end{longtable}
+ \end{tabularx}
 
 \end{center}
 
