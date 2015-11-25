@@ -143,7 +143,7 @@ variables de tipos.
 \{ \boxed{1} fun \{f\}
   \{ \boxed{2} fun \{x\}
     \{ \boxed{3} fun \{y\}
-      \{ \boxed{4} cons \boxed{5} x  \boxed{6} \{f \{f y\}\}\}\}\}\}
+      \{ \boxed{4} cons \boxed{5} x  \boxed{6} \{f \boxed{7} \{f y\}\}\}\}\}\}
 \end{alltt}
 
 Si e1 y e2 expresiones cuales quiera dentro del lenguaje entonces:\\
@@ -158,6 +158,12 @@ Restricciones:\\
 [$\boxed{3}$] = [y] $\rightarrow$ [$\boxed{3}$] \\
 
 [$\boxed{4}$] = [\{cons x \{f \{f y\}\}\}] = nlist si [x] = number y [\{f \{f y\}\}] = nlist \\
+
+[$\boxed{5}$] = [x] = number\\
+
+[$\boxed{6}$] = [f\{f y\}] = nlist, [f]= number [$\boxed{7}$] = nlist\\
+
+[$\boxed{7}$] = [\{f y\}] = nlist, [f]= number [y]= number\\
 
 
 Gracias a estas restricciones podemos sacar los tipos C1...C6
