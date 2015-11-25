@@ -9,6 +9,7 @@
 \usepackage{longtable} 
 \usepackage{listings}
 \usepackage{tabularx}
+\usepackage{alltt}
 \lstset{
   basicstyle=\ttfamily,
   mathescape
@@ -355,6 +356,36 @@ es insuficiente). Deberás usar variables de tipo cuando sea necesario.
 Para no escribir tanto, puedes etiquetar cada expresión con una variable de tipos
 apropiada, y presentar el resto del algoritmo en términos solamente de estas
 variables de tipos.
+
+\begin{alltt}
+\{ \boxed{1} fun \{f\}
+  \{ \boxed{2} fun \{x\}
+    \{ \boxed{3} fun \{y\}
+      \{ \boxed{4} cons \boxed{5} x  \boxed{6} \{f \{f y\}\}\}\}\}\}
+\end{alltt}
+
+Si e1 y e2 expresiones cuales quiera dentro del lenguaje entonces:\\
+ 1.- [(cons e1 e2)]= nlist si [e1]= number y [e2]= nlist\\
+
+Restricciones:\\
+
+[$\boxed{1}$] = [f] $\rightarrow$ [$\boxed{1}$] \\
+
+[$\boxed{2}$] = [x] $\rightarrow$ [$\boxed{2}$] \\
+
+[$\boxed{3}$] = [y] $\rightarrow$ [$\boxed{3}$] \\
+
+[$\boxed{4}$] = [\{cons x \{f \{f y\}\}\}] = nlist si [x] = number y [\{f \{f y\}\}] = nlist \\
+
+
+Gracias a estas restricciones podemos sacar los tipos C1...C6
+\begin{alltt}
+\{fun \{f : number \} : nlist
+  \{fun \{x : number \} : nlist
+    \{fun \{y : number \} : nlist
+      \{cons x \{f \{f y\}\}\}\}\}\}
+\end{alltt}
+
 
 \section*{Problema IV}
 Considera los juicios de tipos discutidos en clase para un lenguaje glotón
