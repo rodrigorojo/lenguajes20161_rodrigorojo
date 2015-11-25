@@ -1,5 +1,5 @@
 # Fdb version 3
-["pdflatex"] 1448410984 "Tarea3.tex" "Tarea3.pdf" "Tarea3" 1448410984
+["pdflatex"] 1448417179 "Tarea3.tex" "Tarea3.pdf" "Tarea3" 1448417180
   "/usr/local/texlive/2015/texmf-dist/fonts/map/fontname/texfonts.map" 1272929888 3287 e6b82fe08f5336d4d5ebc73fb1152e87 ""
   "/usr/local/texlive/2015/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1246382020 1004 54797486969f23fa377b128694d548df ""
   "/usr/local/texlive/2015/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex8.tfm" 1246382020 988 bdf658c3bfc2d96d3c8b02cfc1c94c20 ""
@@ -68,9 +68,9 @@
   "/usr/local/texlive/2015/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1432479641 1764542 91654ba72bdb667e84ea24f076ae16d8 ""
   "/usr/local/texlive/2015/texmf-var/web2c/pdftex/pdflatex.fmt" 1432479681 3849859 39a7d258195bde2394e244961601fbc5 ""
   "/usr/local/texlive/2015/texmf.cnf" 1432479636 577 0d611272082f3cdb8e80e09a3c69cf07 ""
-  "Tarea3.aux" 1448410984 492 34923d400fa9d50fb67f48e326203821 ""
-  "Tarea3.tex" 1448410984 23832 bf31bb5ff7fab1706fc9686fb9004259 ""
+  "Tarea3.aux" 1448417180 384 f07700de0433389da8a3a2c5c3f1ec0d ""
+  "Tarea3.tex" 1448417179 11074 07e352e1076e4e4df2fd7d1ea3d186a6 ""
   (generated)
+  "Tarea3.pdf"
   "Tarea3.log"
   "Tarea3.aux"
-  "Tarea3.pdf"
