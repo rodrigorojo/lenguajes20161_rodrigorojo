@@ -145,20 +145,20 @@ Restricciones:\\
 
 [$\boxed{3}$] = [y] $\rightarrow$ [$\boxed{4}$] \\
 
-[$\boxed{4}$] = [\{cons x \{f \{f y\}\}\}] = nlist si [x] = number y [\{f \{f y\}\}] = nlist \\
+[$\boxed{4}$] = [\{cons x \{f \{f y\}\}\}] = list si [x] = number y [\{f \{f y\}\}] = list \\
 
 [$\boxed{5}$] = [x] = number\\
 
-[$\boxed{6}$] = [f\{f y\}] = nlist, [f]= number [$\boxed{7}$] = nlist\\
+[$\boxed{6}$] = [f\{f y\}] = nlist, [f]= number \| list, [$\boxed{7}$] = list\\
 
-[$\boxed{7}$] = [\{f y\}] = nlist, [f]= number [y]= number\\
+[$\boxed{7}$] = [\{f y\}] = nlist, [f]= number \| list, [y]= number \| list\\
 
 
 Gracias a estas restricciones podemos sacar los tipos C1...C6
 \begin{alltt}
-\{fun \{f : number \} : nlist
-  \{fun \{x : number \} : nlist
-    \{fun \{y : number \} : nlist
+\{fun \{f : number | list \} : list
+  \{fun \{x : number \} : list
+    \{fun \{y : number | list \} : list
       \{cons x \{f \{f y\}\}\}\}\}\}
 \end{alltt}
 
