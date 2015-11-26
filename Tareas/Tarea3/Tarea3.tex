@@ -53,22 +53,10 @@ Haga el juicio de tipo para la función fibonacci y el predicado empty?\\
 
 \end{center}
 
-\begin{lstlisting}
- (define Empty?
-  (lambda (l)
-    (if (= (length l) 0)  true false)))
-\end{lstlisting}
-
 \begin{center}
- \begin{longtable}{c c c c}
- $\surd$ &	&	& \\ \cline{1-1}
- $\Gamma \vdash (l) : list$ &	&  & \\ \cline{1-1}
- $\Gamma (length (list \gets num))$ & $\surd$ & & \\ \cline{1-2}
- $\Gamma \vdash (length  \quad l):number$ & $\Gamma \vdash 0:number$ & $\surd$ & $\surd$ \\ \hline
- \multicolumn{2}{c}{$\Gamma \vdash (=(length  \quad l) \quad 0):bool$} & $\Gamma \vdash true:bool$ & $\Gamma \vdash false:bool$ \\ \hline
- \multicolumn{4}{c}{$\Gamma [l \gets list] \vdash ((if (= (length l) 0)  true false)):bool$} \\ \hline
- \multicolumn{4}{c}{$\Gamma \vdash (empty?:bool) \vdash \{(lambda(l)):list \quad (if (= (length l) 0)  true false)\}:bool$} \\
-
+ \begin{longtable}{c}
+ l:list \\ \hline
+ (empty? l):bool \\
 \end{longtable}
 
 \end{center}
