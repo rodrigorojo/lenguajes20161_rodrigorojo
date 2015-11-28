@@ -55,8 +55,8 @@ Haga el juicio de tipo para la función fibonacci y el predicado empty?\\
 
 \begin{center}
  \begin{longtable}{c}
- $l:list$ \\ \hline
- $\Gamma \vdash (empty? \quad l):bool$ \\
+ $\Gamma \vdash l:list$ \\ \hline
+ $(empty? \quad l):bool$ \\
 \end{longtable}
 
 \end{center}
@@ -134,33 +134,125 @@ variables de tipos.
       \{ \boxed{4} cons \boxed{5} x  \boxed{6} \{f \boxed{7} \{f y\}\}\}\}\}\}
 \end{alltt}
 
-Si e1 y e2 expresiones cuales quiera dentro del lenguaje entonces:\\
- 1.- [(cons e1 e2)]= nlist si [e1]= number y [e2]= nlist\\
+\begin{center}
+ \begin{longtable}{ | l | p{10 cm} | p{5 cm} | }
+  \hline
+  Acción & Stack & Sustitución \\ \hline \hline
+  
+ Inicio  & [[$\boxed{1}$]] = [[f]] $\rightarrow$ [[$\boxed{2}$]] 				& Vacio \\
+	 & [[$\boxed{2}$]] = [[x]] $\rightarrow$ [[$\boxed{3}$]] 				& \\
+	 & [[$\boxed{3}$]] = [[y]] $\rightarrow$ [[$\boxed{4}$]] 				& \\
+	 & [[cons]] = [[$\boxed{5}$]] $\times$ [[$\boxed{6}$]] $\rightarrow$ [[$\boxed{4}$]] 
+	 = number $\times$ list $\rightarrow$ list 						& \\
+	 & [[$\boxed{5}$]] = [[x]]  								& \\
+	 & [[f]] = [[$\boxed{7}$]] $\rightarrow$ [[$\boxed{6}$]] 				& \\
+	 & [[f]] = [[y]] $\rightarrow$ [[$\boxed{7}$]] 						& \\ \hline
+	 
+ Paso 3  & [[$\boxed{2}$]] = [[x]] $\rightarrow$ [[$\boxed{3}$]] 				& [[$\boxed{1}$]] $\mapsto$ [[f]] $\rightarrow$ [[$\boxed{2}$]] \\
+	 & [[$\boxed{3}$]] = [[y]] $\rightarrow$ [[$\boxed{4}$]] 				& \\
+	 & [[cons]] = [[$\boxed{5}$]] $\times$ [[$\boxed{6}$]] $\rightarrow$ [[$\boxed{4}$]] 
+	 = number $\times$ list $\rightarrow$ list 						& \\
+	 & [[$\boxed{5}$]] = [[x]]  								& \\
+	 & [[f]] = [[$\boxed{7}$]] $\rightarrow$ [[$\boxed{6}$]] 				& \\
+	 & [[f]] = [[y]] $\rightarrow$ [[$\boxed{7}$]] 						& \\ \hline 
+ 
+ Paso 3  & [[$\boxed{3}$]] = [[y]] $\rightarrow$ [[$\boxed{4}$]] 				& [[$\boxed{1}$]] $\mapsto$ [[f]] $\rightarrow$ [[x]] $\rightarrow$ [[$\boxed{3}$]] \\
+	 & [[cons]] = [[$\boxed{5}$]] $\times$ [[$\boxed{6}$]] $\rightarrow$ [[$\boxed{4}$]] 
+	 = number $\times$ list $\rightarrow$ list 						& [[$\boxed{2}$]] $\mapsto$ [[x]] $\rightarrow$ [[$\boxed{3}$]] \\
+	 & [[$\boxed{5}$]] = [[x]]  								& \\
+	 & [[f]] = [[$\boxed{7}$]] $\rightarrow$ [[$\boxed{6}$]] 				& \\
+	 & [[f]] = [[y]] $\rightarrow$ [[$\boxed{7}$]] 						& \\ \hline 
+	 
+ Paso 3  & [[cons]] = [[$\boxed{5}$]] $\times$ [[$\boxed{6}$]] $\rightarrow$ [[$\boxed{4}$]] 
+	 = number $\times$ list $\rightarrow$ list 						& [[$\boxed{1}$]] $\mapsto$ [[f]] $\rightarrow$ [[x]] $\rightarrow$ [[y]] $\rightarrow$ [[$\boxed{4}$]] \\
+	 & [[$\boxed{5}$]] = [[x]]  								& [[$\boxed{2}$]] $\mapsto$ [[x]] $\rightarrow$ [[y]] $\rightarrow$ [[$\boxed{4}$]] \\
+	 & [[f]] = [[$\boxed{7}$]] $\rightarrow$ [[$\boxed{6}$]] 				& [[$\boxed{3}$]] $\mapsto$ [[y]] $\rightarrow$ [[$\boxed{4}$]] \\
+	 & [[f]] = [[y]] $\rightarrow$ [[$\boxed{7}$]] 						& \\ \hline 
+	 
+ Paso 5  & [[$\boxed{5}$]] = number					& [[$\boxed{1}$]] $\mapsto$ [[f]] $\rightarrow$ [[x]] $\rightarrow$ [[y]] $\rightarrow$ [[$\boxed{4}$]] \\
+	 & [[$\boxed{6}$]] = list					& [[$\boxed{2}$]] $\mapsto$ [[x]] $\rightarrow$ [[y]] $\rightarrow$ [[$\boxed{4}$]] \\
+	 & [[$\boxed{4}$]] = list					& [[$\boxed{3}$]] $\mapsto$ [[y]] $\rightarrow$ [[$\boxed{4}$]] \\
+	 & [[$\boxed{5}$]] = [[x]]  					& \\
+	 & [[f]] = [[$\boxed{7}$]] $\rightarrow$ [[$\boxed{6}$]] 	& \\
+	 & [[f]] = [[y]] $\rightarrow$ [[$\boxed{7}$]] 			& \\ \hline 
+ 
+ Paso 3  & [[$\boxed{6}$]] = list					& [[$\boxed{1}$]] $\mapsto$ [[f]] $\rightarrow$ [[x]] $\rightarrow$ [[y]] $\rightarrow$ [[$\boxed{4}$]] \\
+	 & [[$\boxed{4}$]] = list					& [[$\boxed{2}$]] $\mapsto$ [[x]] $\rightarrow$ [[y]] $\rightarrow$ [[$\boxed{4}$]] \\
+	 & number = [[x]]  						& [[$\boxed{3}$]] $\mapsto$ [[y]] $\rightarrow$ [[$\boxed{4}$]] \\
+	 & [[f]] = [[$\boxed{7}$]] $\rightarrow$ [[$\boxed{6}$]] 	& [[$\boxed{5}$]] $\mapsto$ number \\
+	 & [[f]] = [[y]] $\rightarrow$ [[$\boxed{7}$]] 			& \\ \hline 
+	 
+ Paso 3  & [[$\boxed{4}$]] = list				& [[$\boxed{1}$]] $\mapsto$ [[f]] $\rightarrow$ [[x]] $\rightarrow$ [[y]] $\rightarrow$ [[$\boxed{4}$]] \\
+	 & number = [[x]]  					& [[$\boxed{2}$]] $\mapsto$ [[x]] $\rightarrow$ [[y]] $\rightarrow$ [[$\boxed{4}$]] \\
+	 & [[f]] = [[$\boxed{7}$]] $\rightarrow$ list		& [[$\boxed{3}$]] $\mapsto$ [[y]] $\rightarrow$ [[$\boxed{4}$]] \\
+	 & [[f]] = [[y]] $\rightarrow$ [[$\boxed{7}$]] 		& [[$\boxed{5}$]] $\mapsto$ number \\ 
+	 &	& [[$\boxed{6}$]] $\mapsto$ list \\ \hline
+ 
+ Paso 3  & number = [[x]]  					& [[$\boxed{1}$]] $\mapsto$ [[f]] $\rightarrow$ [[x]] $\rightarrow$ [[y]] $\rightarrow$ list \\
+	 & [[f]] = [[$\boxed{7}$]] $\rightarrow$ list		& [[$\boxed{2}$]] $\mapsto$ [[x]] $\rightarrow$ [[y]] $\rightarrow$ list \\
+	 & [[f]] = [[y]] $\rightarrow$ [[$\boxed{7}$]] 		& [[$\boxed{3}$]] $\mapsto$ [[y]] $\rightarrow$ list \\
+	 &	& [[$\boxed{5}$]] $\mapsto$ number \\
+	 &	& [[$\boxed{6}$]] $\mapsto$ list \\ 
+	 &	& [[$\boxed{4}$]] $\mapsto$ list \\ \hline
+ 
+ Paso 4  & [[f]] = [[$\boxed{7}$]] $\rightarrow$ list		& [[$\boxed{1}$]] $\mapsto$ [[f]] $\rightarrow$ number $\rightarrow$ [[y]] $\rightarrow$ list \\
+	 & [[f]] = [[y]] $\rightarrow$ [[$\boxed{7}$]] 		& [[$\boxed{2}$]] $\mapsto$ number $\rightarrow$ [[y]] $\rightarrow$ list \\
+	 &	& [[$\boxed{3}$]] $\mapsto$ [[y]] $\rightarrow$ list \\
+	 &	& [[$\boxed{5}$]] $\mapsto$ number \\
+	 &	& [[$\boxed{6}$]] $\mapsto$ list \\ 
+	 &	& [[$\boxed{4}$]] $\mapsto$ list \\ 
+	 &	& [[x]] $\mapsto$ number \\ \hline
+ 
+ Paso 3  & [[$\boxed{7}$]] $\rightarrow$ list = [[y]] $\rightarrow$ [[$\boxed{7}$]] 		& [[$\boxed{1}$]] $\mapsto$ [[$\boxed{7}$]] $\rightarrow$ list $\rightarrow$ number $\rightarrow$ [[y]] $\rightarrow$ list \\
+	 &	& [[$\boxed{2}$]] $\mapsto$ number $\rightarrow$ [[y]] $\rightarrow$ list \\
+	 &	& [[$\boxed{3}$]] $\mapsto$ [[y]] $\rightarrow$ list \\
+	 &	& [[$\boxed{5}$]] $\mapsto$ number \\
+	 &	& [[$\boxed{6}$]] $\mapsto$ list \\ 
+	 &	& [[$\boxed{4}$]] $\mapsto$ list \\ 
+	 &	& [[x]] $\mapsto$ number \\ 
+	 &	& [[f]] $\mapsto$ [[$\boxed{7}$]] $\rightarrow$ list \\ \hline
+ 
+ Paso 5  & [[$\boxed{7}$]] = [[y]] & [[$\boxed{1}$]] $\mapsto$ [[$\boxed{7}$]] $\rightarrow$ list $\rightarrow$ number $\rightarrow$ [[y]] $\rightarrow$ list \\
+	 & list = [[$\boxed{7}$]] & [[$\boxed{2}$]] $\mapsto$ number $\rightarrow$ [[y]] $\rightarrow$ list \\
+	 &	& [[$\boxed{3}$]] $\mapsto$ [[y]] $\rightarrow$ list \\
+	 &	& [[$\boxed{5}$]] $\mapsto$ number \\
+	 &	& [[$\boxed{6}$]] $\mapsto$ list \\ 
+	 &	& [[$\boxed{4}$]] $\mapsto$ list \\ 
+	 &	& [[x]] $\mapsto$ number \\ 
+	 &	& [[f]] $\mapsto$ [[$\boxed{7}$]] $\rightarrow$ list \\ \hline
+ 
+ Paso 4  & list = [[$\boxed{7}$]] & [[$\boxed{1}$]] $\mapsto$ [[$\boxed{7}$]] $\rightarrow$ list $\rightarrow$ number $\rightarrow$ [[$\boxed{7}$]] $\rightarrow$ list \\
+	 &	& [[$\boxed{2}$]] $\mapsto$ number $\rightarrow$ [[$\boxed{7}$]] $\rightarrow$ list \\
+	 &	& [[$\boxed{3}$]] $\mapsto$ [[$\boxed{7}$]] $\rightarrow$ list \\
+	 &	& [[$\boxed{5}$]] $\mapsto$ number \\
+	 &	& [[$\boxed{6}$]] $\mapsto$ list \\ 
+	 &	& [[$\boxed{4}$]] $\mapsto$ list \\ 
+	 &	& [[x]] $\mapsto$ number \\ 
+	 &	& [[f]] $\mapsto$ [[$\boxed{7}$]] $\rightarrow$ list \\ 
+	 &	& [[y]] $\mapsto$ [[$\boxed{7}$]] \\ \hline
+	 
+ Paso 4  &Vacio & [[$\boxed{1}$]] $\mapsto$ list $\rightarrow$ list $\rightarrow$ number $\rightarrow$ list $\rightarrow$ list \\
+	 &	& [[$\boxed{2}$]] $\mapsto$ number $\rightarrow$ list $\rightarrow$ list \\
+	 &	& [[$\boxed{3}$]] $\mapsto$ list $\rightarrow$ list \\
+	 &	& [[$\boxed{5}$]] $\mapsto$ number \\
+	 &	& [[$\boxed{6}$]] $\mapsto$ list \\ 
+	 &	& [[$\boxed{4}$]] $\mapsto$ list \\ 
+	 &	& [[x]] $\mapsto$ number \\ 
+	 &	& [[f]] $\mapsto$ list $\rightarrow$ list \\ 
+	 &	& [[y]] $\mapsto$ list \\ 
+	 &	& [[$\boxed{7}$]] $\mapsto$ list \\ \hline
 
-Restricciones:\\
+   \end{longtable}
 
-[$\boxed{1}$] = [f] $\rightarrow$ [$\boxed{2}$] \\
-
-[$\boxed{2}$] = [x] $\rightarrow$ [$\boxed{3}$] \\
-
-[$\boxed{3}$] = [y] $\rightarrow$ [$\boxed{4}$] \\
-
-[$\boxed{4}$] = [\{cons x \{f \{f y\}\}\}] = list si [x] = number y [\{f \{f y\}\}] = list \\
-
-[$\boxed{5}$] = [x] = number\\
-
-[$\boxed{6}$] = [f\{f y\}] = nlist, [f]= number \| list, [$\boxed{7}$] = list\\
-
-[$\boxed{7}$] = [\{f y\}] = nlist, [f]= number \| list, [y]= number \| list\\
-
+\end{center}
 
 Gracias a estas restricciones podemos sacar los tipos C1...C6
-\begin{alltt}
-\{fun \{f : number | list \} : list
-  \{fun \{x : number \} : list
-    \{fun \{y : number | list \} : list
-      \{cons x \{f \{f y\}\}\}\}\}\}
-\end{alltt}
+\begin{lstlisting}
+{fun {f : list $\rightarrow$ list } : list
+  {fun {x : number } : list
+    {fun {y : list } : list
+      {cons x {f {f y}}}}}}
+\end{lstlisting}
 
 
 \section*{Problema IV}
