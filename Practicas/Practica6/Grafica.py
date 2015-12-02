@@ -1,3 +1,5 @@
+import csv
+import xml.etree.ElementTree as ET
 class Graph:
 	"""Variables de clase: 
 		Una lista de Vertices
@@ -89,9 +91,26 @@ class GraphReader():
 			line.strip()
 			
 		return list_lines	
+	def readCSV(self):
+		with open(self.ruta, 'rb') as f:
+		    reader = csv.reader(f, delimiter='\n', quoting=csv.QUOTE_NONE)
+		    for row in reader:
+		        print row
+	def readXML(self):
+		tree = ET.parse(self.ruta)
+		root = tree.getroot()
+		for child in root:
+		   print child.tag, child.attrib
+
 
 graphreader = GraphReader('graph.json')
 print graphreader.readJSON()
+
+graphreader = GraphReader('graph.csv')
+print graphreader.readCSV()
+
+graphreader = GraphReader('graph.xml')
+print graphreader.readXML()
 			
 vertex3 = Vertex(2,1,2,[1,2,4,3])
 vertex2 = Vertex(3,3,4,[1,2,3])
