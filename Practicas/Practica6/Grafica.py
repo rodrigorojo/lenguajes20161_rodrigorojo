@@ -116,10 +116,7 @@ class GraphReader():
 	def readCSV(self):
 		with open(self.ruta, 'rb') as f:
 		    reader = csv.reader(f, delimiter=',', quoting=csv.QUOTE_NONE)
-<<<<<<< HEAD
-=======
 		    lista = []
->>>>>>> c953c21fab0c8c406f2f9dd27cfbbf489ae5cd4a
 		    for row in reader:
 		        lista.append(row)
 		return lista
