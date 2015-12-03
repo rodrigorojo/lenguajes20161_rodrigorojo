@@ -86,6 +86,7 @@ class Arista:
 		return self.weight
 vertex = Vertex("")
 graph = Graph([vertex],0,"",[])
+graph1 = Graph([vertex],0,"",[])
 
 class GraphReader():
 	
@@ -123,9 +124,16 @@ class GraphReader():
 	def readXML(self):
 		tree = ET.parse(self.ruta)
 		root = tree.getroot()
+		list_vertex = []
+		list_edges = []
 		for child in root:
-		   print child.tag, child.attrib
-
+		   v = str(child.attrib)
+		   if child.tag == 'vertex':
+		   		list_vertex.append(v[11])
+		   else:
+		   		list_edges.append([v[12],v[27],v[42]])
+		graph1.listaVertices = list_vertex	
+		graph1.listaAristas = list_edges	
 
 graphreader = GraphReader('graph.json')
 graphreader.readJSON()
@@ -134,8 +142,7 @@ graphreader = GraphReader('graph.csv')
 """print graphreader.readCSV()"""
 
 graphreader = GraphReader('graph.xml')
-"""print graphreader.readXML()"""
-
+graphreader.readXML()
 
 
 print "prueba: JSON "
@@ -148,6 +155,13 @@ print graph.vertices()
 print "directed: "
 print graph.directed(graph.bool_dirigida)
 
- 
-
+print "prueba: XML "
+print "Aristas: "
+print graph1.edges()
+print "Pesos : "
+pass
+print "Vertices: "
+print graph1.vertices()
+print "directed: "
+print graph1.directed(graph1.bool_dirigida)
 
