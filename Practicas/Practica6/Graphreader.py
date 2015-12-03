@@ -11,9 +11,6 @@ class GraphReader():
 	def __init__(self,ruta):
 		self.ruta = ruta
 	
-	def getGraph(self):
-		return self.graph
-	
 	def readJSON(self):
 		lista_vertices = []
 		lista_aristas = []
@@ -34,7 +31,7 @@ class GraphReader():
 				p = str(edge[2])
 				a = Edges(v1,v2,p)
 				lista_aristas.append(a)
-		g = Graph(lista_vertices, len(lista_aristas), i, lista_aristas)
+		g = Graph(lista_vertices, i, lista_aristas)
 		return g
 
 	def readCSV(self):
@@ -64,7 +61,7 @@ class GraphReader():
 		        	e3 = row[2].replace(' ','')
 		        	a = Edges(e1,e2,e3)
 		        	lista_aristas.append(a)
-		g = Graph(lista_vertices, len(lista_aristas), i, lista_aristas)
+		g = Graph(lista_vertices, i, lista_aristas)
 		return g
 
 	def readXML(self):
@@ -86,7 +83,7 @@ class GraphReader():
 		    else:
 		    	a = Edges(n[12],n[27],n[42])
 		    	list_edges.append(a)
-		g = Graph(list_vertex, len(list_edges), i, list_edges)
+		g = Graph(list_vertex, i, list_edges)
 		return g
 				
 		
