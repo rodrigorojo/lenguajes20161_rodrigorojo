@@ -102,9 +102,11 @@ class GraphReader():
 				print [v1, v2, p]	
 	def readCSV(self):
 		with open(self.ruta, 'rb') as f:
-		    reader = csv.reader(f, delimiter='\n', quoting=csv.QUOTE_NONE)
+		    reader = csv.reader(f, delimiter=',', quoting=csv.QUOTE_NONE)
+		    lista = []
 		    for row in reader:
-		        print row
+		        lista.append(row)
+		return lista
 	def readXML(self):
 		tree = ET.parse(self.ruta)
 		root = tree.getroot()
