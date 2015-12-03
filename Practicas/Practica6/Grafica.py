@@ -1,5 +1,8 @@
 import csv
 import xml.etree.ElementTree as ET
+import json
+from pprint import pprint
+
 class Graph:
 	"""Variables de clase: 
 		Una lista de Vertices
@@ -83,14 +86,20 @@ class GraphReader():
 		return self.graph
 	
 	def readJSON(self):
-		list_lines = []
-		input_file = open(self.ruta, 'rb')
-		for line in input_file:
-			list_lines.append(line)
-		for line in list_lines:
-			line.strip()
-			
-		return list_lines	
+		with open(self.ruta, 'rb') as data_file:
+			data = json.load(data_file)
+			dirigida = [data["direct"]]
+			print dirigida
+			list_vertex =[]
+			for vertex in data["vertices"]:
+				nombre = str(vertex[0])
+				list_vertex.append(nombre)
+			print list_vertex
+			for edge in data["edges"]:
+				v1 = str(edge[0])
+				v2 = str(edge[1])
+				p = str(edge[2])
+				print [v1, v2, p]	
 	def readCSV(self):
 		with open(self.ruta, 'rb') as f:
 		    reader = csv.reader(f, delimiter='\n', quoting=csv.QUOTE_NONE)
@@ -103,7 +112,7 @@ class GraphReader():
 		   print child.tag, child.attrib
 
 
-graphreader = GraphReader('graph.json')
+"""graphreader = GraphReader('graph.json')
 print graphreader.readJSON()
 
 graphreader = GraphReader('graph.csv')
@@ -116,5 +125,5 @@ vertex3 = Vertex(2,1,2,[1,2,4,3])
 vertex2 = Vertex(3,3,4,[1,2,3])
 vertex = Vertex("E",3,4,[1,2,3])
 graph = Graph([vertex,vertex2,vertex3],2,"2")
-print vertex3.degree()
+print vertex3.degree()"""
 
