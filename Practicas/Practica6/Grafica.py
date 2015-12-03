@@ -109,23 +109,23 @@ class GraphReader():
 		return self.graph
 	
 	def readJSON(self):
+		lista_vertices = []
+		lista_aristas = []
+		i = ""
 		with open(self.ruta, 'rb') as data_file:
 			data = json.load(data_file)
-			dirigida = data["direct"]
-			graph.bool_dirigida = dirigida
-			list_vertex =[]
-			list_edges = []
+			i = data["direct"]
 			for vertex in data["vertices"]:
-				nombre = str(vertex[0])
-				list_vertex.append(nombre)
-			graph.listaVertices = list_vertex				
+				v = Vertex(vertex[0])
+				lista_vertices.append(v)				
 			for edge in data["edges"]:
 				v1 = str(edge[0])
 				v2 = str(edge[1])
 				p = str(edge[2])
-				list_edges.append([v1, v2, p])
-			graph.numArist = len(list_edges	)
-			graph.listaAristas = list_edges
+				a = Arista(v1,v2,p)
+				lista_aristas.append(a)
+		g = Graph(lista_vertices, len(lista_aristas), i, lista_aristas)
+		return g
 	def readCSV(self):
 		lista_vertices = []
 		lista_aristas  = []
@@ -169,8 +169,8 @@ class GraphReader():
 		graph1.listaVertices = list_vertex	
 		graph1.listaAristas = list_edges	
 
-graphreader = GraphReader('graph.json')
-graphreader.readJSON()
+graphreaderjson = GraphReader('graph.json')
+graficajson = graphreaderjson.readJSON()
 
 graficacsvreader = GraphReader('graph.csv')
 graficacsv = graficacsvreader.readCSV()
@@ -192,12 +192,14 @@ print graph.directed(graficacsv.bool_dirigida)
 
 
 print "prueba: JSON "
-print "Aristas: "
-print graph.edges()
-print "Pesos : "
-pass
-print "Vertices: "
-print graph.vertices()
+print "vertices: "
+lv2 = graficajson.getVertices()
+for v in lv2:
+	v.printVertice()
+print "aristas: "
+la2 = graficajson.getAristas()
+for a in la2:
+	a.printArista()
 print "directed: "
 print graph.directed(graph.bool_dirigida)
 
