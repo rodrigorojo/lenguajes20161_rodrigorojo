@@ -9,4 +9,5 @@ $ cat .gitignore
 *.fdb_latexmk
 *.fls
 *.synctex.gz
+*.pyc
 **/compiled
