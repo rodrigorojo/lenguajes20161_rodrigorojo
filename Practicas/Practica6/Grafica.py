@@ -38,7 +38,8 @@ class Graph:
 			l.append(e)
 		print l
 	
-	
+	def isDirected(self):
+		return self.bool_dirigida
 	
 	def directed(self, identify):
 		if identify == 0:
@@ -114,7 +115,11 @@ class GraphReader():
 		i = ""
 		with open(self.ruta, 'rb') as data_file:
 			data = json.load(data_file)
-			i = data["direct"]
+			x = data["direct"]
+			if x == 1:
+				i = True
+			else:
+				i = False
 			for vertex in data["vertices"]:
 				v = Vertex(vertex[0])
 				lista_vertices.append(v)				
@@ -135,9 +140,9 @@ class GraphReader():
 		    reader = csv.reader(f, delimiter=',', quoting=csv.QUOTE_NONE)
 		    for row in reader:
 		        if row[0] == "direct=1":
-		        	i = 1
+		        	i = True
 		        elif row[0] == "direct=0":
-		        	i = 0
+		        	i = False
 		        else:
 		        	e1 = row[0].replace('"', '')
 		        	e2 = row[1].replace('"', '')
@@ -188,7 +193,8 @@ la = graficacsv.getAristas()
 for a in la:
 	a.printArista()
 print "directed: "
-print graph.directed(graficacsv.bool_dirigida)
+b = graficacsv.isDirected()
+print b
 
 
 print "prueba: JSON "
@@ -201,7 +207,8 @@ la2 = graficajson.getAristas()
 for a in la2:
 	a.printArista()
 print "directed: "
-print graph.directed(graph.bool_dirigida)
+b2 = graficajson.isDirected()
+print b2
 
 print "prueba: XML "
 print "Aristas: "
