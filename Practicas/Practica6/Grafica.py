@@ -21,6 +21,11 @@ class Graph:
 		self.listaAristas = listEdges
 	
 	
+	def getVertices(self):
+		return self.listaVertices
+	def getAristas(self):
+		return self.listaAristas
+
 	def vertices(self):
 		l = []
 		for v in self.listaVertices:
@@ -61,7 +66,8 @@ class Vertex:
 	def __init__(self, element):
 		self.element = element
 		
-	
+	def printVertice(self):
+		print self.element
 	def neighbours(self):
 		return self.listEdge
 	def degree(self):
@@ -71,13 +77,19 @@ class Vertex:
 		
 class Arista:
 	peso = 0.0
-	def __init__(self,adyacente,peso):
-		self.adyacente = adyacente
+	"""si la grafica es no dirigida se puede ir de origen a destino y de destino a origen son solo nombres"""
+	origen = ""
+	destino = ""
+	def __init__(self,origen,destino,peso):
+		self.origen = origen
+		self.destino = destino
 		self.peso = peso
 	def constructorAristas(origen,destino, peso):
 		self.origen = origen
 		self.destino = destino
 		self.peso = peso
+	def printArista(self):
+		print self.origen, self.destino, self.peso
 	def svertex(self):
 		return self.origen
 	def tvertex(self):
@@ -115,12 +127,34 @@ class GraphReader():
 			graph.numArist = len(list_edges	)
 			graph.listaAristas = list_edges
 	def readCSV(self):
+		lista_vertices = []
+		lista_aristas  = []
+		lista_aux =[]
+		i = ""
 		with open(self.ruta, 'rb') as f:
 		    reader = csv.reader(f, delimiter=',', quoting=csv.QUOTE_NONE)
-		    lista = []
 		    for row in reader:
-		        lista.append(row)
-		return lista
+		        if row[0] == "direct=1":
+		        	i = 1
+		        elif row[0] == "direct=0":
+		        	i = 0
+		        else:
+		        	e1 = row[0].replace('"', '')
+		        	e2 = row[1].replace('"', '')
+		        	e2 = e2.replace(' ', '')
+		        	if lista_aux.count(e1) == 0:
+		        		lista_aux.append(e1)
+		        		v1 = Vertex(e1)
+		        		lista_vertices.append(v1)
+		        	if lista_aux.count(e2) == 0:
+		        		lista_aux.append(e2)
+		        		v2 = Vertex(e2)
+		        		lista_vertices.append(v2)
+		        	e3 = row[2].replace(' ','')
+		        	a = Arista(e1,e2,e3)
+		        	lista_aristas.append(a)
+		g = Graph(lista_vertices, len(lista_aristas), i, lista_aristas)
+		return g
 	def readXML(self):
 		tree = ET.parse(self.ruta)
 		root = tree.getroot()
@@ -138,11 +172,23 @@ class GraphReader():
 graphreader = GraphReader('graph.json')
 graphreader.readJSON()
 
-graphreader = GraphReader('graph.csv')
-"""print graphreader.readCSV()"""
+graficacsvreader = GraphReader('graph.csv')
+graficacsv = graficacsvreader.readCSV()
 
 graphreader = GraphReader('graph.xml')
 graphreader.readXML()
+
+print "prueba: CSV"
+print "vertices:"
+lv = graficacsv.getVertices()
+for v in lv:
+	v.printVertice()
+print "aristas:"
+la = graficacsv.getAristas()
+for a in la:
+	a.printArista()
+print "directed: "
+print graph.directed(graficacsv.bool_dirigida)
 
 
 print "prueba: JSON "
@@ -164,4 +210,3 @@ print "Vertices: "
 print graph1.vertices()
 print "directed: "
 print graph1.directed(graph1.bool_dirigida)
-
