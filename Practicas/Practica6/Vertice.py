@@ -3,7 +3,8 @@ from Arista import *
 class Vertex:
 	"""constructor de los vertices"""
 	element =""
-	listEdge = []
+	vecinos = []
+	grado = 0
 	
 	def __init__(self, element):
 		self.element = element
@@ -11,11 +12,15 @@ class Vertex:
 	def getElement(self):
 		return self.element
 
-	def ponArista(self, arista):
-		self.listEdge.append(arista)
+	def incrementaGrado(self):
+		self.grado = self.grado + 1 
+
+	def agregaVecino(self, vecino):
+		if self.vecinos.count(vecino) == 0:
+			self.vecinos.append(vecino)
 		
 	def printVertice(self):
-		print self.element
+		print self.element, self.grado, self.vecinos
 
 	def neighbours(self):
 		return self.listEdge

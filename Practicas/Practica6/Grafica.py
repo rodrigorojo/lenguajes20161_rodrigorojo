@@ -30,8 +30,10 @@ class Graph:
 		j = self.listaAux.index(destino)
 		a = Edges(self.listaVertices[i], self.listaVertices[j], peso)
 		self.listaAristas.append(a)
-		"""self.listaVertices[i].ponArista(a)
-		self.listaVertices[j].ponArista(a)"""
+		self.listaVertices[i].incrementaGrado()
+		self.listaVertices[i].agregaVecino(destino)
+		self.listaVertices[j].incrementaGrado()
+		self.listaVertices[j].agregaVecino(origen)
 
 	def vertices(self):
 		return self.listaVertices
