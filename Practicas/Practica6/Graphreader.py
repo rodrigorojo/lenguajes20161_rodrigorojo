@@ -71,17 +71,18 @@ class GraphReader():
 		list_edges = []
 		i = ""
 		d = str(root.attrib)
-		if d[12] == '1':
+		if root.attrib.values()[0] == '1':
 		    i = True
 		else:
 		    i = False
 		for child in root:
-		    n = str(child.attrib)
+		    n = str(child.attrib.values()[0])
 		    if child.tag == 'vertex':
-		    	v = Vertex(n[11])
+		    	v = Vertex(n)
 		    	list_vertex.append(v)
 		    else:
-		    	a = Edges(n[12],n[27],n[42])
+		    	a = Edges(child.attrib.values()[0],child.attrib.values()[1],
+		    								child.attrib.values()[2])
 		    	list_edges.append(a)
 		g = Graph(list_vertex, i, list_edges)
 		return g
