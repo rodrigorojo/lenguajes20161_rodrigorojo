@@ -7,6 +7,12 @@ class Vertex:
 	
 	def __init__(self, element):
 		self.element = element
+
+	def getElement(self):
+		return self.element
+
+	def ponArista(self, arista):
+		self.listEdge.append(arista)
 		
 	def printVertice(self):
 		print self.element

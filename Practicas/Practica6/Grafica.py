@@ -7,6 +7,7 @@ class Graph:
 		El numero de Aristas
 		un booleano a manera de String que nos dira si la grafica es o no dirigida"""
 	listaVertices = []
+	listaAux = []
 	bool_dirigida = ""
 	listaAristas = []
 	
@@ -15,7 +16,23 @@ class Graph:
 		self.listaVertices = listVertex
 		self.bool_dirigida = bool_direct
 		self.listaAristas = listEdges
+
+	def setDirected(self, directed):
+		self.bool_dirigida = directed
+
+	def agregaVertice(self, elemento):
+		v = Vertex(elemento)
+		self.listaAux.append(elemento)
+		self.listaVertices.append(v)
 	
+	def agregaArista(self, origen, destino, peso):
+		i = self.listaAux.index(origen)
+		j = self.listaAux.index(destino)
+		a = Edges(self.listaVertices[i], self.listaVertices[j], peso)
+		self.listaAristas.append(a)
+		"""self.listaVertices[i].ponArista(a)
+		self.listaVertices[j].ponArista(a)"""
+
 	def vertices(self):
 		return self.listaVertices
 

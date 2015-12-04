@@ -39,6 +39,7 @@ print "directed: "
 b2 = graficajson.directed()
 print b2
 
+
 print "prueba: XML "
 print "vertices: "
 lv3 = graficaxml.vertices()

@@ -11,7 +11,7 @@ class Edges:
 		self.peso = peso
 
 	def printArista(self):
-		print self.origen, self.destino, self.peso
+		print self.origen.getElement(), self.destino.getElement(), self.peso
 
 	def svertex(self):
 		return self.origen
