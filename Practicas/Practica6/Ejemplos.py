@@ -12,7 +12,7 @@ graficacsv = graficacsvreader.readCSV()
 graphreaderxml = GraphReader('graph.xml')
 graficaxml = graphreaderxml.readXML()
 
-print "prueba: CSV"
+print "prueba: ", graficacsvreader.ruta
 print "vertices:"
 lv = graficacsv.vertices()
 for v in lv:
@@ -26,7 +26,7 @@ b = graficacsv.directed()
 print b
 
 
-print "prueba: JSON "
+print "prueba: ", graphreaderjson.ruta
 print "vertices: "
 lv2 = graficajson.vertices()
 for v in lv2:
@@ -40,7 +40,7 @@ b2 = graficajson.directed()
 print b2
 
 
-print "prueba: XML "
+print "prueba: ", graphreaderxml.ruta
 print "vertices: "
 lv3 = graficaxml.vertices()
 for v in lv3:
@@ -53,4 +53,50 @@ print "directed: "
 b3 = graficaxml.directed()
 print b3
 
+"""readerpetersencsv = GraphReader('petersen.csv')
+petersencsv = readerpetersencsv.readCSV()"""
 
+readerpetersenjson = GraphReader('petersen.json')
+petersenjson = readerpetersenjson.readJSON()
+
+readerpetersenxml = GraphReader('petersen.xml')
+petersenxml = readerpetersenxml.readXML()
+
+"""print "prueba: ", readerpetersencsv.ruta
+print "vertices:"
+lv4 = petersencsv.vertices()
+for v in lv4:
+	v.printVertice()
+print "aristas:"
+la4 = petersencsv.edges()
+for a in la4:
+	a.printArista()
+print "directed: "
+b4 = petersencsv.directed()
+print b"""
+
+print "prueba: ", readerpetersenjson.ruta
+print "vertices:"
+lv5 = petersenjson.vertices()
+for v in lv5:
+	v.printVertice()
+print "aristas:"
+la5 = petersenjson.edges()
+for a in la5:
+	a.printArista()
+print "directed: "
+b5 = petersenjson.directed()
+print b5
+
+print "prueba: ", readerpetersenxml.ruta
+print "vertices:"
+lv6 = petersenxml.vertices()
+for v in lv6:
+	v.printVertice()
+print "aristas:"
+la6 = petersenxml.edges()
+for a in la6:
+	a.printArista()
+print "directed: "
+b6 = petersenxml.directed()
+print b6
