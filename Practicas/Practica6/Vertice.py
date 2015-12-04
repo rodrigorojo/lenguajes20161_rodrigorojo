@@ -20,10 +20,10 @@ class Vertex:
 			self.vecinos.append(vecino)
 		
 	def printVertice(self):
-		print self.element, self.grado, self.vecinos
+		print self.element, "grado: ", self.grado
 
 	def neighbours(self):
-		return self.listEdge
+		return vecinos
 		
 	def degree(self):
-		return len(self.listEdge)
+		return grado
