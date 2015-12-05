@@ -25,6 +25,7 @@ print "directed: "
 b = graficacsv.directed()
 print b
 
+print "\n"
 
 print "prueba: ", graphreaderjson.ruta
 print "vertices: "
@@ -39,6 +40,7 @@ print "directed: "
 b2 = graficajson.directed()
 print b2
 
+print "\n"
 
 print "prueba: ", graphreaderxml.ruta
 print "vertices: "
@@ -53,27 +55,31 @@ print "directed: "
 b3 = graficaxml.directed()
 print b3
 
-"""readerpetersencsv = GraphReader('petersen.csv')
-petersencsv = readerpetersencsv.readCSV()"""
-
+print "\n"
+"""
+readerpetersencsv = GraphReader('petersen.csv')
+petersencsv = readerpetersencsv.readCSV()
+"""
 readerpetersenjson = GraphReader('petersen.json')
 petersenjson = readerpetersenjson.readJSON()
 
 readerpetersenxml = GraphReader('petersen.xml')
 petersenxml = readerpetersenxml.readXML()
 
-"""print "prueba: ", readerpetersencsv.ruta
-print "vertices:"
-lv4 = petersencsv.vertices()
+"""
+print "prueba: ", readerpetersencsv.ruta
+print "Vertices: "
+lv4= petersencsv.vertices()
 for v in lv4:
 	v.printVertice()
-print "aristas:"
 la4 = petersencsv.edges()
 for a in la4:
 	a.printArista()
 print "directed: "
-b4 = petersencsv.directed()
-print b"""
+b4= petersencsv.directed()
+print b4
+"""
+print "Por alguna diabolica Razon readerCSV falla con petersen.csv :v "
 
 print "prueba: ", readerpetersenjson.ruta
 print "vertices:"
@@ -87,6 +93,8 @@ for a in la5:
 print "directed: "
 b5 = petersenjson.directed()
 print b5
+
+print "\n"
 
 print "prueba: ", readerpetersenxml.ruta
 print "vertices:"
