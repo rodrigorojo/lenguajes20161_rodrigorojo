@@ -55,3 +55,19 @@ Problema 4: Todo lo que dijeron esta bien pero la pregunta era porque los
 lenguajes perezosos no hay operaciones de estado lo cual no contestaron ni remotamente.
 
 **Calificación: 7**
+
+### Tarea 3
+
+Problema I: fibonacci tiene tipo number -> number no number dado que es una función.
+
+Problema II: Muy bien.
+
+Problema III: x era mejor definirlo como T0 un tipo en general pero muy bien.
+
+Problema IV: Muy bien.
+
+Problema V: Muy bien.
+
+Problem VI: Fortran y Algol eran DSL muy en sus inicios pero son lenguajes generales en la actualidad hubieran elegido ejemplos mas actuales.
+
+**Calificación: 10**
