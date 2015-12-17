@@ -29,6 +29,21 @@ Su implementación tiene un bug en el with multi-parametrico
 
 **Calificación: 9.5**
 
+### Practica 5
+
+No implementaron la recursion ni por cajas ni por
+procedimientos, ademas su implementación de listas
+no implementa la definida en el BNF en la practica
+
+**Calificación: 5**
+
+### Practica 6
+
+No escribieron un README de la practica,
+no implementaron la detección de ciclos.
+
+**Calificación: 9**
+
 ## Tareas
 
 ### Tarea 1
