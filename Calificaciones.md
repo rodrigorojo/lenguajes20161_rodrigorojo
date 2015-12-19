@@ -52,7 +52,9 @@ Problema II: Tu ejemplo es correcto pero el valor en alcance dinamico
 seria 3 no 5.
 Problem III: Te falto sustituir add5 por su coordenada lexica.
 
-**Calificación: 9**
+Asignado punto extra.
+
+**Calificación: 10**
 
 ### Tarea 2
 
